@@ -138,7 +138,7 @@ Configured to build cadaver ${PACKAGE_VERSION}:
   Compiler:              ${CC}
   Neon library:	         ${neon_library_message}
   XML Parser:            ${neon_xml_parser_message}
-  SSL library:		 ${neon_SSL_message}
+  SSL library:		 ${ne_SSL_message}
   Internationalization:  ${nls_msg}
   GNU readline support:	 ${msg_readline}
 

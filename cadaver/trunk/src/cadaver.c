@@ -1,6 +1,6 @@
 /* 
    cadaver, command-line DAV client
-   Copyright (C) 1999-2004, Joe Orton <joe@manyfish.co.uk>, 
+   Copyright (C) 1999-2005, Joe Orton <joe@manyfish.co.uk>, 
    except where otherwise indicated.
                                                                      
    This program is free software; you can redistribute it and/or modify
@@ -101,8 +101,6 @@ char *path, /* current working collection */
 
 int tolerant; /* tolerate DAV-enabledness failure */
 
-int use_expect = 0;
-
 int have_connection = 0; /* true when we are connected to the server */
 int dav_collection;
 
@@ -133,8 +131,6 @@ static void usage(void)
 "Usage: %s [OPTIONS] http://hostname[:port]/path\n"
 "  Port defaults to 80, path defaults to '/'\n"
 "Options:\n"
-"  -e, --expect100  Enable sending of `Expect: 100-continue' header.\n"
-"     *** Warning: For Apache servers, use only with version 1.3.9 and later.\n"
 "  -t, --tolerant   Allow cd/open into non-WebDAV enabled collection.\n"
 "  -V, --version    Display version information.\n"
 "  -h, --help       Display this help message.\n"
@@ -328,7 +324,7 @@ void open_connection(const char *url)
 	    server.port = ne_uri_defaultport(server.scheme);
 
 	if (strcasecmp(server.scheme, "https") == 0) {
-	    if (!ne_supports_ssl()) {
+	    if (!ne_has_support(NE_FEATURE_SSL)) {
 		printf(_("SSL is not enabled.\n"));
 		return;
 	    }
@@ -381,7 +377,6 @@ void open_connection(const char *url)
 #endif /* ENABLE_NETRC */
     have_connection = false;
 
-    ne_set_expect100(session, use_expect);
     ne_set_useragent(session, "cadaver/" PACKAGE_VERSION);
     ne_set_server_auth(session, supply_creds_server, NULL);
     ne_set_proxy_auth(session, supply_creds_proxy, NULL);
@@ -441,7 +436,6 @@ static void parse_args(int argc, char **argv)
     static const struct option opts[] = {
 	{ "version", no_argument, NULL, 'V' },
 	{ "help", no_argument, NULL, 'h' },
-	{ "expect100", no_argument, NULL, 'e' },
 	{ "proxy", required_argument, NULL, 'p' },
 	{ "tolerant", no_argument, NULL, 't' },
 	{ 0, 0, 0, 0 }
@@ -451,7 +445,6 @@ static void parse_args(int argc, char **argv)
 	switch (optc) {
 	case 'h': usage(); exit(-1);
 	case 'V': execute_about(); exit(-1);
-	case 'e': use_expect = true; break;
 	case 'p': set_proxy(optarg); break;
 	case 't': tolerant = 1; break;
 	case '?': 
@@ -494,7 +487,7 @@ static int execute_command(const char *line)
 {
     const struct command *cmd;
     char **tokens;
-    int argcount, ret = 0;
+    int n, argcount, ret = 0;
     tokens = parse_command(line, &argcount);
     if (argcount == 0) {
 	free(tokens);
@@ -553,7 +546,10 @@ static int execute_command(const char *line)
 	    break;
 	}
     }
-    split_string_free(tokens);
+    for (n = 0; n < argcount; n++) {
+        ne_free(tokens[n]);
+    }
+    ne_free(tokens);
     return ret;
 }
 
