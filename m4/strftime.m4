@@ -3,7 +3,7 @@
 dnl This macro is intended to be used solely in this file.
 dnl These are the prerequisite macros for GNU's strftime.c replacement.
 dnl FIXME: the list is far from complete
-AC_DEFUN(_jm_STRFTIME_PREREQS,
+AC_DEFUN([_jm_STRFTIME_PREREQS],
 [
  dnl strftime.c uses localtime_r if it exists.  Check for it.
  AC_CHECK_FUNCS(localtime_r)
@@ -15,7 +15,7 @@ dnl Determine if the strftime function has all the features of the GNU one.
 dnl
 dnl From Jim Meyering.
 dnl
-AC_DEFUN(jm_FUNC_GNU_STRFTIME,
+AC_DEFUN([jm_FUNC_GNU_STRFTIME],
 [AC_REQUIRE([AC_HEADER_TIME])dnl
 
  _jm_STRFTIME_PREREQS
@@ -139,7 +139,7 @@ changequote([, ])dnl
   fi
 ])
 
-AC_DEFUN(jm_FUNC_STRFTIME,
+AC_DEFUN([jm_FUNC_STRFTIME],
 [
   _jm_STRFTIME_PREREQS
   AC_REPLACE_FUNCS(strftime)
