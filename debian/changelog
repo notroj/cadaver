@@ -1,0 +1,47 @@
+cadaver (0.17.0-4) unstable; urgency=low
+
+  * added build dependencies which fixes Bug #93233 (debmake)
+  * added some more cleaning 
+
+ -- Bernd Eckenfels <ecki@debian.org>  Sun,  8 Apr 2001 00:02:43 +0200
+
+cadaver (0.17.0-3) unstable; urgency=low
+
+  * added build dependencies which fixes Bug #92658 (libxmltok1-dev,
+    libexpat1-dev)
+
+ -- Bernd Eckenfels <ecki@debian.org>  Thu,  5 Apr 2001 04:13:49 +0200
+
+cadaver (0.17.0-2) unstable; urgency=low
+
+  * changed build dependency on libssl-dev (#90389)
+
+ -- Bernd Eckenfels <ecki@debian.org>  Mon,  2 Apr 2001 02:11:20 +0200
+
+cadaver (0.17.0-1) unstable; urgency=low
+
+  * new upstream version (fixes bug #86067)
+  * added --with-ssl --enable-warnings to configure
+  * added -isp to gencontrol to make lintian happy
+  * moved to non-US/main/web since it uses SSL
+
+ -- Bernd Eckenfels <ecki@debian.org>  Thu,  1 Mar 2001 04:51:23 +0100
+
+cadaver (0.13.3-1) unstable; urgency=low
+
+  * new upstream version (fixed bug #61050)
+
+ -- Bernd Eckenfels <ecki@debian.org>  Sat, 22 Jul 2000 06:25:02 +0200
+
+
+cadaver (0.9.0-1) unstable; urgency=low
+
+  * added some rm-s to the rules file
+  * the created Makefile does not support CFLAGS=.. removed from rules
+  * Initial release.
+
+ -- Bernd Eckenfels <ecki@lina.inka.de>  Thu,  6 Jan 2000 09:39:32 +0100
+
+Local variables:
+mode: debian-changelog
+End:

@@ -1,0 +1,895 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2001-02-27 09:16+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: ENCODING\n"
+
+#: src/cadaver.c:159
+msgid "ls [path]"
+msgstr ""
+
+#: src/cadaver.c:159
+msgid "List contents of current [or other] collection"
+msgstr ""
+
+#: src/cadaver.c:160
+msgid "cd path"
+msgstr ""
+
+#: src/cadaver.c:160
+msgid "Change to specified collection"
+msgstr ""
+
+#: src/cadaver.c:162
+msgid "Display name of current collection"
+msgstr ""
+
+#: src/cadaver.c:164
+msgid "put local [remote]"
+msgstr ""
+
+#: src/cadaver.c:164
+msgid "Upload local file"
+msgstr ""
+
+#: src/cadaver.c:166
+msgid "get remote [local]"
+msgstr ""
+
+#: src/cadaver.c:166
+msgid "Download remote resource"
+msgstr ""
+
+#: src/cadaver.c:167
+msgid "mget remote..."
+msgstr ""
+
+#: src/cadaver.c:167
+msgid "Download many remote resources"
+msgstr ""
+
+#: src/cadaver.c:169
+msgid "mput local..."
+msgstr ""
+
+#: src/cadaver.c:169
+msgid "Upload many local files"
+msgstr ""
+
+#: src/cadaver.c:170
+msgid "edit resource"
+msgstr ""
+
+#: src/cadaver.c:170
+msgid "Edit given resource"
+msgstr ""
+
+#: src/cadaver.c:171
+msgid "less remote..."
+msgstr ""
+
+#: src/cadaver.c:171
+msgid "Display remote resource through pager"
+msgstr ""
+
+#: src/cadaver.c:172
+msgid "mkcol remote..."
+msgstr ""
+
+#: src/cadaver.c:172
+msgid "Create remote collection(s)"
+msgstr ""
+
+#: src/cadaver.c:173
+msgid "cat remote..."
+msgstr ""
+
+#: src/cadaver.c:173
+msgid "Display remote resource(s)"
+msgstr ""
+
+#: src/cadaver.c:174
+msgid "delete remote..."
+msgstr ""
+
+#: src/cadaver.c:174
+msgid "Delete non-collection resource(s)"
+msgstr ""
+
+#: src/cadaver.c:175
+msgid "rmcol remote..."
+msgstr ""
+
+#: src/cadaver.c:175
+msgid "Delete remote collections and ALL contents"
+msgstr ""
+
+#: src/cadaver.c:176
+msgid "copy source... dest"
+msgstr ""
+
+#: src/cadaver.c:176
+msgid "Copy resource(s) from source to dest"
+msgstr ""
+
+#: src/cadaver.c:177
+msgid "move source... dest"
+msgstr ""
+
+#: src/cadaver.c:177
+msgid "Move resource(s) from source to dest"
+msgstr ""
+
+#. DON'T FORGET TO ADD A NEW COMMAND ALIAS WHEN YOU ADD A NEW COMMAND
+#: src/cadaver.c:181
+msgid "lock resource"
+msgstr ""
+
+#: src/cadaver.c:181
+msgid "Lock given resource"
+msgstr ""
+
+#: src/cadaver.c:182
+msgid "unlock resource"
+msgstr ""
+
+#: src/cadaver.c:182
+msgid "Unlock given resource"
+msgstr ""
+
+#: src/cadaver.c:183
+msgid "discover resource"
+msgstr ""
+
+#: src/cadaver.c:183
+msgid "Display lock information for resource"
+msgstr ""
+
+#: src/cadaver.c:184
+msgid "steal resource"
+msgstr ""
+
+#: src/cadaver.c:184
+msgid "Steal lock token for resource"
+msgstr ""
+
+#: src/cadaver.c:186
+msgid "Display list of owned locks"
+msgstr ""
+
+#: src/cadaver.c:194
+msgid "chexec [+|-] remote"
+msgstr ""
+
+#: src/cadaver.c:194
+msgid "Change isexecutable property of resource"
+msgstr ""
+
+#: src/cadaver.c:197
+msgid "propget resource [propname]"
+msgstr ""
+
+#: src/cadaver.c:198
+msgid "Retrieve properties of resource"
+msgstr ""
+
+#: src/cadaver.c:200
+msgid "propset resource propname value"
+msgstr ""
+
+#: src/cadaver.c:201
+msgid "Set property on resource"
+msgstr ""
+
+#: src/cadaver.c:204
+msgid "set [option] [value]"
+msgstr ""
+
+#: src/cadaver.c:204
+msgid "Set an option, or display options"
+msgstr ""
+
+#: src/cadaver.c:206
+msgid "Open connection to given URL"
+msgstr ""
+
+#: src/cadaver.c:208
+msgid "Close current connection"
+msgstr ""
+
+#: src/cadaver.c:211
+msgid "Exit program"
+msgstr ""
+
+#: src/cadaver.c:214
+msgid "unset [option] [value]"
+msgstr ""
+
+#: src/cadaver.c:214
+msgid "Unsets or clears value from option."
+msgstr ""
+
+#. Unconnected operation, 0 arguments
+#: src/cadaver.c:216
+msgid "lcd [directory]"
+msgstr ""
+
+#: src/cadaver.c:216
+msgid "Change local working directory"
+msgstr ""
+
+#: src/cadaver.c:218
+msgid "lls [options]"
+msgstr ""
+
+#: src/cadaver.c:218
+msgid "Display local directory listing"
+msgstr ""
+
+#: src/cadaver.c:219
+msgid "Print local working directory"
+msgstr ""
+
+#: src/cadaver.c:220
+msgid "help [command]"
+msgstr ""
+
+#: src/cadaver.c:220
+msgid "Display help message"
+msgstr ""
+
+#: src/cadaver.c:236
+#, c-format
+msgid ""
+"Usage: %s [OPTIONS] http://hostname[:port]/path\n"
+"  Port defaults to 80, path defaults to '/'\n"
+"Options:\n"
+"  -e, --expect100  Enable sending of `Expect: 100-continue' header.\n"
+"     *** Warning: For Apache servers, use only with version 1.3.9 and "
+"later.\n"
+"  -t, --tolerant   Allow cd/open into non-WebDAV enabled collection.\n"
+"  -V, --version    Display version information.\n"
+"  -h, --help       Display this help message.\n"
+"Please send bug reports and feature requests to <cadaver@webdav.org>\n"
+msgstr ""
+
+#: src/cadaver.c:260
+#, c-format
+msgid "Connection to `%s' closed.\n"
+msgstr ""
+
+#: src/cadaver.c:273
+#, c-format
+msgid ""
+"Ignored error: %s not WebDAV-enabled:\n"
+"%s\n"
+msgstr ""
+
+#: src/cadaver.c:280
+#, c-format
+msgid ""
+"Could not access %s (not WebDAV-enabled?):\n"
+"%s\n"
+msgstr ""
+
+#: src/cadaver.c:309
+#, c-format
+msgid "Enter private key password for `%s': "
+msgstr ""
+
+#: src/cadaver.c:321
+msgid "Private key password must be 4 or more characters!\n"
+msgstr ""
+
+#: src/cadaver.c:335
+msgid ""
+"SSL support has not be compiled into this application.\n"
+"URLs beginning with \"https:\" cannot be used!\n"
+msgstr ""
+
+#: src/cadaver.c:347
+#, c-format
+msgid "Could not use client certificate `%s' (wrong password)?\n"
+msgstr ""
+
+#: src/cadaver.c:351
+#, c-format
+msgid "Using client certificate `%s'.\n"
+msgstr ""
+
+#: src/cadaver.c:396
+#, c-format
+msgid "Could not parse URL `%s'\n"
+msgstr ""
+
+#: src/cadaver.c:413
+#, c-format
+msgid "Unrecognized URL scheme `%s'.\n"
+msgstr ""
+
+#: src/cadaver.c:478
+#, c-format
+msgid "Could not resolve proxy server hostname `%s'.\n"
+msgstr ""
+
+#: src/cadaver.c:485
+#, c-format
+msgid "Could not resolve server hostname `%s'.\n"
+msgstr ""
+
+#: src/cadaver.c:502
+msgid "Could not connect to remote host.\n"
+msgstr ""
+
+#. FIXME: This is NOT a "could not open connection" error
+#: src/cadaver.c:506
+#, c-format
+msgid ""
+"Could not contact server:\n"
+"%s\n"
+msgstr ""
+
+#: src/cadaver.c:546
+#, c-format
+msgid "Try `%s --help' for more information.\n"
+msgstr ""
+
+#: src/cadaver.c:591
+msgid "Unrecognised command. Type 'help' for a list of commands.\n"
+msgstr ""
+
+#: src/cadaver.c:593
+#, c-format
+msgid "The `%s' command requires %d argument%s"
+msgstr ""
+
+#: src/cadaver.c:596 src/cadaver.c:608
+#, c-format
+msgid ""
+":\n"
+"  %s : %s\n"
+msgstr ""
+
+#: src/cadaver.c:602
+#, c-format
+msgid "The `%s' command takes at most %d argument%s"
+msgstr ""
+
+#: src/cadaver.c:605
+#, c-format
+msgid "The `%s' command takes no arguments"
+msgstr ""
+
+#: src/cadaver.c:613
+#, c-format
+msgid ""
+"The `%s' command can only be used when connected to the server.\n"
+"Try running `open' first (see `help open' for more details).\n"
+msgstr ""
+
+#: src/cadaver.c:660
+#, c-format
+msgid "Terminated by signal %d.\n"
+msgstr ""
+
+#: src/cadaver.c:697
+#, c-format
+msgid "Could not read rcfile %s: %s\n"
+msgstr ""
+
+#. Show me the way to go home...
+#: src/cadaver.c:846
+msgid "Environment variable $HOME needs to be set!\n"
+msgstr ""
+
+#: src/cadaver.c:899
+msgid "Looking up hostname... "
+msgstr ""
+
+#: src/cadaver.c:902
+msgid "Connecting to server... "
+msgstr ""
+
+#: src/cadaver.c:905
+msgid "connected.\n"
+msgstr ""
+
+#: src/cadaver.c:908
+#, c-format
+msgid "Using secure connection: %s\n"
+msgstr ""
+
+#: src/cadaver.c:921
+msgid " (reconnecting..."
+msgstr ""
+
+#: src/cadaver.c:924
+msgid "done)"
+msgstr ""
+
+#: src/cadaver.c:934
+msgid "] reconnecting: "
+msgstr ""
+
+#: src/cadaver.c:937
+msgid "okay ["
+msgstr ""
+
+#: src/cadaver.c:947
+msgid "\rTransfer timed out, reconnecting... "
+msgstr ""
+
+#: src/cadaver.c:950
+msgid "okay."
+msgstr ""
+
+#: src/cadaver.c:997
+msgid "\rProgress: ["
+msgstr ""
+
+#: src/cadaver.c:1002
+msgid "] %5.1f%% of %ld bytes"
+msgstr ""
+
+#: src/cadaver.c:1054
+msgid "Username: "
+msgstr ""
+
+#. TODO: UI is crap here
+#: src/cadaver.c:1057
+msgid "\rAuthentication aborted!\n"
+msgstr ""
+
+#: src/cadaver.c:1060
+msgid "Password: "
+msgstr ""
+
+#: src/cadaver.c:1062
+msgid "Authentication aborted!\n"
+msgstr ""
+
+#: src/cadaver.c:1072
+msgid "Retrying:"
+msgstr ""
+
+#: src/cadaver.c:1076
+msgid "Retrying ["
+msgstr ""
+
+#: src/cadaver.c:1096
+#, c-format
+msgid "Authentication required for %s on server `%s':\n"
+msgstr ""
+
+#: src/cadaver.c:1104
+#, c-format
+msgid "Authentication required for %s on proxy server `%s':\n"
+msgstr ""
+
+#: src/ls.c:139
+msgid "Ref:"
+msgstr ""
+
+#: src/ls.c:140
+msgid "Coll:"
+msgstr ""
+
+#: src/ls.c:156
+#, c-format
+msgid "Error: %-30s %d %s\n"
+msgstr ""
+
+#: src/commands.c:313 src/commands.c:322 src/ls.c:157
+msgid "unknown"
+msgstr ""
+
+#: src/ls.c:175
+msgid "Listing collection"
+msgstr ""
+
+#: src/ls.c:180
+msgid "collection is empty.\n"
+msgstr ""
+
+#: src/ls.c:240
+msgid "Authorization Required"
+msgstr ""
+
+#: src/ls.c:242
+msgid "Redirect"
+msgstr ""
+
+#: src/ls.c:244
+msgid "Server Error"
+msgstr ""
+
+#: src/ls.c:246
+msgid "Unknown Error"
+msgstr ""
+
+#: src/cmdline.c:284
+msgid "[Matching..."
+msgstr ""
+
+#: src/cmdline.c:311
+#, c-format
+msgid "%d matches.]\n"
+msgstr ""
+
+#: src/cmdline.c:313
+msgid "1 match.]\n"
+msgstr ""
+
+#: src/commands.c:117
+msgid "succeeded.\n"
+msgstr ""
+
+#: src/commands.c:127
+msgid "authentication failed.\n"
+msgstr ""
+
+#: src/commands.c:131
+msgid "could not connect to server.\n"
+msgstr ""
+
+#: src/commands.c:134
+msgid "connection timed out.\n"
+msgstr ""
+
+#: src/commands.c:137 src/commands.c:913
+#, c-format
+msgid ""
+"failed:\n"
+"%s\n"
+msgstr ""
+
+#: src/commands.c:311
+msgid "exclusive"
+msgstr ""
+
+#: src/commands.c:312
+msgid "shared"
+msgstr ""
+
+#: src/commands.c:320
+msgid "write"
+msgstr ""
+
+#: src/commands.c:330
+msgid "infinite"
+msgstr ""
+
+#: src/commands.c:331 src/commands.c:349
+msgid "invalid"
+msgstr ""
+
+#: src/commands.c:342
+msgid "infinity"
+msgstr ""
+
+#: src/commands.c:355
+#, c-format
+msgid ""
+"Lock <%s> on %s:\n"
+"  Scope: %s  Type: %s  Timeout: %s\n"
+"  Owner: %s  Depth: %s\n"
+msgstr ""
+
+#: src/commands.c:361
+msgid "(none)"
+msgstr ""
+
+#: src/commands.c:370 src/commands.c:401
+#, c-format
+msgid "Failed on %s: %d %s\n"
+msgstr ""
+
+#: src/commands.c:380
+msgid "Discovering locks on"
+msgstr ""
+
+#: src/commands.c:411
+msgid "Stealing locks on"
+msgstr ""
+
+#: src/commands.c:433
+msgid "List of owned locks:\n"
+msgstr ""
+
+#: src/commands.c:435
+msgid "No owned locks.\n"
+msgstr ""
+
+#: src/commands.c:444
+msgid "Locking"
+msgstr ""
+
+#: src/commands.c:468
+msgid "Unlocking"
+msgstr ""
+
+#: src/commands.c:473
+msgid "Enter locktoken: "
+msgstr ""
+
+#: src/commands.c:526
+#, c-format
+msgid "Value of %s is: %s\n"
+msgstr ""
+
+#: src/commands.c:531
+#, c-format
+msgid "Could not fetch property: %d %s\n"
+msgstr ""
+
+#: src/commands.c:534
+#, c-format
+msgid "Server did not return result for %s\n"
+msgstr ""
+
+#: src/commands.c:554
+msgid "Setting property on "
+msgstr ""
+
+#: src/commands.c:573
+msgid "Namespaces are not supported by propget yet, sorry.\n"
+msgstr ""
+
+#: src/commands.c:582
+msgid "Fetching properties for"
+msgstr ""
+
+#: src/commands.c:625
+msgid "Deleting"
+msgstr ""
+
+#: src/commands.c:628
+#, c-format
+msgid ""
+"is a collection resource.\n"
+"The `rm' command cannot be used to delete a collection.\n"
+"Use `rmcol %s' to delete this collection and ALL its contents.\n"
+msgstr ""
+
+#: src/commands.c:644
+msgid "Deleting collection"
+msgstr ""
+
+#: src/commands.c:647
+#, c-format
+msgid ""
+"is not a collection.\n"
+"The `rmcol' command can only be used to delete collections.\n"
+"Use `rm %s' to delete this resource.\n"
+msgstr ""
+
+#: src/commands.c:729 src/commands.c:745
+#, c-format
+msgid "Displaying `%s':\n"
+msgstr ""
+
+#: src/commands.c:732
+#, c-format
+msgid ""
+"Error! Could not spawn pager `%s':\n"
+"%s\n"
+msgstr ""
+
+#: src/commands.c:747
+#, c-format
+msgid "Failed: %s\n"
+msgstr ""
+
+#: src/commands.c:764
+msgid "Not a collection resource."
+msgstr ""
+
+#. FIXME: this error occurs when you do open /foo and get
+#. * the response for /foo/ back
+#: src/commands.c:769
+msgid "Did not find a collection resource."
+msgstr ""
+
+#: src/commands.c:780
+msgid "copying"
+msgstr ""
+
+#: src/commands.c:780
+msgid "copy"
+msgstr ""
+
+#: src/commands.c:785
+msgid "moving"
+msgstr ""
+
+#: src/commands.c:785
+msgid "move"
+msgstr ""
+
+#: src/commands.c:813
+#, c-format
+msgid "When %s multiple resources, the last argument must be a collection.\n"
+msgstr ""
+
+#: src/commands.c:828
+#, c-format
+msgid "Moving `%s' to `%s': "
+msgstr ""
+
+#: src/commands.c:834
+#, c-format
+msgid "Copying `%s' to `%s': "
+msgstr ""
+
+#. File already exists... don't overwrite
+#: src/commands.c:896
+#, c-format
+msgid "Enter local filename for `%s': "
+msgstr ""
+
+#: src/commands.c:900
+msgid "cancelled.\n"
+msgstr ""
+
+#: src/commands.c:911
+#, c-format
+msgid "Downloading `%s' to %s:"
+msgstr ""
+
+#: src/commands.c:936
+#, c-format
+msgid "Could not stat file: %s\n"
+msgstr ""
+
+#: src/commands.c:942
+#, c-format
+msgid "Error! Could not examine temporary file: %s\n"
+msgstr ""
+
+#. File not changed.
+#: src/commands.c:948
+msgid "No changes were made.\n"
+msgstr ""
+
+#: src/commands.c:951
+msgid "Changes were made.\n"
+msgstr ""
+
+#: src/commands.c:990
+#, c-format
+msgid "You cannot edit a collection resource (%s).\n"
+msgstr ""
+
+#: src/commands.c:999
+#, c-format
+msgid ""
+"Could not create temporary file %s:\n"
+"%s\n"
+msgstr ""
+
+#: src/commands.c:1006
+#, c-format
+msgid ""
+"Could not set file permissions for %s:\n"
+"%s\n"
+msgstr ""
+
+#: src/commands.c:1013
+#, c-format
+msgid "Could not fdopen temporary file: %s\n"
+msgstr ""
+
+#. FIXME: copy'n'friggin'paste.
+#: src/commands.c:1037
+#, c-format
+msgid "Downloading `%s' to %s"
+msgstr ""
+
+#: src/commands.c:1043
+#, c-format
+msgid "Error writing to temporary file: %s\n"
+msgstr ""
+
+#: src/commands.c:1052
+#, c-format
+msgid "Could not re-open temporary file: %s\n"
+msgstr ""
+
+#: src/commands.c:1056
+#, c-format
+msgid "Uploading changes to `%s'"
+msgstr ""
+
+#. TODO: offer to save locally instead
+#: src/commands.c:1064
+msgid "Try uploading again (y/n)? "
+msgstr ""
+
+#: src/commands.c:1075
+#, c-format
+msgid ""
+"Could not delete temporary file %s:\n"
+"%s\n"
+msgstr ""
+
+#: src/commands.c:1098
+#, c-format
+msgid "Uploading %s to `%s':"
+msgstr ""
+
+#: src/commands.c:1100
+#, c-format
+msgid "Could not open file: %s\n"
+msgstr ""
+
+#: src/commands.c:1153
+#, c-format
+msgid ""
+"Use:\n"
+"   chexec + %s   to make the resource executable\n"
+"or chexec - %s   to make the resource unexecutable\n"
+msgstr ""
+
+#: src/commands.c:1162
+msgid "Setting isexecutable"
+msgstr ""
+
+#: src/commands.c:1168
+msgid "The server does not support the 'isexecutable' property."
+msgstr ""
+
+#: src/commands.c:1183
+#, c-format
+msgid "Local directory: %s\n"
+msgstr ""
+
+#: src/commands.c:1197
+#, c-format
+msgid "Error executing ls: %s\n"
+msgstr ""
+
+#. Error
+#: src/commands.c:1201
+#, c-format
+msgid "Error forking ls: %s\n"
+msgstr ""
+
+#: src/commands.c:1218
+msgid "Could not determine home directory from environment.\n"
+msgstr ""
+
+#: src/commands.c:1223
+#, c-format
+msgid ""
+"Could not change local directory:\n"
+"chdir: %s\n"
+msgstr ""
+
+#: src/commands.c:1230
+#, c-format
+msgid "Current collection is `%s', on server `%s'\n"
+msgstr ""
+
+#: src/commands.c:1273
+msgid ""
+"Aliases: rm=delete, mkdir=mkcol, mv=move, cp=copy, more=less, quit=exit=bye\n"
+msgstr ""
+
+#: src/commands.c:1286
+msgid "This command can only be used when connected to a server.\n"
+msgstr ""
+
+#: src/commands.c:1289
+#, c-format
+msgid "Command name not known: %s\n"
+msgstr ""
