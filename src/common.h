@@ -1,6 +1,6 @@
 /* 
-   common
-   Copyright (C) 1998-2001, Joe Orton <joe@orton.demon.co.uk>.
+   Common definitions for cadaver.
+   Copyright (C) 1998-2005, Joe Orton <joe@orton.demon.co.uk>.
                                                                      
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -34,7 +34,9 @@
 /* A signal hander */
 typedef void (*sig_handler)( int );
 
+#ifndef min
 #define min(a,b) ((a)<(b)?(a):(b))
+#endif
 
 #ifdef __EMX__
 /* siebert: strcasecmp is stricmp */
@@ -62,5 +64,10 @@ int cad_mkstemp(char *template);
 char *strerror (int errnum);
 #endif
 
+#if NE_VERSION_MINOR == 24
+/* neon 0.24 compatibility */
+#define NE_FEATURE_SSL 1
+#define ne_has_support(x) ne_supports_ssl()
 #endif
 
+#endif /* COMMON_H */
