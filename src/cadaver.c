@@ -64,9 +64,9 @@
 #include <ne_socket.h>
 #include <ne_locks.h>
 #include <ne_alloc.h>
+#include <ne_redirect.h>
 
 #include "common.h"
-
 #include "cadaver.h"
 #include "cmdline.h"
 #include "commands.h"
@@ -339,7 +339,8 @@ void open_connection(const char *url)
     }
 
     ne_lockstore_register(lock_store, session);
-    
+    ne_redirect_register(session);
+
     ne_set_progress(session, transfer_progress, NULL);
     ne_set_status(session, connection_status, NULL);
 
