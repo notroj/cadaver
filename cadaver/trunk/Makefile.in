@@ -34,7 +34,7 @@ LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@ @NEON_LIBS@
 
 TARGET = $(PACKAGE)
-SUBDIRS = libneon @SUBDIRS@
+SUBDIRS = lib/neon @SUBDIRS@
 OBJECTS = src/cadaver.o src/common.o src/commands.o src/ls.o	\
 	 src/cmdline.o src/options.o src/utils.o src/edit.o
 NOBJECTS = src/search.o src/version.o
