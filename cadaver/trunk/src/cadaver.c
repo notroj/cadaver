@@ -1088,7 +1088,6 @@ static int supply_creds(const char *prompt, const char *realm, const char *hostn
 	return -1;
     } else if (strlen(tmp) >= NE_ABUFSIZ) {
 	printf(_("\rPassword too long (>%d)\n"), NE_ABUFSIZ);
-	memset(tmp, strlen(tmp), 0);
 	return -1;
     }
     
