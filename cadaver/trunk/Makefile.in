@@ -1,0 +1,100 @@
+# cadaver Makefile: generated from Makefile.in
+
+PACKAGE = @PACKAGE@
+VERSION = @VERSION@
+
+SHELL = @SHELL@
+@SET_MAKE@
+
+# Installation paths.
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+bindir = @bindir@
+mandir = @mandir@
+man1dir = $(mandir)/man1
+datadir = $(prefix)/share
+docdir = $(prefix)/doc/cadaver
+
+# intl stuff
+localedir = $(datadir)/locale
+gnulocaledir = $(prefix)/share/locale
+gettextsrcdir = $(prefix)/share/gettext
+aliaspath = $(localedir):.
+
+# Build paths
+top_srcdir = @top_srcdir@
+top_builddir = .
+VPATH = @srcdir@
+
+# Toolchain settings.
+CC = @CC@
+CPPFLAGS = @DEFS@ @CPPFLAGS@ -I$(top_srcdir)/src
+CFLAGS = @CFLAGS@ @SDEFS@ 
+LDFLAGS = @LDFLAGS@
+LIBS = @LIBS@ @NEON_LIBS@
+
+TARGET = $(PACKAGE)
+SUBDIRS = libneon @SUBDIRS@
+OBJECTS = src/cadaver.o src/common.o src/commands.o src/ls.o	\
+	 src/cmdline.o src/options.o src/utils.o src/edit.o
+NOBJECTS = src/search.o src/version.o
+LIBOBJS = lib/basename.o lib/dirname.o lib/rpmatch.o lib/yesno.o	\
+	lib/glob.o lib/getpass.o lib/tempname.o lib/mkstemp.o \
+	@LIBOBJS@
+ALLOBJS = $(OBJECTS) $(LIBOBJS)
+
+# Installation programs
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL = @INSTALL@
+
+all: $(TARGET)
+
+.PHONY: subdirs install again clean
+
+$(TARGET): $(ALLOBJS) subdirs
+	$(CC) $(LDFLAGS) -o $(TARGET) $(ALLOBJS) $(LIBS)
+
+.c.o:
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ -c $<
+
+subdirs:
+	for d in $(SUBDIRS); do (cd $$d; $(MAKE)); done
+
+clean:
+	rm -f $(OBJECTS) $(LIBOBJS) $(TARGET)	
+	for d in $(SUBDIRS); do (cd $$d; $(MAKE) clean); done
+
+again: clean $(TARGET)
+
+install: $(TARGET)
+	@echo "Creating directories..."
+	$(INSTALL) -d $(bindir)
+	$(INSTALL) -d $(man1dir)
+	@echo "Installing $(TARGET) executable..."
+	$(INSTALL_PROGRAM) $(TARGET) $(bindir)/$(TARGET)
+	@echo "Installing man page..."
+	$(INSTALL_DATA) $(top_srcdir)/doc/cadaver.1 $(man1dir)/cadaver.1
+
+Makefile: Makefile.in
+	@./config.status Makefile
+
+# Deps
+src/cadaver.o: src/cadaver.c config.h src/common.h	\
+	src/options.h src/cmdline.h src/commands.h src/cadaver.h
+src/options.o: src/options.c config.h src/options.h src/cadaver.h src/common.h 
+src/cmdline.o: src/cmdline.c src/cmdline.h src/cadaver.h lib/basename.h \
+	lib/glob.h src/commands.h src/common.h
+src/commands.o: src/commands.c src/commands.h src/cadaver.h \
+	lib/basename.h src/options.h src/common.h
+src/edit.o: src/edit.c src/cadaver.h src/options.h src/common.h
+src/common.o: src/common.c src/common.h config.h
+src/ls.o: src/ls.c src/commands.h src/cadaver.h config.h
+src/search.o: src/search.c src/commands.h src/cadaver.h config.h
+src/utils.o: src/utils.c src/utils.h src/cadaver.h config.h
+src/version.o: src/version.c src/utils.h src/cadaver.h config.h
+lib/netrc.o: lib/netrc.c lib/netrc.h config.h
+lib/getpass.o: lib/getpass.c lib/getpass.h config.h
+lib/tempname.o: lib/tempname.c config.h
+lib/mkstemp.o: lib/mkstemp.c config.h
+

@@ -1,0 +1,5 @@
+# Package source files
+src/cadaver.c
+src/ls.c
+src/cmdline.c
+src/commands.c

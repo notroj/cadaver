@@ -1,0 +1,8 @@
+
+* 'propnames' has confusing output
+
+* screwy for collections served by mod_dav_svn
+
+* 'history' doesn't fail appropriately for 501 etc responses.
+
+* everything breaks if pwd has spaces.

@@ -1,0 +1,2 @@
+?package(cadaver):needs=text section=Apps/Net\
+  title="cadaver" command="/usr/bin/cadaver"
