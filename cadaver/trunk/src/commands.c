@@ -1,6 +1,6 @@
 /* 
    cadaver, command-line DAV client
-   Copyright (C) 1999-2001, Joe Orton <joe@manyfish.co.uk>, 
+   Copyright (C) 1999-2005, Joe Orton <joe@manyfish.co.uk>, 
    except where otherwise indicated.
 
    This program is free software; you can redistribute it and/or modify
@@ -139,6 +139,15 @@ void out_result(int ret)
 	output(o_finish, _("connection timed out.\n"));
 	break;
     default:
+        if (ret == NE_REDIRECT) {
+            const ne_uri *dest = ne_redirect_location(session);
+            if (dest) {
+                char *uri = ne_uri_unparse(dest);
+                output(o_finish, _("redirected to %s\n"), uri);
+                ne_free(uri);
+                break;
+            }
+        }
 	output(o_finish, _("failed:\n%s\n"), ne_get_error(session));
 	break;
     }
