@@ -6,3 +6,6 @@
 * 'history' doesn't fail appropriately for 501 etc responses.
 
 * everything breaks if pwd has spaces.
+
+* mv hello/ jello
+ -> fails with 301 on 2.0, no trailing slash on dest

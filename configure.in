@@ -36,7 +36,7 @@ AC_ARG_ENABLE(netrc,
 AC_HELP_STRING([--disable-netrc], [enable .netrc support]),,
 enable_netrc=yes)
 
-NEON_REQUIRE(0,22)
+NEON_REQUIRE(0,24)
 dnl Don't enable zlib or ACL support in neon
 NEON_WITHOUT_ZLIB
 NEON_WITHOUT_ACL
@@ -44,10 +44,10 @@ NEON_WITHOUT_ACL
 AC_PROVIDE([NE_SNPRINTF])
 
 dnl Build neon. We support a VPATH build.
-NEON_VPATH_BUNDLED(['$(top_srcdir)/libneon'], [libneon], [
+NEON_VPATH_BUNDLED(['$(top_srcdir)/lib/neon'], [lib/neon], [
 	# We are using a bundled build, do the necessary stuff...
 	# we have a bundled expat, and we don't need zlib support
-	NEON_XML_PARSER([\$(top_builddir)/expat])
+	NEON_XML_PARSER([\$(top_builddir)/lib/expat])
 	NEON_NORMAL_BUILD
 ], [
 	# Not using a bundled build... do stuff.
@@ -64,10 +64,11 @@ else
 fi
 
 dnl Check for getopt_long
-AC_CHECK_FUNC(getopt_long,,[AC_LIBOBJ(lib/getopt); AC_LIBOBJ(lib/getopt1)])
+AC_CHECK_FUNC(getopt_long,,[AC_LIBOBJ(lib/getopt)
+AC_LIBOBJ(lib/getopt1)])
 
 dnl Check for strcasecmp
-AC_CHECK_FUNC(strcasecmp,,AC_LIBOBJ(lib/strcasecmp))
+AC_CHECK_FUNC(strcasecmp,,[AC_LIBOBJ(lib/strcasecmp)])
 
 AC_HEADER_TIME
 
@@ -127,7 +128,7 @@ AC_SUBST(LIBS)
 AC_SUBST(CFLAGS)
 AC_SUBST(SUBDIRS)
 
-AC_OUTPUT([Makefile libneon/Makefile])
+AC_OUTPUT([Makefile lib/neon/Makefile])
 
 cat <<EOF
 
@@ -137,7 +138,7 @@ Configured to build cadaver ${PACKAGE_VERSION}:
   Compiler:              ${CC}
   Neon library:	         ${neon_library_message}
   XML Parser:            ${neon_xml_parser_message}
-  SSL library:		 ${neon_ssl_message}
+  SSL library:		 ${neon_SSL_message}
   Internationalization:  ${nls_msg}
   GNU readline support:	 ${msg_readline}
 
