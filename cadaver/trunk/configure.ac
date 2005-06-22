@@ -36,7 +36,8 @@ AC_ARG_ENABLE(netrc,
 AC_HELP_STRING([--disable-netrc], [enable .netrc support]),,
 enable_netrc=yes)
 
-NEON_REQUIRE(0,24)
+NE_REQUIRE_VERSIONS([0], [24 25])
+
 dnl Don't enable zlib or ACL support in neon
 NEON_WITHOUT_ZLIB
 NEON_WITHOUT_ACL
@@ -128,11 +129,11 @@ AC_SUBST(LIBS)
 AC_SUBST(CFLAGS)
 AC_SUBST(SUBDIRS)
 
-AC_OUTPUT([Makefile lib/neon/Makefile])
+AC_CONFIG_FILES([Makefile lib/neon/Makefile])
 
-cat <<EOF
+AC_OUTPUT
 
-Configured to build cadaver ${PACKAGE_VERSION}:
+AC_MSG_NOTICE([Configured to build cadaver ${PACKAGE_VERSION}:
 
   Install prefix:        ${prefix}
   Compiler:              ${CC}
@@ -141,7 +142,5 @@ Configured to build cadaver ${PACKAGE_VERSION}:
   SSL library:		 ${ne_SSL_message}
   Internationalization:  ${nls_msg}
   GNU readline support:	 ${msg_readline}
+])
 
-Now run 'make' to compile cadaver.
-
-EOF
