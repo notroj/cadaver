@@ -48,7 +48,7 @@ dnl Build neon. We support a VPATH build.
 NEON_VPATH_BUNDLED(['$(top_srcdir)/lib/neon'], [lib/neon], [
 	# We are using a bundled build, do the necessary stuff...
 	# we have a bundled expat, and we don't need zlib support
-	NEON_XML_PARSER([\$(top_builddir)/lib/expat])
+        NEON_XML_PARSER([\$(top_srcdir)/lib/expat], [\$(top_builddir)/lib/expat])
 	NEON_NORMAL_BUILD
 ], [
 	# Not using a bundled build... do stuff.
