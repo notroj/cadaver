@@ -1,7 +1,7 @@
 # cadaver Makefile: generated from Makefile.in
 
-PACKAGE = @PACKAGE@
-VERSION = @VERSION@
+PACKAGE = @PACKAGE_NAME@
+VERSION = @PACKAGE_VERSION@
 
 SHELL = @SHELL@
 @SET_MAKE@
