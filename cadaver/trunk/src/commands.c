@@ -23,7 +23,7 @@
  *  1. Use dispatch, or out_* to do UI. This makes it CONSISTENT.
  *  2. Get some feedback on the screen before making any requests
  *     to the server. Tell them what is going on: remember, on a slow
- *     link or a loaded server, a request can take AGES to return.
+ *     link or a loaded server,5~ a request can take AGES to return.
  */
 
 #include "config.h"
@@ -140,7 +140,7 @@ void out_result(int ret)
 	break;
     default:
         if (ret == NE_REDIRECT) {
-            const ne_uri *dest = ne_redirect_location(session);
+            const ne_uri *dest = ne_redirect_location(session.sess);
             if (dest) {
                 char *uri = ne_uri_unparse(dest);
                 output(o_finish, _("redirect to %s\n"), uri);
@@ -148,7 +148,7 @@ void out_result(int ret)
                 break;
             }
         }
-	output(o_finish, _("failed:\n%s\n"), ne_get_error(session));
+	output(o_finish, _("failed:\n%s\n"), ne_get_error(session.sess));
 	break;
     }
 }
@@ -187,7 +187,7 @@ char *command_generator(const char *text, int state)
 
 static void execute_logout(void)
 {
-    ne_forget_auth(session);
+    ne_forget_auth(session.sess);
 }
 
 const struct command *get_command(const char *name)
@@ -210,7 +210,7 @@ static void dispatch(const char *verb, const char *filename,
 		     int (*func)(ne_session *, const char *), const char *arg)
 {
     out_start(verb, filename);
-    out_result((*func)(session, arg));
+    out_result((*func)(session.sess, arg));
 }
 
 char *getowner(void)
@@ -311,7 +311,7 @@ static char *utf8_decode(const char *str)
 static char *true_path(const char *res)
 {
     char *full;
-    full = resolve_path(path, res, false);
+    full = resolve_path(session.uri.path, res, false);
     if (getrestype(full) == resr_collection) {
 	if (!ne_path_has_trailing_slash(full)) {
 	    char *tmp = ne_concat(full, "/", NULL);
@@ -414,7 +414,7 @@ static void steal_result(void *userdata, const struct ne_lock *lock,
 	}
 	print_uri(&lock->uri);
 	printf(": <%s>\n", lock->token);
-	ne_lockstore_add(lock_store, ne_lock_copy(lock));
+	ne_lockstore_add(session.locks, ne_lock_copy(lock));
 	*count += 1;
     } else {
 	printf(_("Failed on %s: %d %s\n"), uri,
@@ -427,9 +427,9 @@ static void do_discover(const char *res, const char *mesg,
 {
     char *real_remote;
     int ret, count = 0;
-    real_remote = resolve_path(path, res, false);
+    real_remote = resolve_path(session.uri.path, res, false);
     out_start(mesg, res);
-    ret = ne_lock_discover(session, real_remote, result_cb, &count);
+    ret = ne_lock_discover(session.sess, real_remote, result_cb, &count);
     switch (ret) {
     case NE_OK:
 	if (count == 0) {
@@ -458,8 +458,8 @@ static void execute_showlocks(void)
     int count = 0;
     struct ne_lock *lk;
     
-    for (lk = ne_lockstore_first(lock_store); lk != NULL;
-	 lk = ne_lockstore_next(lock_store), count++) {
+    for (lk = ne_lockstore_first(session.locks); lk != NULL;
+	 lk = ne_lockstore_next(session.locks), count++) {
         print_lock(lk);
     }
 
@@ -474,7 +474,7 @@ static void execute_lock(const char *res)
     struct ne_lock *lock;
     enum resource_type rtype;
 
-    real_remote = resolve_path(path, res, false);
+    real_remote = resolve_path(session.uri.path, res, false);
     rtype = getrestype(real_remote);
     if (rtype == resr_collection) {
 	if (!ne_path_has_trailing_slash(real_remote)) {
@@ -496,11 +496,11 @@ static void execute_lock(const char *res)
 	/* use value of lockdepth option. */
 	lock->depth = lockdepth;
     }
-    ne_fill_server_uri(session, &lock->uri);
+    ne_fill_server_uri(session.sess, &lock->uri);
     lock->uri.path = ne_strdup(real_remote);
-    if (out_handle(ne_lock(session, lock))) {
+    if (out_handle(ne_lock(session.sess, lock))) {
 	/* success: remember the lock. */
-	ne_lockstore_add(lock_store, lock);
+	ne_lockstore_add(session.locks, lock);
     } else {
 	/* otherwise, throw it away */
 	ne_lock_destroy(lock);
@@ -511,35 +511,36 @@ static void execute_lock(const char *res)
 static void execute_unlock(const char *res)
 {
     struct ne_lock *lock;
-    char *real_remote = true_path(res);
+    ne_uri uri;
+
+    uri = session.uri; /* shallow copy */
+    uri.path = true_path(res);
 
     out_start(_("Unlocking"), res);
-    /* use server URI as temp store. */
-    server.path = real_remote;
-    lock = ne_lockstore_findbyuri(lock_store, &server);
+    lock = ne_lockstore_findbyuri(session.locks, &uri);
     if (!lock) {
 	lock = ne_lock_create();
 	lock->token = readline(_("Enter locktoken: "));
 	if (!lock->token || strlen(lock->token) == 0) {
 	    goto unlock_fail;
 	}
-	ne_fill_server_uri(session, &lock->uri);
-	lock->uri.path = ne_strdup(real_remote);
+	ne_fill_server_uri(session.sess, &lock->uri);
+	lock->uri.path = ne_strdup(uri.path);
     } else {
 	/* remove the lock from the lockstore */
-	ne_lockstore_remove(lock_store, lock);
+	ne_lockstore_remove(session.locks, lock);
     }
 
-    out_result(ne_unlock(session, lock));
+    out_result(ne_unlock(session.sess, lock));
 
 unlock_fail:
-    free(real_remote);
+    ne_free(uri.path);
     ne_lock_destroy(lock);
 }
 
 static void execute_mkcol(const char *name)
 {
-    char *uri = resolve_path(path, name, true);
+    char *uri = resolve_path(session.uri.path, name, true);
     dispatch(_("Creating"), name, ne_mkcol, uri);
     free(uri);
 }
@@ -603,7 +604,7 @@ static void propop(const char *descr, const char *res,
 {
     ne_proppatch_operation ops[2];
     ne_propname pname;
-    char *uri = resolve_path(path, res, false);
+    char *uri = resolve_path(session.uri.path, res, false);
     char *val = NULL /* quieten gcc */, *encname = utf8_encode(name);
 
     ops[0].name = &pname;
@@ -618,7 +619,7 @@ static void propop(const char *descr, const char *res,
     pname.nspace = (const char *)get_option(opt_namespace);
     pname.name = encname;
     out_start(descr, res);
-    out_handle(ne_proppatch(session, uri, ops));
+    out_handle(ne_proppatch(session.sess, uri, ops));
 
     if (value) 
 	free(val);
@@ -640,7 +641,7 @@ static void execute_propdel(const char *res, const char *name)
 static void execute_propget(const char *res, const char *name)
 {
     ne_propname pnames[2] = {{NULL}, {NULL}};
-    char *remote = resolve_path(path, res, false), *encname = NULL;
+    char *remote = resolve_path(session.uri.path, res, false), *encname = NULL;
     ne_propname *props;
     int ret;
     
@@ -653,7 +654,7 @@ static void execute_propget(const char *res, const char *name)
     }
 
     out_start(_("Fetching properties for"), res);
-    ret = ne_simple_propfind(session, remote, NE_DEPTH_ZERO, props,
+    ret = ne_simple_propfind(session.sess, remote, NE_DEPTH_ZERO, props,
 			      pget_results, props);
 
     if (ret != NE_OK) {
@@ -682,9 +683,9 @@ static void propname_results(void *userdata, const char *href,
 static void execute_propnames(const char *res)
 {
     char *remote;
-    remote = resolve_path(path, res, false);
+    remote = resolve_path(session.uri.path, res, false);
     out_start("Fetching property names", res);
-    if (out_handle(ne_propnames(session, remote, NE_DEPTH_ZERO,
+    if (out_handle(ne_propnames(session.sess, remote, NE_DEPTH_ZERO,
 				 propname_results, NULL))) { 
     }
     free(remote);
@@ -696,13 +697,13 @@ static void remove_locks(const char *p, int depth)
     ne_uri sought;
     
     memset(&sought, 0, sizeof(sought));
-    ne_fill_server_uri(session, &sought);
+    ne_fill_server_uri(session.sess, &sought);
     sought.path = ne_strdup(p);
 
     do {
-	lk = ne_lockstore_findbyuri(lock_store, &sought);
+	lk = ne_lockstore_findbyuri(session.locks, &sought);
 	if (lk) {
-	    ne_lockstore_remove(lock_store, lk);
+	    ne_lockstore_remove(session.locks, lk);
 	}
     } while (lk);
 
@@ -711,7 +712,7 @@ static void remove_locks(const char *p, int depth)
 
 static void execute_delete(const char *filename)
 {
-    char *remote = resolve_path(path, filename, false);
+    char *remote = resolve_path(session.uri.path, filename, false);
     out_start(_("Deleting"), filename);
     if (getrestype(remote) == resr_collection) {
 	output(o_finish, 
@@ -720,7 +721,7 @@ _("is a collection resource.\n"
 "Use `rmcol %s' to delete this collection and ALL its contents.\n"), 
 filename);
     } else {
-	if (out_handle(ne_delete(session, remote))) {
+	if (out_handle(ne_delete(session.sess, remote))) {
 	    remove_locks(remote, 0);
 	}
     }
@@ -730,7 +731,7 @@ filename);
 static void execute_rmcol(const char *filename)
 {
     char *remote;
-    remote = resolve_path(path, filename, true);
+    remote = resolve_path(session.uri.path, filename, true);
     out_start(_("Deleting collection"), filename);
     if (getrestype(remote) != resr_collection) {
 	output(o_finish, 
@@ -738,7 +739,7 @@ static void execute_rmcol(const char *filename)
 		 "The `rmcol' command can only be used to delete collections.\n"
 		 "Use `rm %s' to delete this resource.\n"), filename);
     } else {
-	out_result(ne_delete(session, remote));
+	out_result(ne_delete(session.sess, remote));
     }
     remove_locks(remote, NE_DEPTH_INFINITE);
     free(remote);
@@ -816,7 +817,7 @@ static void execute_less(const char *resource)
     char *real_res;
     const char *pager;
     FILE *p;
-    real_res = resolve_path(path, resource, false);
+    real_res = resolve_path(session.uri.path, resource, false);
     pager = choose_pager();
     printf(_("Displaying `%s':\n"), real_res);
     p = spawn_pager(pager);
@@ -826,7 +827,7 @@ static void execute_less(const char *resource)
     } else {
 	int fd = fileno(p);
 	child_running = true;
-	ne_get(session, real_res, fd);
+	ne_get(session.sess, real_res, fd);
 	kill_pager(p); /* Blocks until the pager quits */
 	child_running = false;
     }
@@ -834,10 +835,10 @@ static void execute_less(const char *resource)
 
 static void execute_cat(const char *resource)
 {
-    char *real_res = resolve_path(path, resource, false);
+    char *real_res = resolve_path(session.uri.path, resource, false);
     printf(_("Displaying `%s':\n"), real_res);
-    if (ne_get(session, real_res, STDOUT_FILENO) != NE_OK) {
-	printf(_("Failed: %s\n"), ne_get_error(session));
+    if (ne_get(session.sess, real_res, STDOUT_FILENO) != NE_OK) {
+	printf(_("Failed: %s\n"), ne_get_error(session.sess));
     }
 }
 
@@ -848,13 +849,13 @@ static void do_copymove(int argc, const char *argv[],
     /* We are guaranteed that argc > 2... */
     char *dest;
 
-    dest = resolve_path(path, argv[argc-1], true);
+    dest = resolve_path(session.uri.path, argv[argc-1], true);
     if (getrestype(dest) == resr_collection) {
 	int n;
 	char *real_src, *real_dest;
 	for(n = 0; n < argc-1; n++) {
-	    real_src = resolve_path(path, argv[n], false);
-	    real_dest = clever_path(path, argv[n], dest);
+	    real_src = resolve_path(session.uri.path, argv[n], false);
+	    real_dest = clever_path(session.uri.path, argv[n], dest);
 	    if (strcmp(real_src, real_dest) == 0) {
 		printf("%s: %s and %s are the same resource.\n", v2,
 			real_src, real_dest);
@@ -869,8 +870,8 @@ static void do_copymove(int argc, const char *argv[],
 	    _("When %s multiple resources, the last argument must be a collection.\n"), v1);
     } else {
 	char *rsrc, *rdest;
-	rsrc = resolve_path(path, argv[0], false);
-	rdest = resolve_path(path, argv[1], false);
+	rsrc = resolve_path(session.uri.path, argv[0], false);
+	rdest = resolve_path(session.uri.path, argv[1], false);
 	/* Simple */
 	(*cb) (rsrc, rdest);
 	free(rsrc);
@@ -882,13 +883,13 @@ static void do_copymove(int argc, const char *argv[],
 static void simple_move(const char *src, const char *dest) 
 {
     output(o_start, _("Moving `%s' to `%s': "), src, dest);
-    out_result(ne_move(session, get_bool_option(opt_overwrite), src, dest));
+    out_result(ne_move(session.sess, get_bool_option(opt_overwrite), src, dest));
 }
 
 static void simple_copy(const char *src, const char *dest) 
 {
     output(o_start, _("Copying `%s' to `%s': "), src, dest);
-    out_result(ne_copy(session, get_bool_option(opt_overwrite), 
+    out_result(ne_copy(session.sess, get_bool_option(opt_overwrite), 
 		       NE_DEPTH_INFINITE, src, dest));
 }
 
@@ -940,7 +941,7 @@ char *resolve_path(const char *p, const char *filename, int iscoll)
 static void execute_get(const char *remote, const char *local)
 {
     char *filename, *real_remote;
-    real_remote = resolve_path(path, remote, false);
+    real_remote = resolve_path(session.uri.path, remote, false);
     if (local == NULL) {
 	struct stat st;
 	/* Choose an appropriate local filename */
@@ -967,11 +968,11 @@ static void execute_get(const char *remote, const char *local)
 	if (fd < 0) {
 	    output(o_finish, _("failed:\n%s\n"), strerror(errno));
 	} else {
-            int ret = ne_get(session, real_remote, fd);
+            int ret = ne_get(session.sess, real_remote, fd);
             if (close(fd) && ret == NE_OK) {
                 int errnum = errno;
                 ret = NE_ERROR;
-                ne_set_error(session, _("Could not write to file: %s"),
+                ne_set_error(session.sess, _("Could not write to file: %s"),
                              strerror(errnum));
             }
 	    out_result(ret);
@@ -988,7 +989,7 @@ static void simple_put(const char *local, const char *remote)
     if (fd < 0) {
 	output(o_finish, _("Could not open file: %s\n"), strerror(errno));
     } else {
-	out_result(ne_put(session, remote, fd));
+	out_result(ne_put(session.sess, remote, fd));
 	(void) close(fd);
     }
 }
@@ -997,9 +998,9 @@ static void execute_put(const char *local, const char *remote)
 {
     char *real_remote;
     if (remote == NULL) {
-	real_remote = resolve_path(path, base_name(local), false);
+	real_remote = resolve_path(session.uri.path, base_name(local), false);
     } else {
-	real_remote = resolve_path(path, remote, false);
+	real_remote = resolve_path(session.uri.path, remote, false);
     }
     simple_put(local, real_remote);
     free(real_remote);
@@ -1055,7 +1056,7 @@ static void multi_cat(int argc, const char *argv[])
 static void multi_mput(int argc, const char *argv[])
 {
     for(; argv[0] != NULL; argv++) {
-	char *remote = resolve_path(path, argv[0], false);
+	char *remote = resolve_path(session.uri.path, argv[0], false);
 	simple_put(argv[0], remote);
 	free(remote);
     }    
@@ -1091,18 +1092,18 @@ static void execute_chexec(const char *val, const char *remote)
 	return;
     }
     
-    uri = resolve_path(path, remote, false);
+    uri = resolve_path(session.uri.path, remote, false);
 
     out_start(_("Setting isexecutable"), remote);
-    ret = ne_options(session, uri, &caps);
+    ret = ne_options(session.sess, uri, &caps);
     if (ret != NE_OK) {
 	out_result(ret);
     } else if (!caps.dav_executable) {
-	ne_set_error(session, 
+	ne_set_error(session.sess, 
 		       _("The server does not support the 'isexecutable' property."));
 	out_result(NE_ERROR);
     } else {    
-	out_result(ne_proppatch(session, uri, ops));
+	out_result(ne_proppatch(session.sess, uri, ops));
     }
     free(uri);
 
@@ -1163,11 +1164,9 @@ static void execute_lcd(const char *p)
 
 static void execute_pwd(void)
 {
-    char *uri;
-    server.path = path;
-    uri = ne_uri_unparse(&server);
+    char *uri = ne_uri_unparse(&session.uri);
     printf(_("Current collection is `%s'.\n"), uri);
-    free(uri);
+    ne_free(uri);
 }
 
 static void execute_cd(const char *newpath)
@@ -1175,23 +1174,25 @@ static void execute_cd(const char *newpath)
     char *real_path;
     int is_swap = false;
     if (strcmp(newpath, "-") == 0) {
-	if (!old_path) {
+	if (!session.lastwp) {
 	    printf(_("No previous collection.\n"));
 	    return;
 	}
 	is_swap = true;
-	real_path = old_path;
+	real_path = session.lastwp;
     } else {
-	real_path = resolve_path(path, newpath, true);
+	real_path = resolve_path(session.uri.path, newpath, true);
     }
     if (set_path(real_path)) {
 	/* Error */
 	if (!is_swap) free(real_path);
     } else {
 	/* Success */
-	if (!is_swap && old_path) free(old_path);
-	old_path = path;
-	path = real_path;
+	if (!is_swap && session.lastwp)  {
+            ne_free(session.lastwp);
+        }
+	session.lastwp = session.uri.path;
+	session.uri.path = real_path;
     }
 }
 

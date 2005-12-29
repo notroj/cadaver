@@ -132,13 +132,14 @@ void execute_ls(const char *remote)
     int ret;
     char *real_remote;
     struct resource *reslist = NULL, *current, *next;
+
     if (remote != NULL) {
-	real_remote = resolve_path(path, remote, true);
+	real_remote = resolve_path(session.uri.path, remote, true);
     } else {
-	real_remote = ne_strdup(path);
+	real_remote = ne_strdup(session.uri.path);
     }
     out_start(_("Listing collection"), real_remote);
-    ret = fetch_resource_list(session, real_remote, 1, 0, &reslist);
+    ret = fetch_resource_list(session.sess, real_remote, 1, 0, &reslist);
     if (ret == NE_OK) {
 	/* Easy this, eh? */
 	if (reslist == NULL) {

@@ -182,9 +182,9 @@ static void *davglob_opendir(const char *dir)
 {
     struct dg_ctx *ctx = NULL;
     struct resource *files;
-    char *real_path = resolve_path(path, dir, 1);
+    char *real_path = resolve_path(session.uri.path, dir, 1);
     NE_DEBUG(DEBUG_FILES, "opendir: %s\n", dir);
-    switch (fetch_resource_list(session, real_path, 1, 0, &files)) {
+    switch (fetch_resource_list(session.sess, real_path, 1, 0, &files)) {
     case NE_OK:
 	ctx = ne_calloc(sizeof *ctx);
 	ctx->rootlen = strlen(real_path);
@@ -237,7 +237,7 @@ static int davglob_stat(const char *filename, struct stat *st) {
      * or not. I think this is true for the glob in glibc2 */
     char *dir;
     NE_DEBUG(DEBUG_FILES, "stat %s\n", filename);
-    dir = resolve_path(path, filename, 1);
+    dir = resolve_path(session.uri.path, filename, 1);
     if (getrestype(dir) == resr_collection) {
 	st->st_mode = S_IFDIR;
     } else {
@@ -276,7 +276,7 @@ do {								\
 	    cmd = get_command(token);
 	    ADDTOK(token);
 	} else if (has_glob_pattern(token) && cmd &&
-		   ((cmd->scope == parmscope_remote && have_connection) || 
+		   ((cmd->scope == parmscope_remote && session.connected) || 
 		     (cmd->scope == parmscope_local))) {
 	    /* Let us Glob */
 	    glob_t gl = {0};

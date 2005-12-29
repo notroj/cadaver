@@ -39,14 +39,15 @@ enum resource_type getrestype(const char *uri)
     struct resource *res = NULL;
     int ret = 0;
     /* TODO: just request resourcetype here. */
-    ret = fetch_resource_list(session, uri, NE_DEPTH_ZERO, 1, &res);
+    ret = fetch_resource_list(session.sess, uri, NE_DEPTH_ZERO, 1, &res);
     if (ret == NE_OK) {
 	if (res != NULL && ne_path_compare(uri, res->uri) == 0) {
 	    ret = res->type;
 	} else {
 	    /* FIXME: this error occurs when you do open /foo and get
 	     * the response for /foo/ back. */
-	    ne_set_error(session, _("Did not find a collection resource."));
+	    ne_set_error(session.sess, 
+                         _("Did not find a collection resource."));
 	    ret = resr_error;
 	}
     } else {
