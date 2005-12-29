@@ -93,7 +93,7 @@ static int is_lockable(const char *uri)
     /* TODO: for the mo, just check we're on a Class 2 server.
      * Should check supportedlock property really. */
 
-    if (ne_options(session, uri, &caps) != NE_OK) {
+    if (ne_options(session.sess, uri, &caps) != NE_OK) {
 	return 0;
     }
 
@@ -118,7 +118,7 @@ void execute_edit(const char *remote)
     const char *pnt;
     int fd;
     
-    real_remote = resolve_path(path, remote, false);
+    real_remote = resolve_path(session.uri.path, remote, false);
 
     /* Don't let them edit a collection, since PUT to a collection is
      * bogus. Really we want to be able to fetch a "DefaultDocument"
@@ -157,12 +157,12 @@ void execute_edit(const char *remote)
    
     if (can_lock) {
 	lock = ne_lock_create();
-	ne_fill_server_uri(session, &lock->uri);
+	ne_fill_server_uri(session.sess, &lock->uri);
 	lock->uri.path = ne_strdup(real_remote);
 	lock->owner = getowner();
 	out_start("Locking", remote);
-	if (out_handle(ne_lock(session, lock))) {
-	    ne_lockstore_add(lock_store, lock);
+	if (out_handle(ne_lock(session.sess, lock))) {
+	    ne_lockstore_add(session.locks, lock);
 	} else {
 	    ne_lock_destroy(lock);
 	    goto edit_close;
@@ -174,7 +174,7 @@ void execute_edit(const char *remote)
     output(o_transfer, _("Downloading `%s' to %s"), real_remote, fname);
 
     /* Don't puke if get fails -- perhaps we are creating a new one? */
-    out_result(ne_get(session, real_remote, fd));
+    out_result(ne_get(session.sess, real_remote, fd));
     
     if (close(fd)) {
 	output(o_finish, _("Error writing to temporary file: %s\n"), 
@@ -194,7 +194,7 @@ void execute_edit(const char *remote)
 		       real_remote);
 		/* FIXME: conditional PUT using fetched Etag/modtime if
 		 * !can_lock */
-		if (out_handle(ne_put(session, real_remote, fd))) {
+		if (out_handle(ne_put(session.sess, real_remote, fd))) {
 		    upload_okay = 1;
 		} else {
 		    /* TODO: offer to save locally instead */
@@ -216,8 +216,8 @@ void execute_edit(const char *remote)
     /* UNLOCK it again whether we succeed or failed in our mission */
     if (can_lock) {
 	output(o_start, "Unlocking `%s':", remote);
-	out_result(ne_unlock(session, lock));
-	ne_lockstore_remove(lock_store, lock);
+	out_result(ne_unlock(session.sess, lock));
+	ne_lockstore_remove(session.locks, lock);
 	ne_lock_destroy(lock);
     }
 

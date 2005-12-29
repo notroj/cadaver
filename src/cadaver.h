@@ -1,6 +1,6 @@
 /* 
    cadaver, command-line DAV client
-   Copyright (C) 1999-2002, Joe Orton <joe@orton.demon.co.uk>
+   Copyright (C) 1999-2005, Joe Orton <joe@orton.demon.co.uk>
                                                                      
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -85,18 +85,20 @@ struct command {
     const char *short_help; /* single-line help message */
 };
 
-extern ne_uri server; /* current URI of server. */
-
 extern char *proxy_hostname;
 extern int proxy_port;
 
-extern ne_session *session;
-extern ne_lock_store *lock_store;
+struct session {
+    ne_uri uri;
+    ne_session *sess;
+    int connected; /* non-zero when connected. */
+    int isdav; /* non-zero if real DAV collection */
+    ne_lock_store *locks; /* stored locks */
+    char *lastwp; /* last working path. */
+};
 
-extern int have_connection, dav_collection;
-
-extern char *path, /* current working collection */
-    *old_path; /* previous working collection */
+/* Current session state. */
+extern struct session session;
 
 /* Sets the current collection to the given path.  Returns zero on
  * success, non-zero if newpath is an untolerated non-WebDAV

@@ -79,30 +79,22 @@
 static netrc_entry *netrc_list; /* list of netrc entries */
 #endif
 
-ne_session *session;
-ne_lock_store *lock_store = NULL;
 const char *lock_store_fn = NULL;
 
 static char *progname; /* argv[0] */
-
-ne_uri server = {0}; /* current URI of server. */
 
 char *proxy_hostname;
 int proxy_port;
 char *server_username = NULL, *server_password = NULL;
 
+/* Current session state. */
+struct session session;
+
 ne_ssl_client_cert *client_cert;
 
 /* Global options */
 
-char *path, /* current working collection */
-    *old_path; /* previous working collection */
-/* TODO: use dynamically allocated memory for paths, maybe */
-
 int tolerant; /* tolerate DAV-enabledness failure */
-
-int have_connection = 0; /* true when we are connected to the server */
-int dav_collection;
 
 /* Current output state */
 static enum out_state {
@@ -140,7 +132,7 @@ static void usage(void)
 static void init_locking(void)
 {
     lock_store_fn = get_option(opt_lockstore);
-    lock_store = ne_lockstore_create();
+    session.locks = ne_lockstore_create();
     /* TODO: read in lock list from ~/.davlocks */
 }
 
@@ -151,11 +143,13 @@ static void finish_locking(void)
 
 void close_connection(void)
 {
-    ne_session_destroy(session);
-    have_connection = false;
-    NE_FREE(path);
-    NE_FREE(old_path);
-    printf(_("Connection to `%s' closed.\n"), server.host);
+    ne_session_destroy(session.sess);
+    session.connected = 0;
+    printf(_("Connection to `%s' closed.\n"),
+           session.uri.host);
+    ne_uri_free(&session.uri);
+    if (session.lastwp)
+        ne_free(session.lastwp);
 }
 
 /* Sets the current collection to the given path.  Returns zero on
@@ -166,16 +160,16 @@ int set_path(const char *newpath)
     int is_coll = (getrestype(newpath) == resr_collection);
     if (is_coll || tolerant) {
 	if (!is_coll) {
-	    dav_collection = false;
+	    session.isdav = 0;
 	    printf(_("Ignored error: %s not WebDAV-enabled:\n%s\n"), newpath,
-		   ne_get_error(session));
+		   ne_get_error(session.sess));
 	} else {
-	    dav_collection = true;
+	    session.isdav = 1;
 	}
 	return 0;
     } else {
 	printf(_("Could not access %s (not WebDAV-enabled?):\n%s\n"), newpath,
-	       ne_get_error(session));
+	       ne_get_error(session.sess));
 	return 1;
     }
 }
@@ -195,7 +189,7 @@ static int cert_verify(void *ud, int failures, const ne_ssl_certificate *c)
 
     if (failures & NE_SSL_IDMISMATCH) {
 	printf(_("Certificate was issued to hostname `%s' rather than `%s'\n"),
-	       ne_ssl_cert_identity(c), server.host);
+	       ne_ssl_cert_identity(c), session.uri.host);
 	printf(_("This connection could have been intercepted.\n"));
     }
 
@@ -255,7 +249,7 @@ static void provide_clicert(void *userdata, ne_session *sess,
     
     if (!ne_ssl_clicert_encrypted(client_cert)) {
         printf("Using client certificate.\n");
-        ne_ssl_set_clicert(session, client_cert);
+        ne_ssl_set_clicert(session.sess, client_cert);
     }
     
 }
@@ -264,14 +258,14 @@ static int setup_ssl(void)
 {
     char *ccfn = get_option(opt_clicert);
 
-    ne_ssl_trust_default_ca(session);
+    ne_ssl_trust_default_ca(session.sess);
 	      
-    ne_ssl_set_verify(session, cert_verify, NULL);
+    ne_ssl_set_verify(session.sess, cert_verify, NULL);
 
     if (ccfn) {
         client_cert = ne_ssl_clicert_read(ccfn);
         if (client_cert) {
-            ne_ssl_provide_clicert(session, provide_clicert, ccfn);
+            ne_ssl_provide_clicert(session.sess, provide_clicert, ccfn);
         } else {
             printf("Could not load client certificate from `%s'.\n",
                    ccfn);
@@ -287,16 +281,18 @@ void open_connection(const char *url)
     char *proxy_host = get_option(opt_proxy), *pnt;
     ne_server_capabilities caps;
     int ret, use_ssl = 0;
+    ne_session *sess;
 
-    if (have_connection) {
+    ne_uri_free(&session.uri);
+
+    if (session.connected) {
 	close_connection();
     } else {
-	NE_FREE(path);
-	NE_FREE(old_path);
+        if (session.lastwp) {
+            ne_free(session.lastwp);
+            session.lastwp = NULL;
+        }
     }
-
-    server.path = NULL; /* this is used as a temporary store. */
-    ne_uri_free(&server);
 
     /* Single argument: see whether we have a path or scheme */
     if (strchr(url, '/') == NULL) {
@@ -304,26 +300,26 @@ void open_connection(const char *url)
 	pnt = strchr(url, ':');
 	if (pnt != NULL) {
 	    *pnt++ = '\0';
-	    server.port = atoi(pnt);
+	    session.uri.port = atoi(pnt);
 	} else {
-	    server.port = 80;
+	    session.uri.port = 80;
 	}
-	server.host = ne_strdup(url);
-	server.scheme = ne_strdup("http");
+	session.uri.host = ne_strdup(url);
+	session.uri.scheme = ne_strdup("http");
     } else {
 	/* Parse the URL */
-	if (ne_uri_parse(url, &server) || server.host == NULL) {
+	if (ne_uri_parse(url, &session.uri) || session.uri.host == NULL) {
 	    printf(_("Could not parse URL `%s'\n"), url);
 	    return;
 	}
 
-	if (server.scheme == NULL)
-	    server.scheme = ne_strdup("http");
+	if (session.uri.scheme == NULL)
+	    session.uri.scheme = ne_strdup("http");
 
-	if (!server.port)
-	    server.port = ne_uri_defaultport(server.scheme);
+	if (!session.uri.port)
+	    session.uri.port = ne_uri_defaultport(session.uri.scheme);
 
-	if (strcasecmp(server.scheme, "https") == 0) {
+	if (strcasecmp(session.uri.scheme, "https") == 0) {
 	    if (!ne_has_support(NE_FEATURE_SSL)) {
 		printf(_("SSL is not enabled.\n"));
 		return;
@@ -331,26 +327,27 @@ void open_connection(const char *url)
 	    use_ssl = 1;
 	}
     }
-    
-    session = ne_session_create(server.scheme, server.host, server.port);
 
+    session.sess = ne_session_create(session.uri.scheme, session.uri.host,
+                                     session.uri.port);
+    sess = session.sess;
+    
     if (use_ssl && setup_ssl()) {
 	return;
     }
 
-    ne_lockstore_register(lock_store, session);
-    ne_redirect_register(session);
+    ne_lockstore_register(session.locks, sess);
+    ne_redirect_register(sess);
+    ne_set_progress(sess, transfer_progress, NULL);
+    ne_set_status(sess, connection_status, NULL);
 
-    ne_set_progress(session, transfer_progress, NULL);
-    ne_set_status(session, connection_status, NULL);
-
-    if (server.path == NULL) {
-	server.path = ne_strdup("/");
+    if (session.uri.path == NULL) {
+	session.uri.path = ne_strdup("/");
     } else {
-	if (!ne_path_has_trailing_slash(server.path)) {
-	    pnt = ne_concat(server.path, "/", NULL);
-	    free(server.path);
-	    server.path = pnt;
+	if (!ne_path_has_trailing_slash(session.uri.path)) {
+	    pnt = ne_concat(session.uri.path, "/", NULL);
+	    free(session.uri.path);
+	    session.uri.path = pnt;
 	}
     }
 
@@ -367,7 +364,7 @@ void open_connection(const char *url)
 #ifdef ENABLE_NETRC
     {
 	netrc_entry *found;
-	found = search_netrc(netrc_list, server.host);
+	found = search_netrc(netrc_list, session.uri.host);
 	if (found != NULL) {
 	    if (found->account && found->password) {
 		server_username = found->account;
@@ -376,44 +373,40 @@ void open_connection(const char *url)
 	}
     }
 #endif /* ENABLE_NETRC */
-    have_connection = false;
+    session.connected = 0;
 
-    ne_set_useragent(session, "cadaver/" PACKAGE_VERSION);
-    ne_set_server_auth(session, supply_creds_server, NULL);
-    ne_set_proxy_auth(session, supply_creds_proxy, NULL);
+    ne_set_useragent(session.sess, "cadaver/" PACKAGE_VERSION);
+    ne_set_server_auth(session.sess, supply_creds_server, NULL);
+    ne_set_proxy_auth(session.sess, supply_creds_proxy, NULL);
     
     if (proxy_host) {
-	ne_session_proxy(session, proxy_hostname, proxy_port);
+	ne_session_proxy(session.sess, proxy_hostname, proxy_port);
     }
 
-    ret = ne_options(session, server.path, &caps);
+    ret = ne_options(session.sess, session.uri.path, &caps);
     
     switch (ret) {
     case NE_OK:
-	have_connection = true;
-	path = NULL;
-	if (set_path(server.path)) {
+	session.connected = true;
+	if (set_path(session.uri.path)) {
 	    close_connection();
-	} else {
-	    path = server.path;
 	}
 	break;
     case NE_CONNECT:
 	if (proxy_host) {
 	    printf(_("Could not connect to `%s' on port %d:\n%s\n"),
-		   proxy_hostname, proxy_port, ne_get_error(session));
+		   proxy_hostname, proxy_port, ne_get_error(session.sess));
 	} else {
 	    printf(_("Could not connect to `%s' on port %d:\n%s\n"),
-		   server.host, server.port, ne_get_error(session));
+		   session.uri.host, session.uri.port, ne_get_error(session.sess));
 	}
 	break;
     case NE_LOOKUP:
-	puts(ne_get_error(session));
+	puts(ne_get_error(session.sess));
 	break;
     default:
-	/* FIXME: This is NOT a "could not open connection" error */
-	printf(_("Could not contact server:\n%s\n"),
-	       ne_get_error(session));
+	printf(_("Could not open collection:\n%s\n"),
+	       ne_get_error(session.sess));
 	break;
     }
 
@@ -470,17 +463,19 @@ static void parse_args(int argc, char **argv)
     }
 }
 
-static char * read_command(void)
+static char *read_command(void)
 {
     static char prompt[BUFSIZ];
-    if (path) {
-        char *p = ne_path_unescape(path);
-	snprintf(prompt, BUFSIZ, "dav:%s%c ", p,
-		  dav_collection?'>':'?');
+
+    if (session.uri.path) {
+        char *p = ne_path_unescape(session.uri.path);
+	ne_snprintf(prompt, BUFSIZ, "dav:%s%c ", p,
+                    session.isdav ? '>' : '?');
         ne_free(p);
     } else {
 	sprintf(prompt, "dav:!> ");
     }
+
     return readline(prompt); 
 }
 
@@ -518,7 +513,7 @@ static int execute_command(const char *line)
 	} else {
 	    printf(".\n");
 	}
-    } else if (!have_connection && cmd->needs_connection) {
+    } else if (!session.connected && cmd->needs_connection) {
 	printf(_("The `%s' command can only be used when connected to the server.\n"
 		  "Try running `open' first (see `help open' for more details).\n"), 
 		  tokens[0]);
@@ -565,7 +560,7 @@ static RETSIGTYPE quit_handler(int sig)
 	return;
     } else {
 	printf(_("Terminated by signal %d.\n"), sig);
-	if (have_connection) {
+	if (session.connected) {
 	    close_connection();
 	}
 	exit(-1);
@@ -647,7 +642,7 @@ static char *remote_completion(const char *text, int state)
 	 */
 	if (last_fetch < (time(NULL) - COMPLETION_CACHE_EXPIRE) 
 	    || !last_path 
-	    || strcmp(path, last_path) != 0) {
+	    || strcmp(session.uri.path, last_path) != 0) {
 
 	    if (last_path != NULL) {
 		free(last_path);
@@ -658,14 +653,15 @@ static char *remote_completion(const char *text, int state)
 	    }
 
 	    /* Hide the connection status */
-	    ne_set_status(session, NULL, NULL);
-	    if (fetch_resource_list(session, path, 1, 0, &reslist) != NE_OK) {
+	    ne_set_status(session.sess, NULL, NULL);
+	    if (fetch_resource_list(session.sess, session.uri.path, 1, 0, 
+                                    &reslist) != NE_OK) {
 		reslist = NULL;
 	    }
 	    /* Restore the session connection printing */
-	    ne_set_status(session, connection_status, NULL);
+	    ne_set_status(session.sess, connection_status, NULL);
 
-	    last_path = ne_strdup(path);
+	    last_path = ne_strdup(session.uri.path);
 	}
 
 	current = reslist;
@@ -727,7 +723,7 @@ static char **completion(const char *text, int start, int end)
 		/* TODO */
 		break;
 	    case parmscope_remote:
-		if (have_connection) {
+		if (session.connected) {
 		    matches = rl_completion_matches(text, remote_completion);
 		}
 		break;
@@ -834,8 +830,6 @@ int main(int argc, char *argv[])
     int ret = 0;
     char *home = getenv("HOME"), *tmp;
 
-    path = NULL;
-    have_connection = false;
     progname = argv[0];
 
 #ifdef ENABLE_NLS
@@ -851,6 +845,8 @@ int main(int argc, char *argv[])
     }
 
     ne_sock_init();
+
+    memset(&session, 0, sizeof session);
 
     /* Options before rcfile, so rcfile settings can
      * override defaults */
@@ -884,7 +880,7 @@ int main(int argc, char *argv[])
 	}
     }
 
-    if (have_connection) {
+    if (session.connected) {
 	close_connection();
     }
 
@@ -1121,7 +1117,7 @@ static int supply_creds_server(void *userdata, const char *realm, int attempt,
 
     return supply_creds(
 	_("Authentication required for %s on server `%s':\n"), realm,
-	server.host, username, password);
+	session.uri.host, username, password);
 }
 
 static int supply_creds_proxy(void *userdata, const char *realm, int attempt,
