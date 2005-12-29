@@ -6,10 +6,7 @@ AC_INIT(cadaver, 0.22.0, cadaver@webdav.org)
 AC_CONFIG_SRCDIR(src/cadaver.c)
 AC_CONFIG_HEADER(config.h)
 
-PACKAGE=cadaver
-
 AC_DEFINE([_GNU_SOURCE], 1, [Define to enable GNU extensions])
-AC_DEFINE([USE_DAV_LOCKS], 1, [Build support for WebDAV locking through neon])
 
 NEON_WITH_LIBS
 
