@@ -143,7 +143,7 @@ void out_result(int ret)
             const ne_uri *dest = ne_redirect_location(session);
             if (dest) {
                 char *uri = ne_uri_unparse(dest);
-                output(o_finish, _("redirected to %s\n"), uri);
+                output(o_finish, _("redirect to %s\n"), uri);
                 ne_free(uri);
                 break;
             }
