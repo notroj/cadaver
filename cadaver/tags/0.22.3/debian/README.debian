@@ -1,0 +1,9 @@
+cadaver for Debian
+----------------------
+
+warning, you should not compile this package if libncurses4-dev is
+installed.
+
+Only the installation of the menu entry into Apps/Net is debian specific.
+
+Bernd Eckenfels <ecki@lina.inka.de>, Thu,  6 Jan 2000 09:39:32 +0100

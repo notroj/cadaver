@@ -1,0 +1,16 @@
+
+* 'propnames' has confusing output
+
+* screwy for collections served by mod_dav_svn
+
+* 'history' doesn't fail appropriately for 501 etc responses.
+
+* mv hello/ jello
+ -> fails with 301 on 2.0, no trailing slash on dest
+
+* doesn't care about the standard $http_proxy environment variable
+ (wget e.g. honors this)
+
+* the -p option isn't documented (neither in the manpage nor
+with -h).
+

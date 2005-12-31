@@ -1,0 +1,112 @@
+.TH cadaver 1 "January 2002" Unix "User Manuals"
+.SH NAME
+cadaver \- A command\-line WebDAV client for Unix. 
+.SH SYNOPSIS
+cadaver [-et][-V][-h] http://hostname[:port]/path
+.SH DESCRIPTION
+.B cadaver 
+supports file upload, download, on-screen display, namespace operations
+(move and copy), collection creation and deletion, and locking operations.
+
+Its operation is similar to the standard BSD 
+.BR ftp (1)
+client and the Samba Project's 
+.BR smbclient (1). 
+A user familiar with these tools should be quite
+comfortable with cadaver.
+.SH OPTIONS
+.IP "-e, --expect100"
+Enable sending of `Expect: 100-continue' header.
+.IP "-t, --tolerant"
+Allow cd/open into non-WebDAV enabled collection; use if the server
+or proxy server has WebDAV compliance problems.
+.IP "-V, --version"
+Display version information and exit.
+.IP "-h, --help"
+Display this help message and exit.
+.SH COMMAND REFERENCE
+.IP "ls [path]"
+List contents of current [or other] collection
+.IP "cd path"
+Change to specified collection
+.IP "pwd"
+Display name of current collection
+.IP "put local [remote]"
+Upload local file
+.IP "get remote [local]"
+Download remote resource
+.IP "mget remote..."
+Download many remote resources
+.IP "mput local..."
+Upload many local files
+.IP "edit resource"
+Edit given resource
+.IP "less remote..."
+Display remote resource through pager
+.IP "mkcol remote..."
+Create remote collection(s)
+.IP "cat remote..."
+Display remote resource(s)
+.IP "delete remote..."
+Delete non-collection resource(s)
+.IP "rmcol remote..."
+Delete remote collections and ALL contents
+.IP "copy source... dest"
+Copy resource(s) from source to dest
+.IP "move source... dest"
+Move resource(s) from source to dest
+.IP "lock resource"
+Lock given resource
+.IP "unlock resource"
+Unlock given resource
+.IP "discover resource"
+Display lock information for resource
+.IP "steal resource"
+Steal lock token for resource
+.IP "showlocks"
+Display list of owned locks
+.IP "propnames res"
+Names of properties defined on resource
+.IP "chexec [+|-] remote"
+Change isexecutable property of resource
+.IP "propget res [propname]"
+Retrieve properties of resource
+.IP "propset res propname value"
+Set property on resource
+.IP "set [option] [value]"
+Set an option, or display options
+.IP "open URL"
+Open connection to given URL
+.IP "close"
+Close current connection
+.IP "quit"
+Exit program
+.IP "unset [option] [value]"
+Unsets or clears value from option.
+.IP "lcd [directory]"
+Change local working directory
+.IP "lls [options]"
+Display local directory listing
+.IP "lpwd"
+Print local working directory
+.IP "logout"
+Logout of authentication session
+.IP "help [command]"
+Display help message
+.SH EXAMPLES
+.IP "cadaver http://dav.example.com/"
+Connects to the server myserver.example.com, opening the root collection.
+.IP "cadaver http://zope.example.com:8022/Users/fred/"
+Connects to the server zope.example.com using port 8022, opening
+the collection "/Users/fred/".
+.IP "cadaver https://secure.example.com/"
+Connects to a server called secure.example.com using SSL.
+.IP
+.SH FILES
+.IP "~/.cadaverrc"
+Individual user settings that can override cadaver defaults.
+.SH AUTHOR
+Joe Orton <cadaver@webdav.org>
+.SH SEE ALSO
+ftp(1), smbclient(1)
+
