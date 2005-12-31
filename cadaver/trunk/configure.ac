@@ -88,45 +88,29 @@ AC_CHECK_HEADERS(sys/time.h pwd.h stdarg.h vmsdir.h memory.h alloca.h ncurses.h 
 
 jm_FUNC_STRFTIME()
 
-dnl joe: disabling this because it causes portability problems (particularly
-dnl to Mac OS X, it seems), and there are not translations yet.  Will turn
-dnl it on again when there are translations.
-dnl AM_GNU_GETTEXT([no-libtool])
+AM_GNU_GETTEXT([no-libtool],,[\$(top_builddir)/lib/intl])
 
-dnl if test "$USE_NLS" = "yes"; then
-dnl	# joe: how to do this with less mucky quotes, please?
-dnl	CFLAGS="$CFLAGS '-DLOCALEDIR=\"$(localedir)\" -DGNULOCALEDIR=\"$(gnulocaledir)\" -DLOCALE_ALIAS_PATH=\"$(aliaspath)\"'"
-dnl	NLSINSTALL="install-nls"
-dnl	if test "$USE_INCLUDED_LIBINTL" = "yes"; then
-dnl		# Using included NLS stuff
-dnl		CFLAGS="$CFLAGS -I\$(top_srcdir)/intl"
-dnl		nls_msg="Built using included libintl"
-dnl		LIBS="-Lintl -lintl $LIBS"
-dnl	else
-dnl		nls_msg="Built using native support"
-dnl		# ??? CFLAGS? LIBS?
-dnl	fi
-dnl	SUBDIRS="$SUBDIRS intl po"
-dnl else
+if test "$USE_NLS" = "yes"; then
+    if test "$USE_INCLUDED_LIBINTL" = "yes"; then
+	nls_msg="Built using included libintl"
+        CPPFLAGS="$CPPFLAGS -I\$(top_builddir)/lib/intl"
+    else
+	nls_msg="Built using native support"
+    fi
+    LIBS="$LIBS $LIBINTL"
+else
+    nls_msg="Not built"
+fi
 
 nls_msg="Not built"
-DATADIRNAME=share
 
 NEON_WARNINGS
 
 # Pick up config.h
 CPPFLAGS="$CPPFLAGS -I\$(top_builddir) -I\$(top_srcdir)/lib"
 
-AC_SUBST(DATADIRNAME)
-AC_SUBST(NLSINSTALL)
-
-AC_SUBST(SDEFS)
-AC_SUBST(PACKAGE)
-AC_SUBST(LIBS)
-AC_SUBST(CFLAGS)
-AC_SUBST(SUBDIRS)
-
-AC_CONFIG_FILES([Makefile lib/neon/Makefile])
+AC_CONFIG_FILES([Makefile lib/neon/Makefile lib/intl/Makefile \
+                 po/Makefile.in])
 
 AC_OUTPUT
 
