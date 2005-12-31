@@ -1,79 +1,101 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Joe Orton
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# English translations for cadaver package.
+# Copyright (C) 2005 Joe Orton
+# This file is distributed under the same license as the cadaver package.
+# Automatically generated, 2005.
 #
-#, fuzzy
+# All this catalog "translates" are quotation characters.
+# The msgids must be ASCII and therefore cannot contain real quotation
+# characters, only substitutes like grave accent (0x60), apostrophe (0x27)
+# and double quote (0x22). These substitutes look strange; see
+# http://www.cl.cam.ac.uk/~mgk25/ucs/quotes.html
+#
+# This catalog translates grave accent (0x60) and apostrophe (0x27) to
+# left single quotation mark (U+2018) and right single quotation mark (U+2019).
+# It also translates pairs of apostrophe (0x27) to
+# left single quotation mark (U+2018) and right single quotation mark (U+2019)
+# and pairs of quotation mark (0x22) to
+# left double quotation mark (U+201C) and right double quotation mark (U+201D).
+#
+# When output to an UTF-8 terminal, the quotation characters appear perfectly.
+# When output to an ISO-8859-1 terminal, the single quotation marks are
+# transliterated to apostrophes (by iconv in glibc 2.2 or newer) or to
+# grave/acute accent (by libiconv), and the double quotation marks are
+# transliterated to 0x22.
+# When output to an ASCII terminal, the single quotation marks are
+# transliterated to apostrophes, and the double quotation marks are
+# transliterated to 0x22.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: cadaver 0.22.0\n"
 "Report-Msgid-Bugs-To: cadaver@webdav.org\n"
 "POT-Creation-Date: 2005-12-31 11:32+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2005-12-31 11:32+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: lib/getopt.c:680
 #, c-format
 msgid "%s: option `%s' is ambiguous\n"
-msgstr ""
+msgstr "%s: option ‘%s’ is ambiguous\n"
 
 #: lib/getopt.c:704
 #, c-format
 msgid "%s: option `--%s' doesn't allow an argument\n"
-msgstr ""
+msgstr "%s: option ‘--%s’ doesn't allow an argument\n"
 
 #: lib/getopt.c:709
 #, c-format
 msgid "%s: option `%c%s' doesn't allow an argument\n"
-msgstr ""
+msgstr "%s: option ‘%c%s’ doesn't allow an argument\n"
 
 #: lib/getopt.c:726 lib/getopt.c:899
 #, c-format
 msgid "%s: option `%s' requires an argument\n"
-msgstr ""
+msgstr "%s: option ‘%s’ requires an argument\n"
 
 #: lib/getopt.c:755
 #, c-format
 msgid "%s: unrecognized option `--%s'\n"
-msgstr ""
+msgstr "%s: unrecognized option ‘--%s’\n"
 
 #: lib/getopt.c:759
 #, c-format
 msgid "%s: unrecognized option `%c%s'\n"
-msgstr ""
+msgstr "%s: unrecognized option ‘%c%s’\n"
 
 #: lib/getopt.c:785
 #, c-format
 msgid "%s: illegal option -- %c\n"
-msgstr ""
+msgstr "%s: illegal option -- %c\n"
 
 #: lib/getopt.c:788
 #, c-format
 msgid "%s: invalid option -- %c\n"
-msgstr ""
+msgstr "%s: invalid option -- %c\n"
 
 #: lib/getopt.c:818 lib/getopt.c:948
 #, c-format
 msgid "%s: option requires an argument -- %c\n"
-msgstr ""
+msgstr "%s: option requires an argument -- %c\n"
 
 #: lib/getopt.c:865
 #, c-format
 msgid "%s: option `-W %s' is ambiguous\n"
-msgstr ""
+msgstr "%s: option ‘-W %s’ is ambiguous\n"
 
 #: lib/getopt.c:883
 #, c-format
 msgid "%s: option `-W %s' doesn't allow an argument\n"
-msgstr ""
+msgstr "%s: option ‘-W %s’ doesn't allow an argument\n"
 
 #: lib/getpass.c:73
 msgid "ERROR: no support for getpassword() routine\n"
-msgstr ""
+msgstr "ERROR: no support for getpassword() routine\n"
 
 #: lib/getpass.c:201
 #, c-format
@@ -81,6 +103,8 @@ msgid ""
 "\n"
 "Caught SIGINT... bailing out.\n"
 msgstr ""
+"\n"
+"Caught SIGINT... bailing out.\n"
 
 #: lib/neon/ne_207.c:188
 #, c-format
@@ -88,314 +112,316 @@ msgid ""
 "Invalid HTTP status line in status element at line %d of response:\n"
 "Status line was: %s"
 msgstr ""
+"Invalid HTTP status line in status element at line %d of response:\n"
+"Status line was: %s"
 
 #: lib/neon/ne_auth.c:124
 msgid "Server was not authenticated correctly."
-msgstr ""
+msgstr "Server was not authenticated correctly."
 
 #: lib/neon/ne_auth.c:128
 msgid "Proxy server was not authenticated correctly."
-msgstr ""
+msgstr "Proxy server was not authenticated correctly."
 
 #: lib/neon/ne_auth.c:426
 #, c-format
 msgid "GSSAPI authentication error (%s)"
-msgstr ""
+msgstr "GSSAPI authentication error (%s)"
 
 #: lib/neon/ne_basic.c:86
 #, c-format
 msgid "Could not determine file size: %s"
-msgstr ""
+msgstr "Could not determine file size: %s"
 
 #: lib/neon/ne_basic.c:132
 msgid "Response did not include requested range"
-msgstr ""
+msgstr "Response did not include requested range"
 
 #: lib/neon/ne_basic.c:176
 msgid "Range is not satisfiable"
-msgstr ""
+msgstr "Range is not satisfiable"
 
 #: lib/neon/ne_basic.c:181
 msgid "Resource does not support ranged GETs."
-msgstr ""
+msgstr "Resource does not support ranged GETs."
 
 #: lib/neon/ne_compress.c:175
 #, c-format
 msgid "%s: %s"
-msgstr ""
+msgstr "%s: %s"
 
 #: lib/neon/ne_compress.c:186
 #, c-format
 msgid "%s: %s (code %d)"
-msgstr ""
+msgstr "%s: %s (code %d)"
 
 #: lib/neon/ne_compress.c:234
 msgid "Could not inflate data"
-msgstr ""
+msgstr "Could not inflate data"
 
 #: lib/neon/ne_compress.c:295
 msgid "Could not initialize zlib"
-msgstr ""
+msgstr "Could not initialize zlib"
 
 #: lib/neon/ne_gnutls.c:434 lib/neon/ne_openssl.c:393
 msgid "Server certificate was missing commonName attribute in subject name"
-msgstr ""
+msgstr "Server certificate was missing commonName attribute in subject name"
 
 #: lib/neon/ne_gnutls.c:471 lib/neon/ne_openssl.c:588
 #, c-format
 msgid "SSL negotiation failed: %s"
-msgstr ""
+msgstr "SSL negotiation failed: %s"
 
 #: lib/neon/ne_gnutls.c:480
 msgid "Server did not send certificate chain"
-msgstr ""
+msgstr "Server did not send certificate chain"
 
 #: lib/neon/ne_locks.c:591
 msgid "LOCK response missing Lock-Token header"
-msgstr ""
+msgstr "LOCK response missing Lock-Token header"
 
 #: lib/neon/ne_locks.c:744
 msgid "No Lock-Token header given"
-msgstr ""
+msgstr "No Lock-Token header given"
 
 #: lib/neon/ne_locks.c:772
 #, c-format
 msgid "Response missing activelock for %s"
-msgstr ""
+msgstr "Response missing activelock for %s"
 
 #: lib/neon/ne_locks.c:816
 #, c-format
 msgid "No activelock for <%s> returned in LOCK refresh response"
-msgstr ""
+msgstr "No activelock for <%s> returned in LOCK refresh response"
 
 #: lib/neon/ne_openssl.c:176
 msgid "certificate is not yet valid"
-msgstr ""
+msgstr "certificate is not yet valid"
 
 #: lib/neon/ne_openssl.c:177
 msgid "certificate has expired"
-msgstr ""
+msgstr "certificate has expired"
 
 #: lib/neon/ne_openssl.c:178
 msgid "certificate issued for a different hostname"
-msgstr ""
+msgstr "certificate issued for a different hostname"
 
 #: lib/neon/ne_openssl.c:179
 msgid "issuer is not trusted"
-msgstr ""
+msgstr "issuer is not trusted"
 
 #: lib/neon/ne_openssl.c:184
 msgid "Server certificate verification failed: "
-msgstr ""
+msgstr "Server certificate verification failed: "
 
 #: lib/neon/ne_openssl.c:202
 msgid "[invalid date]"
-msgstr ""
+msgstr "[invalid date]"
 
 #: lib/neon/ne_openssl.c:425
 #, c-format
 msgid "Certificate verification error: %s"
-msgstr ""
+msgstr "Certificate verification error: %s"
 
 #: lib/neon/ne_openssl.c:607
 msgid "SSL server did not present certificate"
-msgstr ""
+msgstr "SSL server did not present certificate"
 
 #: lib/neon/ne_openssl.c:616
 msgid "Server certificate changed: connection intercepted?"
-msgstr ""
+msgstr "Server certificate changed: connection intercepted?"
 
 #: lib/neon/ne_props.c:372 lib/neon/ne_props.c:412
 msgid "Response exceeds maximum property count"
-msgstr ""
+msgstr "Response exceeds maximum property count"
 
 #: lib/neon/ne_redirect.c:92
 msgid "Could not parse redirect location."
-msgstr ""
+msgstr "Could not parse redirect location."
 
 #: lib/neon/ne_request.c:233
 #, c-format
 msgid "%s: connection was closed by proxy server."
-msgstr ""
+msgstr "%s: connection was closed by proxy server."
 
 #: lib/neon/ne_request.c:236
 #, c-format
 msgid "%s: connection was closed by server."
-msgstr ""
+msgstr "%s: connection was closed by server."
 
 #: lib/neon/ne_request.c:241
 #, c-format
 msgid "%s: connection timed out."
-msgstr ""
+msgstr "%s: connection timed out."
 
 #: lib/neon/ne_request.c:395
 msgid "offset invalid"
-msgstr ""
+msgstr "offset invalid"
 
 #: lib/neon/ne_request.c:398
 msgid "Could not seek to offset %"
-msgstr ""
+msgstr "Could not seek to offset %"
 
 #: lib/neon/ne_request.c:399
 #, c-format
 msgid " of request body file: %s"
-msgstr ""
+msgstr " of request body file: %s"
 
 #: lib/neon/ne_request.c:443
 msgid "Could not send request body"
-msgstr ""
+msgstr "Could not send request body"
 
 #: lib/neon/ne_request.c:791
 msgid "Could not read chunk size"
-msgstr ""
+msgstr "Could not read chunk size"
 
 #: lib/neon/ne_request.c:798
 msgid "Could not parse chunk size"
-msgstr ""
+msgstr "Could not parse chunk size"
 
 #: lib/neon/ne_request.c:835
 msgid "Could not read response body"
-msgstr ""
+msgstr "Could not read response body"
 
 #: lib/neon/ne_request.c:851
 msgid "Could not read chunk delimiter"
-msgstr ""
+msgstr "Could not read chunk delimiter"
 
 #: lib/neon/ne_request.c:854
 msgid "Chunk delimiter was invalid"
-msgstr ""
+msgstr "Chunk delimiter was invalid"
 
 #: lib/neon/ne_request.c:964
 msgid "Could not read status line"
-msgstr ""
+msgstr "Could not read status line"
 
 #: lib/neon/ne_request.c:975
 msgid "Could not parse response status line."
-msgstr ""
+msgstr "Could not parse response status line."
 
 #: lib/neon/ne_request.c:986
 msgid "Could not read interim response headers"
-msgstr ""
+msgstr "Could not read interim response headers"
 
 #: lib/neon/ne_request.c:1020
 msgid "Could not send request"
-msgstr ""
+msgstr "Could not send request"
 
 #: lib/neon/ne_request.c:1068 lib/neon/ne_request.c:1086
 #: lib/neon/ne_request.c:1096
 msgid "Error reading response headers"
-msgstr ""
+msgstr "Error reading response headers"
 
 #: lib/neon/ne_request.c:1114
 msgid "Response header too long"
-msgstr ""
+msgstr "Response header too long"
 
 #: lib/neon/ne_request.c:1196
 msgid "Response exceeded maximum number of header fields."
-msgstr ""
+msgstr "Response exceeded maximum number of header fields."
 
 #: lib/neon/ne_request.c:1213
 #, c-format
 msgid "Could not resolve hostname `%s': %s"
-msgstr ""
+msgstr "Could not resolve hostname ‘%s’: %s"
 
 #: lib/neon/ne_request.c:1323
 msgid "Invalid Content-Length in response"
-msgstr ""
+msgstr "Invalid Content-Length in response"
 
 #: lib/neon/ne_request.c:1385 src/commands.c:975
 #, c-format
 msgid "Could not write to file: %s"
-msgstr ""
+msgstr "Could not write to file: %s"
 
 #: lib/neon/ne_request.c:1458
 msgid "Could not create SSL connection through proxy server"
-msgstr ""
+msgstr "Could not create SSL connection through proxy server"
 
 #: lib/neon/ne_request.c:1504
 msgid "Could not create socket"
-msgstr ""
+msgstr "Could not create socket"
 
 #: lib/neon/ne_request.c:1549
 msgid "Could not connect to server"
-msgstr ""
+msgstr "Could not connect to server"
 
 #: lib/neon/ne_request.c:1552
 msgid "Could not connect to proxy server"
-msgstr ""
+msgstr "Could not connect to proxy server"
 
 #: lib/neon/ne_socket.c:490 lib/neon/ne_socket.c:538 lib/neon/ne_socket.c:641
 msgid "Connection closed"
-msgstr ""
+msgstr "Connection closed"
 
 #: lib/neon/ne_socket.c:548
 msgid "Secure connection truncated"
-msgstr ""
+msgstr "Secure connection truncated"
 
 #: lib/neon/ne_socket.c:560 lib/neon/ne_socket.c:645 lib/neon/ne_socket.c:650
 #, c-format
 msgid "SSL error: %s"
-msgstr ""
+msgstr "SSL error: %s"
 
 #: lib/neon/ne_socket.c:563
 #, c-format
 msgid "SSL error code %d/%d/%lu"
-msgstr ""
+msgstr "SSL error code %d/%d/%lu"
 
 #: lib/neon/ne_socket.c:745
 msgid "Line too long"
-msgstr ""
+msgstr "Line too long"
 
 #: lib/neon/ne_socket.c:885 lib/neon/ne_socket.c:891
 msgid "Host not found"
-msgstr ""
+msgstr "Host not found"
 
 #: lib/neon/ne_socket.c:1001
 msgid "Socket descriptor number exceeds FD_SETSIZE"
-msgstr ""
+msgstr "Socket descriptor number exceeds FD_SETSIZE"
 
 #: lib/neon/ne_socket.c:1161
 msgid "SSL disabled due to lack of entropy"
-msgstr ""
+msgstr "SSL disabled due to lack of entropy"
 
 #: lib/neon/ne_socket.c:1168
 msgid "SSL disabled due to library version mismatch"
-msgstr ""
+msgstr "SSL disabled due to library version mismatch"
 
 #: lib/neon/ne_socket.c:1174
 msgid "Could not create SSL structure"
-msgstr ""
+msgstr "Could not create SSL structure"
 
 #: lib/neon/ne_xml.c:280
 #, c-format
 msgid "XML parse error at line %d: invalid element name"
-msgstr ""
+msgstr "XML parse error at line %d: invalid element name"
 
 #: lib/neon/ne_xml.c:436
 msgid "Unknown error"
-msgstr ""
+msgstr "Unknown error"
 
 #: lib/neon/ne_xml.c:521
 msgid "Invalid Byte Order Mark"
-msgstr ""
+msgstr "Invalid Byte Order Mark"
 
 #: lib/neon/ne_xml.c:609
 #, c-format
 msgid "XML parse error at line %d: %s."
-msgstr ""
+msgstr "XML parse error at line %d: %s."
 
 #: lib/neon/ne_xmlreq.c:31
 #, c-format
 msgid "Could not parse response: %s"
-msgstr ""
+msgstr "Could not parse response: %s"
 
 #: lib/rpmatch.c:75
 msgid "^[yY]"
-msgstr ""
+msgstr "^[yY]"
 
 #: lib/rpmatch.c:78
 msgid "^[nN]"
-msgstr ""
+msgstr "^[nN]"
 
 #: src/cadaver.c:123
 #, c-format
@@ -408,11 +434,18 @@ msgid ""
 "  -h, --help       Display this help message.\n"
 "Please send bug reports and feature requests to <cadaver@webdav.org>\n"
 msgstr ""
+"Usage: %s [OPTIONS] http://hostname[:port]/path\n"
+"  Port defaults to 80, path defaults to ‘/’\n"
+"Options:\n"
+"  -t, --tolerant   Allow cd/open into non-WebDAV enabled collection.\n"
+"  -V, --version    Display version information.\n"
+"  -h, --help       Display this help message.\n"
+"Please send bug reports and feature requests to <cadaver@webdav.org>\n"
 
 #: src/cadaver.c:148
 #, c-format
 msgid "Connection to `%s' closed.\n"
-msgstr ""
+msgstr "Connection to ‘%s’ closed.\n"
 
 #: src/cadaver.c:164
 #, c-format
@@ -420,6 +453,8 @@ msgid ""
 "Ignored error: %s not WebDAV-enabled:\n"
 "%s\n"
 msgstr ""
+"Ignored error: %s not WebDAV-enabled:\n"
+"%s\n"
 
 #: src/cadaver.c:171
 #, c-format
@@ -427,64 +462,66 @@ msgid ""
 "Could not access %s (not WebDAV-enabled?):\n"
 "%s\n"
 msgstr ""
+"Could not access %s (not WebDAV-enabled?):\n"
+"%s\n"
 
 #: src/cadaver.c:185
 #, c-format
 msgid "WARNING: Untrusted server certificate presented for `%s':\n"
-msgstr ""
+msgstr "WARNING: Untrusted server certificate presented for ‘%s’:\n"
 
 #: src/cadaver.c:188
 msgid "WARNING: Untrusted server certificate presented:\n"
-msgstr ""
+msgstr "WARNING: Untrusted server certificate presented:\n"
 
 #: src/cadaver.c:191
 #, c-format
 msgid "Certificate was issued to hostname `%s' rather than `%s'\n"
-msgstr ""
+msgstr "Certificate was issued to hostname ‘%s’ rather than ‘%s’\n"
 
 #: src/cadaver.c:193
 #, c-format
 msgid "This connection could have been intercepted.\n"
-msgstr ""
+msgstr "This connection could have been intercepted.\n"
 
 #: src/cadaver.c:199
 #, c-format
 msgid "Issued to: %s\n"
-msgstr ""
+msgstr "Issued to: %s\n"
 
 #: src/cadaver.c:200
 #, c-format
 msgid "Issued by: %s\n"
-msgstr ""
+msgstr "Issued by: %s\n"
 
 #: src/cadaver.c:203
 #, c-format
 msgid "Certificate is valid from %s to %s\n"
-msgstr ""
+msgstr "Certificate is valid from %s to %s\n"
 
 #: src/cadaver.c:206
 #, c-format
 msgid "Do you wish to accept the certificate? (y/n) "
-msgstr ""
+msgstr "Do you wish to accept the certificate? (y/n) "
 
 #: src/cadaver.c:209
 #, c-format
 msgid "Certificate rejected.\n"
-msgstr ""
+msgstr "Certificate rejected.\n"
 
 #: src/cadaver.c:240
 msgid "Decryption password: "
-msgstr ""
+msgstr "Decryption password: "
 
 #: src/cadaver.c:312
 #, c-format
 msgid "Could not parse URL `%s'\n"
-msgstr ""
+msgstr "Could not parse URL ‘%s’\n"
 
 #: src/cadaver.c:324
 #, c-format
 msgid "SSL is not enabled.\n"
-msgstr ""
+msgstr "SSL is not enabled.\n"
 
 #: src/cadaver.c:397 src/cadaver.c:400
 #, c-format
@@ -492,6 +529,8 @@ msgid ""
 "Could not connect to `%s' on port %d:\n"
 "%s\n"
 msgstr ""
+"Could not connect to ‘%s’ on port %d:\n"
+"%s\n"
 
 #: src/cadaver.c:408
 #, c-format
@@ -499,21 +538,23 @@ msgid ""
 "Could not open collection:\n"
 "%s\n"
 msgstr ""
+"Could not open collection:\n"
+"%s\n"
 
 #: src/cadaver.c:446
 #, c-format
 msgid "Try `%s --help' for more information.\n"
-msgstr ""
+msgstr "Try ‘%s --help’ for more information.\n"
 
 #: src/cadaver.c:495
 #, c-format
 msgid "Unrecognised command. Type 'help' for a list of commands.\n"
-msgstr ""
+msgstr "Unrecognised command. Type ‘help’ for a list of commands.\n"
 
 #: src/cadaver.c:497
 #, c-format
 msgid "The `%s' command requires %d argument%s"
-msgstr ""
+msgstr "The ‘%s’ command requires %d argument%s"
 
 #: src/cadaver.c:500 src/cadaver.c:512
 #, c-format
@@ -521,16 +562,18 @@ msgid ""
 ":\n"
 "  %s : %s\n"
 msgstr ""
+":\n"
+"  %s : %s\n"
 
 #: src/cadaver.c:506
 #, c-format
 msgid "The `%s' command takes at most %d argument%s"
-msgstr ""
+msgstr "The ‘%s’ command takes at most %d argument%s"
 
 #: src/cadaver.c:509
 #, c-format
 msgid "The `%s' command takes no arguments"
-msgstr ""
+msgstr "The ‘%s’ command takes no arguments"
 
 #: src/cadaver.c:517
 #, c-format
@@ -538,163 +581,165 @@ msgid ""
 "The `%s' command can only be used when connected to the server.\n"
 "Try running `open' first (see `help open' for more details).\n"
 msgstr ""
+"The ‘%s’ command can only be used when connected to the server.\n"
+"Try running ‘open’ first (see ‘help open’ for more details).\n"
 
 #: src/cadaver.c:562
 #, c-format
 msgid "Terminated by signal %d.\n"
-msgstr ""
+msgstr "Terminated by signal %d.\n"
 
 #: src/cadaver.c:597
 #, c-format
 msgid "Could not read rcfile %s: %s\n"
-msgstr ""
+msgstr "Could not read rcfile %s: %s\n"
 
 #: src/cadaver.c:843
 #, c-format
 msgid "Environment variable $HOME needs to be set!\n"
-msgstr ""
+msgstr "Environment variable $HOME needs to be set!\n"
 
 #: src/cadaver.c:903
 #, c-format
 msgid "Looking up hostname... "
-msgstr ""
+msgstr "Looking up hostname... "
 
 #: src/cadaver.c:906
 #, c-format
 msgid "Connecting to server... "
-msgstr ""
+msgstr "Connecting to server... "
 
 #: src/cadaver.c:909
 #, c-format
 msgid "connected.\n"
-msgstr ""
+msgstr "connected.\n"
 
 #: src/cadaver.c:912
 #, c-format
 msgid "Using secure connection: %s\n"
-msgstr ""
+msgstr "Using secure connection: %s\n"
 
 #: src/cadaver.c:925
 #, c-format
 msgid " (reconnecting..."
-msgstr ""
+msgstr " (reconnecting..."
 
 #: src/cadaver.c:928
 #, c-format
 msgid "done)"
-msgstr ""
+msgstr "done)"
 
 #: src/cadaver.c:938
 #, c-format
 msgid "] reconnecting: "
-msgstr ""
+msgstr "] reconnecting: "
 
 #: src/cadaver.c:941
 #, c-format
 msgid "okay ["
-msgstr ""
+msgstr "okay ["
 
 #: src/cadaver.c:951
 #, c-format
 msgid "\rTransfer timed out, reconnecting... "
-msgstr ""
+msgstr "\rTransfer timed out, reconnecting... "
 
 #: src/cadaver.c:954
 #, c-format
 msgid "okay."
-msgstr ""
+msgstr "okay."
 
 #: src/cadaver.c:1005
 #, c-format
 msgid "\rProgress: ["
-msgstr ""
+msgstr "\rProgress: ["
 
 #: src/cadaver.c:1010
 #, c-format
 msgid "] %5.1f%% of %ld bytes"
-msgstr ""
+msgstr "] %5.1f%% of %ld bytes"
 
 #: src/cadaver.c:1065
 msgid "Username: "
-msgstr ""
+msgstr "Username: "
 
 #: src/cadaver.c:1067
 #, c-format
 msgid "\rAuthentication aborted!\n"
-msgstr ""
+msgstr "\rAuthentication aborted!\n"
 
 #: src/cadaver.c:1070
 #, c-format
 msgid "\rUsername too long (>%d)\n"
-msgstr ""
+msgstr "\rUsername too long (>%d)\n"
 
 #: src/cadaver.c:1078
 msgid "Password: "
-msgstr ""
+msgstr "Password: "
 
 #: src/cadaver.c:1080
 #, c-format
 msgid "Authentication aborted!\n"
-msgstr ""
+msgstr "Authentication aborted!\n"
 
 #: src/cadaver.c:1083
 #, c-format
 msgid "\rPassword too long (>%d)\n"
-msgstr ""
+msgstr "\rPassword too long (>%d)\n"
 
 #: src/cadaver.c:1092
 #, c-format
 msgid "Retrying:"
-msgstr ""
+msgstr "Retrying:"
 
 #: src/cadaver.c:1096
 #, c-format
 msgid "Retrying ["
-msgstr ""
+msgstr "Retrying ["
 
 #: src/cadaver.c:1119
 #, c-format
 msgid "Authentication required for %s on server `%s':\n"
-msgstr ""
+msgstr "Authentication required for %s on server ‘%s’:\n"
 
 #: src/cadaver.c:1130
 #, c-format
 msgid "Authentication required for %s on proxy server `%s':\n"
-msgstr ""
+msgstr "Authentication required for %s on proxy server ‘%s’:\n"
 
 #: src/cmdline.c:286
 msgid "[Matching..."
-msgstr ""
+msgstr "[Matching..."
 
 #: src/cmdline.c:313
 #, c-format
 msgid "%d matches.]\n"
-msgstr ""
+msgstr "%d matches.]\n"
 
 #: src/cmdline.c:315
 msgid "1 match.]\n"
-msgstr ""
+msgstr "1 match.]\n"
 
 #: src/commands.c:122
 msgid "succeeded.\n"
-msgstr ""
+msgstr "succeeded.\n"
 
 #: src/commands.c:133
 msgid "authentication failed.\n"
-msgstr ""
+msgstr "authentication failed.\n"
 
 #: src/commands.c:136
 msgid "could not connect to server.\n"
-msgstr ""
+msgstr "could not connect to server.\n"
 
 #: src/commands.c:139
 msgid "connection timed out.\n"
-msgstr ""
+msgstr "connection timed out.\n"
 
 #: src/commands.c:146
 #, c-format
 msgid "redirect to %s\n"
-msgstr ""
+msgstr "redirect to %s\n"
 
 #: src/commands.c:151 src/commands.c:969
 #, c-format
@@ -702,39 +747,41 @@ msgid ""
 "failed:\n"
 "%s\n"
 msgstr ""
+"failed:\n"
+"%s\n"
 
 #: src/commands.c:328
 msgid "exclusive"
-msgstr ""
+msgstr "exclusive"
 
 #: src/commands.c:329
 msgid "shared"
-msgstr ""
+msgstr "shared"
 
 #: src/commands.c:330 src/commands.c:339 src/ls.c:119
 msgid "unknown"
-msgstr ""
+msgstr "unknown"
 
 #: src/commands.c:337
 msgid "write"
-msgstr ""
+msgstr "write"
 
 #: src/commands.c:347
 msgid "infinite"
-msgstr ""
+msgstr "infinite"
 
 #: src/commands.c:348 src/commands.c:366
 msgid "invalid"
-msgstr ""
+msgstr "invalid"
 
 #: src/commands.c:350
 #, c-format
 msgid "%ld seconds"
-msgstr ""
+msgstr "%ld seconds"
 
 #: src/commands.c:359
 msgid "infinity"
-msgstr ""
+msgstr "infinity"
 
 #: src/commands.c:380
 #, c-format
@@ -744,79 +791,83 @@ msgid ""
 "  Scope: %s  Type: %s  Timeout: %s\n"
 "  Owner: %s\n"
 msgstr ""
+"Lock token <%s>:\n"
+"  Depth %s on ‘%s’\n"
+"  Scope: %s  Type: %s  Timeout: %s\n"
+"  Owner: %s\n"
 
 #: src/commands.c:387
 msgid "(none)"
-msgstr ""
+msgstr "(none)"
 
 #: src/commands.c:402 src/commands.c:420
 #, c-format
 msgid "Failed on %s: %d %s\n"
-msgstr ""
+msgstr "Failed on %s: %d %s\n"
 
 #: src/commands.c:448
 msgid "Discovering locks on"
-msgstr ""
+msgstr "Discovering locks on"
 
 #: src/commands.c:453
 msgid "Stealing locks on"
-msgstr ""
+msgstr "Stealing locks on"
 
 #: src/commands.c:467
 #, c-format
 msgid "No owned locks.\n"
-msgstr ""
+msgstr "No owned locks.\n"
 
 #: src/commands.c:485
 msgid "Locking collection"
-msgstr ""
+msgstr "Locking collection"
 
 #: src/commands.c:487
 msgid "Locking"
-msgstr ""
+msgstr "Locking"
 
 #: src/commands.c:519
 msgid "Unlocking"
-msgstr ""
+msgstr "Unlocking"
 
 #: src/commands.c:523
 msgid "Enter locktoken: "
-msgstr ""
+msgstr "Enter locktoken: "
 
 #: src/commands.c:544
 msgid "Creating"
-msgstr ""
+msgstr "Creating"
 
 #: src/commands.c:583
 #, c-format
 msgid "Value of %s is: %s\n"
-msgstr ""
+msgstr "Value of %s is: %s\n"
 
 #: src/commands.c:589
 #, c-format
 msgid "Could not fetch property: %d %s\n"
-msgstr ""
+msgstr "Could not fetch property: %d %s\n"
 
 #: src/commands.c:592
 #, c-format
 msgid "Server did not return result for %s\n"
-msgstr ""
+msgstr "Server did not return result for %s\n"
 
 #: src/commands.c:633
 msgid "Setting property on"
-msgstr ""
+msgstr "Setting property on"
 
 #: src/commands.c:638
 msgid "Deleting property on"
-msgstr ""
+msgstr "Deleting property on"
 
 #: src/commands.c:656
 msgid "Fetching properties for"
-msgstr ""
+msgstr "Fetching properties for"
 
 #: src/commands.c:716
 msgid "Deleting"
-msgstr ""
+msgstr "Deleting"
 
 #: src/commands.c:719
 #, c-format
@@ -825,10 +876,13 @@ msgid ""
 "The `rm' command cannot be used to delete a collection.\n"
 "Use `rmcol %s' to delete this collection and ALL its contents.\n"
 msgstr ""
+"is a collection resource.\n"
+"The ‘rm’ command cannot be used to delete a collection.\n"
+"Use ‘rmcol %s’ to delete this collection and ALL its contents.\n"
 
 #: src/commands.c:735
 msgid "Deleting collection"
-msgstr ""
+msgstr "Deleting collection"
 
 #: src/commands.c:738
 #, c-format
@@ -837,11 +891,14 @@ msgid ""
 "The `rmcol' command can only be used to delete collections.\n"
 "Use `rm %s' to delete this resource.\n"
 msgstr ""
+"is not a collection.\n"
+"The ‘rmcol’ command can only be used to delete collections.\n"
+"Use ‘rm %s’ to delete this resource.\n"
 
 #: src/commands.c:822 src/commands.c:839
 #, c-format
 msgid "Displaying `%s':\n"
-msgstr ""
+msgstr "Displaying ‘%s’:\n"
 
 #: src/commands.c:825
 #, c-format
@@ -849,67 +906,69 @@ msgid ""
 "Error! Could not spawn pager `%s':\n"
 "%s\n"
 msgstr ""
+"Error! Could not spawn pager ‘%s’:\n"
+"%s\n"
 
 #: src/commands.c:841
 #, c-format
 msgid "Failed: %s\n"
-msgstr ""
+msgstr "Failed: %s\n"
 
 #: src/commands.c:870
 #, c-format
 msgid "When %s multiple resources, the last argument must be a collection.\n"
-msgstr ""
+msgstr "When %s multiple resources, the last argument must be a collection.\n"
 
 #: src/commands.c:885
 #, c-format
 msgid "Moving `%s' to `%s': "
-msgstr ""
+msgstr "Moving ‘%s’ to ‘%s’: "
 
 #: src/commands.c:891
 #, c-format
 msgid "Copying `%s' to `%s': "
-msgstr ""
+msgstr "Copying ‘%s’ to ‘%s’: "
 
 #: src/commands.c:951
 #, c-format
 msgid "Enter local filename for `%s': "
-msgstr ""
+msgstr "Enter local filename for ‘%s’: "
 
 #: src/commands.c:956
 #, c-format
 msgid "cancelled.\n"
-msgstr ""
+msgstr "cancelled.\n"
 
 #: src/commands.c:967
 #, c-format
 msgid "Downloading `%s' to %s:"
-msgstr ""
+msgstr "Downloading ‘%s’ to %s:"
 
 #: src/commands.c:988
 #, c-format
 msgid "Uploading %s to `%s':"
-msgstr ""
+msgstr "Uploading %s to ‘%s’:"
 
 #: src/commands.c:990
 #, c-format
 msgid "Could not open file: %s\n"
-msgstr ""
+msgstr "Could not open file: %s\n"
 
 #: src/commands.c:1022
 msgid "copying"
-msgstr ""
+msgstr "copying"
 
 #: src/commands.c:1022
 msgid "copy"
-msgstr ""
+msgstr "copy"
 
 #: src/commands.c:1027
 msgid "moving"
-msgstr ""
+msgstr "moving"
 
 #: src/commands.c:1027
 msgid "move"
-msgstr ""
+msgstr "move"
 
 #: src/commands.c:1088
 #, c-format
@@ -918,34 +977,37 @@ msgid ""
 "   chexec + %s   to make the resource executable\n"
 "or chexec - %s   to make the resource unexecutable\n"
 msgstr ""
+"Use:\n"
+"   chexec + %s   to make the resource executable\n"
+"or chexec - %s   to make the resource unexecutable\n"
 
 #: src/commands.c:1097
 msgid "Setting isexecutable"
-msgstr ""
+msgstr "Setting isexecutable"
 
 #: src/commands.c:1103
 msgid "The server does not support the 'isexecutable' property."
-msgstr ""
+msgstr "The server does not support the ‘isexecutable’ property."
 
 #: src/commands.c:1118
 #, c-format
 msgid "Local directory: %s\n"
-msgstr ""
+msgstr "Local directory: %s\n"
 
 #: src/commands.c:1134
 #, c-format
 msgid "Error executing ls: %s\n"
-msgstr ""
+msgstr "Error executing ls: %s\n"
 
 #: src/commands.c:1138
 #, c-format
 msgid "Error forking ls: %s\n"
-msgstr ""
+msgstr "Error forking ls: %s\n"
 
 #: src/commands.c:1155
 #, c-format
 msgid "Could not determine home directory from environment.\n"
-msgstr ""
+msgstr "Could not determine home directory from environment.\n"
 
 #: src/commands.c:1160
 #, c-format
@@ -953,268 +1015,271 @@ msgid ""
 "Could not change local directory:\n"
 "chdir: %s\n"
 msgstr ""
+"Could not change local directory:\n"
+"chdir: %s\n"
 
 #: src/commands.c:1168
 #, c-format
 msgid "Current collection is `%s'.\n"
-msgstr ""
+msgstr "Current collection is ‘%s’.\n"
 
 #: src/commands.c:1178
 #, c-format
 msgid "No previous collection.\n"
-msgstr ""
+msgstr "No previous collection.\n"
 
 #: src/commands.c:1220
 #, c-format
 msgid ""
 "Aliases: rm=delete, mkdir=mkcol, mv=move, cp=copy, more=less, quit=exit=bye\n"
 msgstr ""
+"Aliases: rm=delete, mkdir=mkcol, mv=move, cp=copy, more=less, quit=exit=bye\n"
 
 #: src/commands.c:1234
 #, c-format
 msgid "This command can only be used when connected to a server.\n"
-msgstr ""
+msgstr "This command can only be used when connected to a server.\n"
 
 #: src/commands.c:1237
 #, c-format
 msgid "Command name not known: %s\n"
-msgstr ""
+msgstr "Command name not known: %s\n"
 
 #: src/commands.c:1294
 msgid "ls [path]"
-msgstr ""
+msgstr "ls [path]"
 
 #: src/commands.c:1294
 msgid "List contents of current [or other] collection"
-msgstr ""
+msgstr "List contents of current [or other] collection"
 
 #: src/commands.c:1295
 msgid "cd path"
-msgstr ""
+msgstr "cd path"
 
 #: src/commands.c:1295
 msgid "Change to specified collection"
-msgstr ""
+msgstr "Change to specified collection"
 
 #: src/commands.c:1297
 msgid "Display name of current collection"
-msgstr ""
+msgstr "Display name of current collection"
 
 #: src/commands.c:1299
 msgid "put local [remote]"
-msgstr ""
+msgstr "put local [remote]"
 
 #: src/commands.c:1299
 msgid "Upload local file"
-msgstr ""
+msgstr "Upload local file"
 
 #: src/commands.c:1301
 msgid "get remote [local]"
-msgstr ""
+msgstr "get remote [local]"
 
 #: src/commands.c:1301
 msgid "Download remote resource"
-msgstr ""
+msgstr "Download remote resource"
 
 #: src/commands.c:1302
 msgid "mget remote..."
-msgstr ""
+msgstr "mget remote..."
 
 #: src/commands.c:1302
 msgid "Download many remote resources"
-msgstr ""
+msgstr "Download many remote resources"
 
 #: src/commands.c:1304
 msgid "mput local..."
-msgstr ""
+msgstr "mput local..."
 
 #: src/commands.c:1304
 msgid "Upload many local files"
-msgstr ""
+msgstr "Upload many local files"
 
 #: src/commands.c:1305
 msgid "edit resource"
-msgstr ""
+msgstr "edit resource"
 
 #: src/commands.c:1305
 msgid "Edit given resource"
-msgstr ""
+msgstr "Edit given resource"
 
 #: src/commands.c:1306
 msgid "less remote..."
-msgstr ""
+msgstr "less remote..."
 
 #: src/commands.c:1306
 msgid "Display remote resource through pager"
-msgstr ""
+msgstr "Display remote resource through pager"
 
 #: src/commands.c:1307
 msgid "mkcol remote..."
-msgstr ""
+msgstr "mkcol remote..."
 
 #: src/commands.c:1307
 msgid "Create remote collection(s)"
-msgstr ""
+msgstr "Create remote collection(s)"
 
 #: src/commands.c:1308
 msgid "cat remote..."
-msgstr ""
+msgstr "cat remote..."
 
 #: src/commands.c:1308
 msgid "Display remote resource(s)"
-msgstr ""
+msgstr "Display remote resource(s)"
 
 #: src/commands.c:1309
 msgid "delete remote..."
-msgstr ""
+msgstr "delete remote..."
 
 #: src/commands.c:1309
 msgid "Delete non-collection resource(s)"
-msgstr ""
+msgstr "Delete non-collection resource(s)"
 
 #: src/commands.c:1310
 msgid "rmcol remote..."
-msgstr ""
+msgstr "rmcol remote..."
 
 #: src/commands.c:1310
 msgid "Delete remote collections and ALL contents"
-msgstr ""
+msgstr "Delete remote collections and ALL contents"
 
 #: src/commands.c:1311
 msgid "copy source... dest"
-msgstr ""
+msgstr "copy source... dest"
 
 #: src/commands.c:1311
 msgid "Copy resource(s) from source to dest"
-msgstr ""
+msgstr "Copy resource(s) from source to dest"
 
 #: src/commands.c:1312
 msgid "move source... dest"
-msgstr ""
+msgstr "move source... dest"
 
 #: src/commands.c:1312
 msgid "Move resource(s) from source to dest"
-msgstr ""
+msgstr "Move resource(s) from source to dest"
 
 #: src/commands.c:1318
 msgid "lock resource"
-msgstr ""
+msgstr "lock resource"
 
 #: src/commands.c:1318
 msgid "Lock given resource"
-msgstr ""
+msgstr "Lock given resource"
 
 #: src/commands.c:1319
 msgid "unlock resource"
-msgstr ""
+msgstr "unlock resource"
 
 #: src/commands.c:1319
 msgid "Unlock given resource"
-msgstr ""
+msgstr "Unlock given resource"
 
 #: src/commands.c:1320
 msgid "discover resource"
-msgstr ""
+msgstr "discover resource"
 
 #: src/commands.c:1320
 msgid "Display lock information for resource"
-msgstr ""
+msgstr "Display lock information for resource"
 
 #: src/commands.c:1321
 msgid "steal resource"
-msgstr ""
+msgstr "steal resource"
 
 #: src/commands.c:1321
 msgid "Steal lock token for resource"
-msgstr ""
+msgstr "Steal lock token for resource"
 
 #: src/commands.c:1323
 msgid "Display list of owned locks"
-msgstr ""
+msgstr "Display list of owned locks"
 
 #: src/commands.c:1327
 msgid "verrsion resource"
-msgstr ""
+msgstr "verrsion resource"
 
 #: src/commands.c:1327
 msgid "Place given resource under version control"
-msgstr ""
+msgstr "Place given resource under version control"
 
 #: src/commands.c:1328
 msgid "checkin resource"
-msgstr ""
+msgstr "checkin resource"
 
 #: src/commands.c:1328
 msgid "Checkin given resource"
-msgstr ""
+msgstr "Checkin given resource"
 
 #: src/commands.c:1329
 msgid "checkout resource"
-msgstr ""
+msgstr "checkout resource"
 
 #: src/commands.c:1329
 msgid "Checkout given resource"
-msgstr ""
+msgstr "Checkout given resource"
 
 #: src/commands.c:1330
 msgid "uncheckin resource"
-msgstr ""
+msgstr "uncheckin resource"
 
 #: src/commands.c:1330
 msgid "Uncheckout given resource"
-msgstr ""
+msgstr "Uncheckout given resource"
 
 #: src/commands.c:1331
 msgid "history resource"
-msgstr ""
+msgstr "history resource"
 
 #: src/commands.c:1331
 msgid "Show version history of resource"
-msgstr ""
+msgstr "Show version history of resource"
 
 #: src/commands.c:1334
 msgid "label res [add|set|remove] labelname"
-msgstr ""
+msgstr "label res [add|set|remove] labelname"
 
 #: src/commands.c:1335
 msgid "Set/Del/Edit label on resource"
-msgstr ""
+msgstr "Set/Del/Edit label on resource"
 
 #: src/commands.c:1342
 msgid "chexec [+|-] remote"
-msgstr ""
+msgstr "chexec [+|-] remote"
 
 #: src/commands.c:1342
 msgid "Change isexecutable property of resource"
-msgstr ""
+msgstr "Change isexecutable property of resource"
 
 #: src/commands.c:1345
 msgid "propget res [propname]"
-msgstr ""
+msgstr "propget res [propname]"
 
 #: src/commands.c:1346
 msgid "Retrieve properties of resource"
-msgstr ""
+msgstr "Retrieve properties of resource"
 
 #: src/commands.c:1348
 msgid "propdel res propname"
-msgstr ""
+msgstr "propdel res propname"
 
 #: src/commands.c:1349
 msgid "Delete property from resource"
-msgstr ""
+msgstr "Delete property from resource"
 
 #: src/commands.c:1351
 msgid "propset res propname value"
-msgstr ""
+msgstr "propset res propname value"
 
 #: src/commands.c:1352
 msgid "Set property on resource"
-msgstr ""
+msgstr "Set property on resource"
 
 #: src/commands.c:1356
 msgid "search query"
-msgstr ""
+msgstr "search query"
 
 #: src/commands.c:1357
 msgid ""
@@ -1226,113 +1291,122 @@ msgid ""
 "   - search where author is Smith or Jones\n"
 "      > search author = Smith or author = Jones\n"
 msgstr ""
+"DASL Search resource in current collection\n"
+"\n"
+" Examples:\n"
+"   - search where content length is smaller than 100:\n"
+"      > search getcontentlength < 100\n"
+"   - search where author is Smith or Jones\n"
+"      > search author = Smith or author = Jones\n"
 
 #: src/commands.c:1363
 msgid ""
 " Available operators and keywords:\n"
 "     - and, or , (, ), =, <, >, <=, >=, like\n"
 msgstr ""
+" Available operators and keywords:\n"
+"     - and, or , (, ), =, <, >, <=, >=, like\n"
 
 #: src/commands.c:1365
 msgid " (See also variables searchdepth, searchorder, searchdorder)\n"
-msgstr ""
+msgstr " (See also variables searchdepth, searchorder, searchdorder)\n"
 
 #: src/commands.c:1369
 msgid "set [option] [value]"
-msgstr ""
+msgstr "set [option] [value]"
 
 #: src/commands.c:1369
 msgid "Set an option, or display options"
-msgstr ""
+msgstr "Set an option, or display options"
 
 #: src/commands.c:1371
 msgid "Open connection to given URL"
-msgstr ""
+msgstr "Open connection to given URL"
 
 #: src/commands.c:1373
 msgid "Close current connection"
-msgstr ""
+msgstr "Close current connection"
 
 #: src/commands.c:1377
 msgid "Exit program"
-msgstr ""
+msgstr "Exit program"
 
 #: src/commands.c:1380
 msgid "unset [option] [value]"
-msgstr ""
+msgstr "unset [option] [value]"
 
 #: src/commands.c:1380
 msgid "Unsets or clears value from option."
-msgstr ""
+msgstr "Unsets or clears value from option."
 
 #: src/commands.c:1382
 msgid "lcd [directory]"
-msgstr ""
+msgstr "lcd [directory]"
 
 #: src/commands.c:1382
 msgid "Change local working directory"
-msgstr ""
+msgstr "Change local working directory"
 
 #: src/commands.c:1384
 msgid "lls [options]"
-msgstr ""
+msgstr "lls [options]"
 
 #: src/commands.c:1384
 msgid "Display local directory listing"
-msgstr ""
+msgstr "Display local directory listing"
 
 #: src/commands.c:1385
 msgid "Print local working directory"
-msgstr ""
+msgstr "Print local working directory"
 
 #: src/commands.c:1387
 msgid "Logout of authentication session"
-msgstr ""
+msgstr "Logout of authentication session"
 
 #: src/commands.c:1388
 msgid "help [command]"
-msgstr ""
+msgstr "help [command]"
 
 #: src/commands.c:1388
 msgid "Display help message"
-msgstr ""
+msgstr "Display help message"
 
 #: src/commands.c:1390
 msgid "Describe an option variable"
-msgstr ""
+msgstr "Describe an option variable"
 
 #: src/commands.c:1391
 msgid "Information about this version of cadaver"
-msgstr ""
+msgstr "Information about this version of cadaver"
 
 #: src/common.c:46
 msgid "Unknown system error"
-msgstr ""
+msgstr "Unknown system error"
 
 #: src/edit.c:68
 #, c-format
 msgid "Could not stat file: %s\n"
-msgstr ""
+msgstr "Could not stat file: %s\n"
 
 #: src/edit.c:74
 #, c-format
 msgid "Error! Could not examine temporary file: %s\n"
-msgstr ""
+msgstr "Error! Could not examine temporary file: %s\n"
 
 #: src/edit.c:80
 #, c-format
 msgid "No changes were made.\n"
-msgstr ""
+msgstr "No changes were made.\n"
 
 #: src/edit.c:83
 #, c-format
 msgid "Changes were made.\n"
-msgstr ""
+msgstr "Changes were made.\n"
 
 #: src/edit.c:129
 #, c-format
 msgid "You cannot edit a collection resource (%s).\n"
-msgstr ""
+msgstr "You cannot edit a collection resource (%s).\n"
 
 #: src/edit.c:146
 #, c-format
@@ -1340,6 +1414,8 @@ msgid ""
 "Could not create temporary file %s:\n"
 "%s\n"
 msgstr ""
+"Could not create temporary file %s:\n"
+"%s\n"
 
 #: src/edit.c:153
 #, c-format
@@ -1347,31 +1423,33 @@ msgid ""
 "Could not set file permissions for %s:\n"
 "%s\n"
 msgstr ""
+"Could not set file permissions for %s:\n"
+"%s\n"
 
 #: src/edit.c:174
 #, c-format
 msgid "Downloading `%s' to %s"
-msgstr ""
+msgstr "Downloading ‘%s’ to %s"
 
 #: src/edit.c:180
 #, c-format
 msgid "Error writing to temporary file: %s\n"
-msgstr ""
+msgstr "Error writing to temporary file: %s\n"
 
 #: src/edit.c:189
 #, c-format
 msgid "Could not re-open temporary file: %s\n"
-msgstr ""
+msgstr "Could not re-open temporary file: %s\n"
 
 #: src/edit.c:193
 #, c-format
 msgid "Uploading changes to `%s'"
-msgstr ""
+msgstr "Uploading changes to ‘%s’"
 
 #: src/edit.c:201
 #, c-format
 msgid "Try uploading again (y/n)? "
-msgstr ""
+msgstr "Try uploading again (y/n)? "
 
 #: src/edit.c:212
 #, c-format
@@ -1379,83 +1457,85 @@ msgid ""
 "Could not delete temporary file %s:\n"
 "%s\n"
 msgstr ""
+"Could not delete temporary file %s:\n"
+"%s\n"
 
 #: src/ls.c:99
 msgid "Ref:"
-msgstr ""
+msgstr "Ref:"
 
 #: src/ls.c:100
 msgid "Coll:"
-msgstr ""
+msgstr "Coll:"
 
 #: src/ls.c:118
 #, c-format
 msgid "Error: %-30s %d %s\n"
-msgstr ""
+msgstr "Error: %-30s %d %s\n"
 
 #: src/ls.c:141
 msgid "Listing collection"
-msgstr ""
+msgstr "Listing collection"
 
 #: src/ls.c:146
 msgid "collection is empty.\n"
-msgstr ""
+msgstr "collection is empty.\n"
 
 #: src/ls.c:218
 msgid "Authorization Required"
-msgstr ""
+msgstr "Authorization Required"
 
 #: src/ls.c:220
 msgid "Redirect"
-msgstr ""
+msgstr "Redirect"
 
 #: src/ls.c:222
 msgid "Server Error"
-msgstr ""
+msgstr "Server Error"
 
 #: src/ls.c:224
 msgid "Unknown Error"
-msgstr ""
+msgstr "Unknown Error"
 
 #: src/search.c:628
 #, c-format
 msgid "Using query: "
-msgstr ""
+msgstr "Using query: "
 
 #: src/utils.c:50
 msgid "Did not find a collection resource."
-msgstr ""
+msgstr "Did not find a collection resource."
 
 #: src/version.c:311
 msgid "Versioning"
-msgstr ""
+msgstr "Versioning"
 
 #: src/version.c:316
 msgid "Checking in"
-msgstr ""
+msgstr "Checking in"
 
 #: src/version.c:321
 msgid "Checking out"
-msgstr ""
+msgstr "Checking out"
 
 #: src/version.c:326
 msgid "Cancelling check out of"
-msgstr ""
+msgstr "Cancelling check out of"
 
 #: src/version.c:338
 #, c-format
 msgid " %d version%s in history:\n"
-msgstr ""
+msgstr " %d version%s in history:\n"
 
 #: src/version.c:398
 msgid "Version history of"
-msgstr ""
+msgstr "Version history of"
 
 #: src/version.c:424
 #, c-format
 msgid "Invalid action `%s' given.\n"
-msgstr ""
+msgstr "Invalid action ‘%s’ given.\n"
 
 #: src/version.c:434
 msgid "Labelling"
-msgstr ""
+msgstr "Labelling"

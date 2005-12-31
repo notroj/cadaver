@@ -28,13 +28,15 @@ VPATH = @srcdir@
 
 # Toolchain settings.
 CC = @CC@
-CPPFLAGS = @DEFS@ @CPPFLAGS@ -I$(top_srcdir)/src
-CFLAGS = @CFLAGS@ @SDEFS@ 
+INCLUDES = -I$(top_srcdir)/src
+CPPFLAGS = @DEFS@ @CPPFLAGS@ -DLOCALEDIR=\"$(localedir)\"
+CFLAGS = @CFLAGS@
+ALL_CFLAGS = $(CPPFLAGS$) $(INCLUDES) $(CFLAGS)
 LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@ @NEON_LIBS@
 
 TARGET = $(PACKAGE)
-SUBDIRS = lib/neon @SUBDIRS@
+SUBDIRS = lib/neon lib/intl
 OBJECTS = src/cadaver.o src/common.o src/commands.o src/ls.o	\
 	 src/cmdline.o src/options.o src/utils.o src/edit.o
 NOBJECTS = src/search.o src/version.o
@@ -56,18 +58,18 @@ $(TARGET): $(ALLOBJS) subdirs
 	$(CC) $(LDFLAGS) -o $(TARGET) $(ALLOBJS) $(LIBS)
 
 .c.o:
-	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ -c $<
+	$(CC) $(ALL_CFLAGS) -o $@ -c $<
 
 subdirs:
 	for d in $(SUBDIRS); do (cd $$d; $(MAKE)); done
 
 clean:
-	rm -f $(OBJECTS) $(LIBOBJS) $(TARGET)	
+	rm -f $(OBJECTS) $(LIBOBJS) $(TARGET) *~
 	for d in $(SUBDIRS); do (cd $$d; $(MAKE) clean); done
 
 again: clean $(TARGET)
 
-install: $(TARGET)
+install: $(TARGET) install-nls
 	@echo "Creating directories..."
 	$(INSTALL) -d $(bindir)
 	$(INSTALL) -d $(man1dir)
@@ -75,6 +77,9 @@ install: $(TARGET)
 	$(INSTALL_PROGRAM) $(TARGET) $(bindir)/$(TARGET)
 	@echo "Installing man page..."
 	$(INSTALL_DATA) $(top_srcdir)/doc/cadaver.1 $(man1dir)/cadaver.1
+
+install-nls:
+	@cd po && $(MAKE) install
 
 Makefile: Makefile.in
 	@./config.status Makefile
