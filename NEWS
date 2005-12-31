@@ -1,3 +1,9 @@
+Changes in release 0.22.1:
+* Update to neon 0.25.4:
+ - fix support for handling multiple authentication challenges
+ - add support for the Negotiate (GSSAPI/Kerberos) protocol
+* Enable i18n support again.
+
 Changes in release 0.22.0:
 * Fix build on BSD platforms, or if using bundled expat library.
 * Fixes for some URI encoding issues.
