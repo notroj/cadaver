@@ -554,7 +554,7 @@ static int all_iterator(void *userdata, const ne_propname *pname,
 	printf("%s = %s\n", dname, dval);
 	free(dval);
     } else if (status != NULL) {
-	printf("%s failed: %s\n", dname, status->reason_phrase);
+	printf(_("%s failed: %s\n"), dname, status->reason_phrase);
     }
     free(dname);
     return 0;
@@ -684,7 +684,7 @@ static void execute_propnames(const char *res)
 {
     char *remote;
     remote = resolve_path(session.uri.path, res, false);
-    out_start("Fetching property names", res);
+    out_start(_("Fetching property names"), res);
     if (out_handle(ne_propnames(session.sess, remote, NE_DEPTH_ZERO,
 				 propname_results, NULL))) { 
     }
@@ -857,8 +857,8 @@ static void do_copymove(int argc, const char *argv[],
 	    real_src = resolve_path(session.uri.path, argv[n], false);
 	    real_dest = clever_path(session.uri.path, argv[n], dest);
 	    if (strcmp(real_src, real_dest) == 0) {
-		printf("%s: %s and %s are the same resource.\n", v2,
-			real_src, real_dest);
+		printf(_("%s: %s and %s are the same resource.\n"), v2,
+                       real_src, real_dest);
 	    } else {
 		(*cb)(real_src, real_dest);
 	    }
@@ -866,8 +866,8 @@ static void do_copymove(int argc, const char *argv[],
 	    free(real_dest);
 	}
     } else if (argc > 2) {
-	printf(
-	    _("When %s multiple resources, the last argument must be a collection.\n"), v1);
+	printf(_("When %s multiple resources, the last "
+                 "argument must be a collection.\n"), v1);
     } else {
 	char *rsrc, *rdest;
 	rsrc = resolve_path(session.uri.path, argv[0], false);
@@ -1229,7 +1229,7 @@ static void execute_help(const char *arg)
 	const struct command *cmd = get_command(arg);
 
 	if (cmd) {
-	    printf(" `%s'   %s\n", cmd->call, cmd->short_help);
+	    printf(_(" `%s'   %s\n"), cmd->call, _(cmd->short_help));
 	    if (cmd->needs_connection) {
 		printf(_("This command can only be used when connected to a server.\n"));
 	    }
@@ -1336,7 +1336,7 @@ const struct command commands[] = {
 #endif
 
     /*** Property handling ***/
-    C1(propnames, "propnames res", "Names of properties defined on resource"),
+    C1(propnames, "propnames res", N_("Names of properties defined on resource")) ,
 
     { cmd_chexec, "chexec", true, 2, 2, parmscope_none, T2(execute_chexec),
       N_("chexec [+|-] remote"), N_("Change isexecutable property of resource") },
