@@ -36,10 +36,13 @@
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
-
 #ifdef HAVE_STRING_H
 #include <string.h>
 #endif
+#ifdef HAVE_LOCALE_H
+#include <locale.h>
+#endif
+
 
 #include <errno.h>
 
@@ -831,6 +834,10 @@ int main(int argc, char *argv[])
     char *home = getenv("HOME"), *tmp;
 
     progname = argv[0];
+
+#ifdef HAVE_SETLOCALE
+    setlocale(LC_ALL, "");
+#endif
 
 #ifdef ENABLE_NLS
     bindtextdomain(PACKAGE_NAME, LOCALEDIR);
