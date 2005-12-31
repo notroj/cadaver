@@ -132,7 +132,7 @@ struct resource {
     size_t size;
     time_t modtime;
     int is_executable;
-    int is_vcr;         /* Is version resource */
+    int is_vcr;    /* Is version resource. 0: no vcr, 1 checkin 2 checkout */
     char *error_reason; /* error string returned for this resource */
     int error_status; /* error status returned for this resource */
     struct resource *next;
@@ -143,6 +143,10 @@ void open_connection(const char *url);
 
 void execute_ls(const char *remote);
 void execute_edit(const char *remote);
+
+/* Determine whether the resource is a version controlled resource 
+ * 1: Checkin, 2: Checkout, 0: Otherwise */
+int is_vcr(const char *remote);
 
 void execute_version(const char *remote);
 void execute_checkin(const char *remote);

@@ -38,8 +38,8 @@ LIBS = @LIBS@ @NEON_LIBS@
 TARGET = $(PACKAGE)
 SUBDIRS = lib/neon lib/intl
 OBJECTS = src/cadaver.o src/common.o src/commands.o src/ls.o	\
-	 src/cmdline.o src/options.o src/utils.o src/edit.o
-NOBJECTS = src/search.o src/version.o
+	 src/cmdline.o src/options.o src/utils.o src/edit.o \
+	src/version.o src/search.o 
 LIBOBJS = lib/basename.o lib/dirname.o lib/rpmatch.o lib/yesno.o	\
 	lib/glob.o lib/getpass.o lib/tempname.o lib/mkstemp.o \
 	@LIBOBJS@

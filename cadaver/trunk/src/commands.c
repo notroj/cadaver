@@ -963,7 +963,7 @@ static void execute_get(const char *remote, const char *local)
 	filename = ne_strdup(local);
     }
     {
-	int fd = open(filename, O_CREAT|O_WRONLY, 0644);
+	int fd = open(filename, O_CREAT|O_WRONLY|O_TRUNC, 0644);
 	output(o_transfer, _("Downloading `%s' to %s:"), real_remote, filename);
 	if (fd < 0) {
 	    output(o_finish, _("failed:\n%s\n"), strerror(errno));
@@ -1321,8 +1321,7 @@ const struct command commands[] = {
     C1(steal, N_("steal resource"), N_("Steal lock token for resource")),
     { cmd_showlocks, "showlocks", true, 0, 0, parmscope_none, T0(execute_showlocks),
       "showlocks", N_("Display list of owned locks") },
-    
-#ifdef ENABLE_DELTAV
+
     /*** DeltaV commands ***/
     C1(version, N_("verrsion resource"), N_("Place given resource under version control")),
     C1(checkin, N_("checkin resource"), N_("Checkin given resource")),
@@ -1333,7 +1332,7 @@ const struct command commands[] = {
     { cmd_label, "label", true, 3, 3, parmscope_none, T3(execute_label),
       N_("label res [add|set|remove] labelname"),
       N_("Set/Del/Edit label on resource") },
-#endif
+
 
     /*** Property handling ***/
     C1(propnames, "propnames res", N_("Names of properties defined on resource")) ,
@@ -1351,7 +1350,6 @@ const struct command commands[] = {
       N_("propset res propname value"),
       N_("Set property on resource") },
 
-#ifdef ENABLE_DASL
     { cmd_search, "search", true, 1, CMD_VARY, parmscope_remote, TV(execute_search),
       N_("search query"), 
       N_("DASL Search resource in current collection\n\n"
@@ -1363,7 +1361,6 @@ const struct command commands[] = {
 	 " Available operators and keywords:\n"
 	 "     - and, or , (, ), =, <, >, <=, >=, like\n" EOL
          " (See also variables searchdepth, searchorder, searchdorder)\n") },
-#endif
     
     { cmd_set, "set", false, 0, 2, parmscope_none, T2(execute_set), 
       N_("set [option] [value]"), N_("Set an option, or display options") },
