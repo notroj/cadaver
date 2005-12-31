@@ -1,6 +1,6 @@
 /* 
    'version' for cadaver
-   Copyright (C) 2003-2004, Joe Orton <joe@manyfish.co.uk>
+   Copyright (C) 2003-2005, Joe Orton <joe@manyfish.co.uk>
    Copyright (C) 2002-2003, GRASE Lab, UCSC <grase@cse.ucsc.edu>, 
                                                                      
    This program is free software; you can redistribute it and/or modify
@@ -131,8 +131,15 @@ static int validate_report_elements(void *userdata,
 /* Set xml parser error */
 static void set_xml_error(report_ctx * sctx, const char *format, ...)
 {
+    va_list ap;
+    char buf[512];
+
+    va_start(ap, format);
+    ne_vsnprintf(buf, sizeof buf, format, ap);
+    va_end(ap);
+
+    ne_set_error(session.sess, "%s", buf);
     sctx->err_code = NE_ERROR;
-    ne_set_error(session, format);
 }
 
 static int start_element(void *userdata, int parent,
@@ -308,14 +315,14 @@ static void simple_request(const char *remote, const char *verb,
     int ret;
     
     if (remote != NULL) {
-	real_remote = resolve_path(path, remote, true);
+	real_remote = resolve_path(session.uri.path, remote, true);
     } else {
-	real_remote = ne_strdup(path);
+	real_remote = ne_strdup(session.uri.path);
     }
 
     out_start(verb, remote);
 
-    req = ne_request_create(session, method, real_remote);
+    req = ne_request_create(session.sess, method, real_remote);
 
     ne_lock_using_resource(req, real_remote, 0);
 
@@ -379,7 +386,7 @@ static int do_report(const char *real_remote,
     ne_xml_parser *report_parser;
     
     /* create/prep the request */
-    if ((req = ne_request_create(session, "REPORT", real_remote)) == NULL)
+    if ((req = ne_request_create(session.sess, "REPORT", real_remote)) == NULL)
 	return NE_ERROR;
     
     /* Plug our XML parser */
@@ -416,9 +423,9 @@ void execute_history(const char *remote)
     rctx->cdata = ne_buffer_create();
     
     if (remote != NULL) {
-	real_remote = resolve_path(path, remote, false);
+	real_remote = resolve_path(session.uri.path, remote, false);
     } else {
-	real_remote = ne_strdup(path);
+	real_remote = ne_strdup(session.uri.path);
     }
     out_start(_("Version history of"), real_remote);
     
@@ -451,9 +458,9 @@ void execute_label(const char *remote, const char *act, const char *value)
     }
 
     if (remote != NULL) {
-	real_remote = resolve_path(path, remote, true);
+	real_remote = resolve_path(session.uri.path, remote, true);
     } else {
-	real_remote = ne_strdup(path);
+	real_remote = ne_strdup(session.uri.path);
     }
 
     out_start(_("Labelling"), real_remote);
@@ -474,7 +481,7 @@ void execute_label(const char *remote, const char *act, const char *value)
 		      "</D:label>" EOL);
     
     /* create/prep the request */
-    req = ne_request_create(session, "LABEL", real_remote);
+    req = ne_request_create(session.sess, "LABEL", real_remote);
     
     ne_add_request_header(req, "Content-Type", NE_XML_MEDIA_TYPE);
     
@@ -519,7 +526,7 @@ static void vcr_results(void *userdata, const char *uri,
 int is_vcr(const char *uri) 
 { 
     int ret, vcr = 0;
-    ne_propfind_handler *pfh = ne_propfind_create(session, uri, NE_DEPTH_ZERO);
+    ne_propfind_handler *pfh = ne_propfind_create(session.sess, uri, NE_DEPTH_ZERO);
     ret = ne_propfind_named(pfh, vcr_props, vcr_results, &vcr);
     ne_propfind_destroy(pfh);
 
