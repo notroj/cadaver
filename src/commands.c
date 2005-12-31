@@ -1357,9 +1357,9 @@ const struct command commands[] = {
 	 "   - search where content length is smaller than 100:\n"
 	 "      > search getcontentlength < 100\n" 
          "   - search where author is Smith or Jones\n"
-         "      > search author = Smith or author = Jones\n" EOL
+         "      > search author = Smith or author = Jones\n"
 	 " Available operators and keywords:\n"
-	 "     - and, or , (, ), =, <, >, <=, >=, like\n" EOL
+	 "     - and, or , (, ), =, <, >, <=, >=, like\n"
          " (See also variables searchdepth, searchorder, searchdorder)\n") },
     
     { cmd_set, "set", false, 0, 2, parmscope_none, T2(execute_set), 

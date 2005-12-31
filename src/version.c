@@ -470,15 +470,14 @@ void execute_label(const char *remote, const char *act, const char *value)
     
     /* Create the request body */
     ne_buffer_zappend(label_body, 
-		      "<?xml version=\"1.0\" encoding=\"utf-8\" ?>" EOL
-		      "<D:label xmlns:D=\"DAV:\">"
-		      EOL);
+		      "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n"
+		      "<D:label xmlns:D=\"DAV:\">\n");
     
     /* Adction */
     ne_buffer_concat(label_body, "<D:", act, "><D:label-name>", value, 
 		     "</D:label-name></D:", act, ">", NULL);
     ne_buffer_zappend(label_body,
-		      "</D:label>" EOL);
+		      "</D:label>\n");
     
     /* create/prep the request */
     req = ne_request_create(session.sess, "LABEL", real_remote);

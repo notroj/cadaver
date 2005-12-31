@@ -69,6 +69,9 @@
 
 #define WORDLEN 256		/*Max length of a identifier(token) in the search command */
 
+#undef EOL
+#define EOL "\n"
+
 /* Dead prop */
 typedef struct dead_prop
 {
