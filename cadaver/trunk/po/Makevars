@@ -20,6 +20,8 @@ XGETTEXT_OPTIONS = --keyword=_ --keyword=N_
 # their copyright.
 COPYRIGHT_HOLDER = Joe Orton
 
+MSGID_BUGS_ADDRESS = cadaver@webdav.org
+
 # This is the list of locale categories, beyond LC_MESSAGES, for which the
 # message catalogs shall be used.  It is usually empty.
 EXTRA_LOCALE_CATEGORIES =
