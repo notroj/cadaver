@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cadaver 0.22.0\n"
 "Report-Msgid-Bugs-To: cadaver@webdav.org\n"
-"POT-Creation-Date: 2005-12-31 11:32+0000\n"
+"POT-Creation-Date: 2005-12-31 11:46+0000\n"
 "PO-Revision-Date: 2003-09-17 23:40+0200\n"
 "Last-Translator: Ramón Rey Vicente <ramon.rey@hispalinux.es>\n"
 "Language-Team: Spanish Translation Team <es@li.org>\n"
@@ -421,7 +421,7 @@ msgstr ""
 msgid "^[nN]"
 msgstr ""
 
-#: src/cadaver.c:123
+#: src/cadaver.c:126
 #, fuzzy, c-format
 msgid ""
 "Usage: %s [OPTIONS] http://hostname[:port]/path\n"
@@ -444,12 +444,12 @@ msgstr ""
 "Por favor, envie informes de errores y peticiones de características a "
 "<cadaver@webdav.org>\n"
 
-#: src/cadaver.c:148
+#: src/cadaver.c:151
 #, c-format
 msgid "Connection to `%s' closed.\n"
 msgstr "Conexión con '%s' cerrada.\n"
 
-#: src/cadaver.c:164
+#: src/cadaver.c:167
 #, c-format
 msgid ""
 "Ignored error: %s not WebDAV-enabled:\n"
@@ -458,7 +458,7 @@ msgstr ""
 "Error ignorado: %s no dispone de WebDAV activado:\n"
 "%s\n"
 
-#: src/cadaver.c:171
+#: src/cadaver.c:174
 #, c-format
 msgid ""
 "Could not access %s (not WebDAV-enabled?):\n"
@@ -467,94 +467,94 @@ msgstr ""
 "No se puede acceder a %s (¿dispone de WebDAV activado?):\n"
 "%s\n"
 
-#: src/cadaver.c:185
+#: src/cadaver.c:188
 #, c-format
 msgid "WARNING: Untrusted server certificate presented for `%s':\n"
 msgstr ""
 
-#: src/cadaver.c:188
+#: src/cadaver.c:191
 msgid "WARNING: Untrusted server certificate presented:\n"
 msgstr ""
 
-#: src/cadaver.c:191
+#: src/cadaver.c:194
 #, c-format
 msgid "Certificate was issued to hostname `%s' rather than `%s'\n"
 msgstr ""
 
-#: src/cadaver.c:193
+#: src/cadaver.c:196
 #, c-format
 msgid "This connection could have been intercepted.\n"
 msgstr ""
 
-#: src/cadaver.c:199
+#: src/cadaver.c:202
 #, c-format
 msgid "Issued to: %s\n"
 msgstr ""
 
-#: src/cadaver.c:200
+#: src/cadaver.c:203
 #, c-format
 msgid "Issued by: %s\n"
 msgstr ""
 
-#: src/cadaver.c:203
+#: src/cadaver.c:206
 #, c-format
 msgid "Certificate is valid from %s to %s\n"
 msgstr ""
 
-#: src/cadaver.c:206
+#: src/cadaver.c:209
 #, c-format
 msgid "Do you wish to accept the certificate? (y/n) "
 msgstr ""
 
-#: src/cadaver.c:209
+#: src/cadaver.c:212
 #, c-format
 msgid "Certificate rejected.\n"
 msgstr ""
 
-#: src/cadaver.c:240
+#: src/cadaver.c:243
 msgid "Decryption password: "
 msgstr ""
 
-#: src/cadaver.c:312
+#: src/cadaver.c:315
 #, c-format
 msgid "Could not parse URL `%s'\n"
 msgstr "No se puede procesar la URL '%s'\n"
 
-#: src/cadaver.c:324
+#: src/cadaver.c:327
 #, c-format
 msgid "SSL is not enabled.\n"
 msgstr ""
 
-#: src/cadaver.c:397 src/cadaver.c:400
+#: src/cadaver.c:400 src/cadaver.c:403
 #, fuzzy, c-format
 msgid ""
 "Could not connect to `%s' on port %d:\n"
 "%s\n"
 msgstr "No se puede conectar a la máquina remota.\n"
 
-#: src/cadaver.c:408
+#: src/cadaver.c:411
 #, fuzzy, c-format
 msgid ""
 "Could not open collection:\n"
 "%s\n"
 msgstr "No se pudo abrir el archivo: %s\n"
 
-#: src/cadaver.c:446
+#: src/cadaver.c:449
 #, c-format
 msgid "Try `%s --help' for more information.\n"
 msgstr "Probar '%s --help' para más información.\n"
 
-#: src/cadaver.c:495
+#: src/cadaver.c:498
 #, c-format
 msgid "Unrecognised command. Type 'help' for a list of commands.\n"
 msgstr "Comando desconocido, Teclear 'help' para una lista de comandos.\n"
 
-#: src/cadaver.c:497
+#: src/cadaver.c:500
 #, c-format
 msgid "The `%s' command requires %d argument%s"
 msgstr "El comando '%s' requiere %d el argumento %s"
 
-#: src/cadaver.c:500 src/cadaver.c:512
+#: src/cadaver.c:503 src/cadaver.c:515
 #, c-format
 msgid ""
 ":\n"
@@ -563,17 +563,17 @@ msgstr ""
 ":\n"
 "  %s : %s\n"
 
-#: src/cadaver.c:506
+#: src/cadaver.c:509
 #, c-format
 msgid "The `%s' command takes at most %d argument%s"
 msgstr "El comando '%s' acepta como mucho %d argumentos%s"
 
-#: src/cadaver.c:509
+#: src/cadaver.c:512
 #, c-format
 msgid "The `%s' command takes no arguments"
 msgstr "El comando '%s' no toma ningún argumento"
 
-#: src/cadaver.c:517
+#: src/cadaver.c:520
 #, c-format
 msgid ""
 "The `%s' command can only be used when connected to the server.\n"
@@ -582,125 +582,125 @@ msgstr ""
 "El comando '%s' sólo puede ser usado cuando se está conectado al servidor.\n"
 "Pruebe a ejecutar 'open' primerp (ver 'help open para más detalles).\n"
 
-#: src/cadaver.c:562
+#: src/cadaver.c:565
 #, c-format
 msgid "Terminated by signal %d.\n"
 msgstr "Terminado por señal %d.\n"
 
-#: src/cadaver.c:597
+#: src/cadaver.c:600
 #, c-format
 msgid "Could not read rcfile %s: %s\n"
 msgstr "No se puede leer el archivo rc %s: %s\n"
 
-#: src/cadaver.c:843
+#: src/cadaver.c:850
 #, c-format
 msgid "Environment variable $HOME needs to be set!\n"
 msgstr "¡La variable de entorno $HOME necesita ser definida!\n"
 
-#: src/cadaver.c:903
+#: src/cadaver.c:910
 #, c-format
 msgid "Looking up hostname... "
 msgstr "Buscando nombre de máquina..."
 
-#: src/cadaver.c:906
+#: src/cadaver.c:913
 #, c-format
 msgid "Connecting to server... "
 msgstr "Conectando al servidor..."
 
-#: src/cadaver.c:909
+#: src/cadaver.c:916
 #, c-format
 msgid "connected.\n"
 msgstr "conectado.\n"
 
-#: src/cadaver.c:912
+#: src/cadaver.c:919
 #, c-format
 msgid "Using secure connection: %s\n"
 msgstr "Usar conexión segura: %s\n"
 
-#: src/cadaver.c:925
+#: src/cadaver.c:932
 #, c-format
 msgid " (reconnecting..."
 msgstr " (reconectando..."
 
-#: src/cadaver.c:928
+#: src/cadaver.c:935
 #, c-format
 msgid "done)"
 msgstr "hecho)"
 
-#: src/cadaver.c:938
+#: src/cadaver.c:945
 #, c-format
 msgid "] reconnecting: "
 msgstr "] reconectando: "
 
-#: src/cadaver.c:941
+#: src/cadaver.c:948
 #, c-format
 msgid "okay ["
 msgstr "bien ["
 
-#: src/cadaver.c:951
+#: src/cadaver.c:958
 #, c-format
 msgid "\rTransfer timed out, reconnecting... "
 msgstr "Tiempo de transferencia expirado, reconectando... "
 
-#: src/cadaver.c:954
+#: src/cadaver.c:961
 #, c-format
 msgid "okay."
 msgstr "bien."
 
-#: src/cadaver.c:1005
+#: src/cadaver.c:1012
 #, c-format
 msgid "\rProgress: ["
 msgstr " Progreso: ["
 
-#: src/cadaver.c:1010
+#: src/cadaver.c:1017
 #, c-format
 msgid "] %5.1f%% of %ld bytes"
 msgstr "] %5.1f%% de %ld bytes"
 
-#: src/cadaver.c:1065
+#: src/cadaver.c:1072
 msgid "Username: "
 msgstr "Nombre de usuario: "
 
-#: src/cadaver.c:1067
+#: src/cadaver.c:1074
 #, c-format
 msgid "\rAuthentication aborted!\n"
 msgstr "¡Autenticación abortada!\n"
 
-#: src/cadaver.c:1070
+#: src/cadaver.c:1077
 #, c-format
 msgid "\rUsername too long (>%d)\n"
 msgstr ""
 
-#: src/cadaver.c:1078
+#: src/cadaver.c:1085
 msgid "Password: "
 msgstr "Contraseña: "
 
-#: src/cadaver.c:1080
+#: src/cadaver.c:1087
 #, c-format
 msgid "Authentication aborted!\n"
 msgstr "¡Autenticación abortada!\n"
 
-#: src/cadaver.c:1083
+#: src/cadaver.c:1090
 #, c-format
 msgid "\rPassword too long (>%d)\n"
 msgstr ""
 
-#: src/cadaver.c:1092
+#: src/cadaver.c:1099
 #, c-format
 msgid "Retrying:"
 msgstr "Reintentando:"
 
-#: src/cadaver.c:1096
+#: src/cadaver.c:1103
 #, c-format
 msgid "Retrying ["
 msgstr "Reintentando ["
 
-#: src/cadaver.c:1119
+#: src/cadaver.c:1126
 #, c-format
 msgid "Authentication required for %s on server `%s':\n"
 msgstr "Autenticación requerida para %s en el servidor '%s':\n"
 
-#: src/cadaver.c:1130
+#: src/cadaver.c:1137
 #, c-format
 msgid "Authentication required for %s on proxy server `%s':\n"
 msgstr "Autenticación requerida para %s en el servidor proxy '%s':\n"
@@ -837,6 +837,13 @@ msgstr "Introducir bloqueo"
 msgid "Creating"
 msgstr "Borrando"
 
+#: src/commands.c:557
+#, fuzzy, c-format
+msgid "%s failed: %s\n"
+msgstr ""
+"fallado:\n"
+"%s\n"
+
 #: src/commands.c:583
 #, c-format
 msgid "Value of %s is: %s\n"
@@ -864,6 +871,11 @@ msgstr "Activando propiedad en"
 
 #: src/commands.c:656
 msgid "Fetching properties for"
+msgstr "Obteniendo propiedades para"
+
+#: src/commands.c:687
+#, fuzzy
+msgid "Fetching property names"
 msgstr "Obteniendo propiedades para"
 
 #: src/commands.c:716
@@ -915,7 +927,12 @@ msgstr ""
 msgid "Failed: %s\n"
 msgstr "Fallado: %s\n"
 
-#: src/commands.c:870
+#: src/commands.c:860
+#, c-format
+msgid "%s: %s and %s are the same resource.\n"
+msgstr ""
+
+#: src/commands.c:869
 #, c-format
 msgid "When %s multiple resources, the last argument must be a collection.\n"
 msgstr ""
@@ -1037,6 +1054,13 @@ msgid ""
 "Aliases: rm=delete, mkdir=mkcol, mv=move, cp=copy, more=less, quit=exit=bye\n"
 msgstr ""
 "Alias: rm=delete, mkdir=mkcol, mv=move, cp=copy, more=less, quit=exit=bye\n"
+
+#: src/commands.c:1232
+#, fuzzy, c-format
+msgid " `%s'   %s\n"
+msgstr ""
+":\n"
+"  %s : %s\n"
 
 #: src/commands.c:1234
 #, c-format
@@ -1258,6 +1282,11 @@ msgstr ""
 #, fuzzy
 msgid "Set/Del/Edit label on resource"
 msgstr "Editar el recurso dado"
+
+#: src/commands.c:1339
+#, fuzzy
+msgid "Names of properties defined on resource"
+msgstr "Activar propiedad del recurso"
 
 #: src/commands.c:1342
 msgid "chexec [+|-] remote"
