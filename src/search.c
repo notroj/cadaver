@@ -1,6 +1,6 @@
 /* 
    'search' for cadaver
-   Copyright (C) 2004, Joe Orton <joe@manyfish.co.uk>
+   Copyright (C) 2004, 2005, Joe Orton <joe@manyfish.co.uk>
    Copyright (C) 2002, GRASE Lab, UCSC <grase@cse.ucsc.edu>, 
    except where otherwise indicated.
                                                                      
@@ -210,12 +210,18 @@ static int comparison_value(char **string_parsed, ne_buffer * result_buf);
 static int word_string(char **string_parsed, ne_buffer * result_buf);
 
 /* Set xml parser error */
-static void set_xml_error(search_ctx * sctx, const char *format, ...)
+static void set_xml_error(search_ctx *sctx, const char *format, ...)
 {
-    sctx->err_code = NE_ERROR;
-    ne_set_error(session, format);
-}
+    va_list ap;
+    char buf[512];
 
+    va_start(ap, format);
+    ne_vsnprintf(buf, sizeof buf, format, ap);
+    va_end(ap);
+
+    ne_set_error(session.sess, "%s", buf);
+    sctx->err_code = NE_ERROR;
+}
 
 static int start_element(void *userdata, int parent,
 			 const char *nspace, 
@@ -658,7 +664,7 @@ void execute_search(int count, const char **args)
     printf("%s, ", query->data);
 
     /* Run search and get data to sctx */
-    ret = run_search(session, path, searchdepth, query, sctx);
+    ret = run_search(session.sess, session.uri.path, searchdepth, query, sctx);
     if (ret == NE_OK) {
 	display_results(sctx);
     }
@@ -676,7 +682,7 @@ static int search_select_gen(const ne_propname * props,
     int n;
 
     if (!basic_search) {
-	ne_set_error(session, "select_gen: no buffer");
+	ne_set_error(session.sess, "select_gen: no buffer");
 	return NE_ERROR;
     }
 
@@ -704,7 +710,7 @@ static int search_from_gen(const char *href, const int depth,
     const char *depth_str;
 
     if (!basic_search || !href) {
-	ne_set_error(session, "from_gen: no buffer or no href");
+	ne_set_error(session.sess, "from_gen: no buffer or no href");
 	return NE_ERROR;
     }
 
@@ -746,7 +752,7 @@ static int search_where_gen(const char *condition_str,
     ne_buffer *result_buf;
 
     if (!basic_search || !condition_str) {
-	ne_set_error(session, "where_gen: no buffer or no query");
+	ne_set_error(session.sess, "where_gen: no buffer or no query");
 	return NE_ERROR;
     }
 
@@ -763,7 +769,7 @@ static int search_where_gen(const char *condition_str,
 
     /*The ending of a condition must be an ENDBUF */
     if (read_aword(&string_parsed, identifier) != ENDBUF) {
-	ne_set_error(session, "Syntax error in the search condition.");
+	ne_set_error(session.sess, "Syntax error in the search condition.");
 	NE_FREE(ptr_backup);
 	ne_buffer_destroy(result_buf);
 	return NE_ERROR;
@@ -787,7 +793,7 @@ static int search_orderby_gen(const ne_propname * asc,
     int n;
 
     if (!basic_search) {
-	ne_set_error(session, "orderby_gen: no buffer or no query");
+	ne_set_error(session.sess, "orderby_gen: no buffer or no query");
 	return NE_ERROR;
     }
 
@@ -1230,7 +1236,7 @@ static int boolean_primary(char **string_parsed, ne_buffer * result_buf)
 
 	/*Read and match ")" */
 	if (match_fetch(string_parsed, ")") == NE_ERROR) {
-	    ne_set_error(session,
+	    ne_set_error(session.sess,
 			 "Syntax error: A ')' is expected in the search condition.");
 	    ne_buffer_destroy(sub_result);
 	    return NE_ERROR;	/*parsing error */
@@ -1327,7 +1333,7 @@ static int predicate(char **string_parsed, ne_buffer * result_buf)
 
     /*Read the column name */
     if (read_aword(string_parsed, column_name) != IDEN) {
-	ne_set_error(session,
+	ne_set_error(session.sess,
 		     "A column name is expected in the search condition.");
 	ne_buffer_destroy(comparing_value);
 	return NE_ERROR;	/*Parsing error */
@@ -1338,7 +1344,7 @@ static int predicate(char **string_parsed, ne_buffer * result_buf)
 
     /*Translate the operator to XML form */
     if (operator_translate(operator, XML_operator) == 0) {
-	ne_set_error(session,
+	ne_set_error(session.sess,
 		     "Syntax error: Invalid operator in the search condition.");
 	ne_buffer_destroy(comparing_value);
 	return NE_ERROR;
@@ -1356,7 +1362,7 @@ static int predicate(char **string_parsed, ne_buffer * result_buf)
 	else {
 	    /* For the case of word string. */
 	    if (word_string(string_parsed, comparing_value) == NE_ERROR) {
-		ne_set_error(session,
+		ne_set_error(session.sess,
 			     "Syntax error: A quoted string or a word string is expected in the search condition.");
 		ne_buffer_destroy(comparing_value);
 		return NE_ERROR;	/*Parsing error */
@@ -1409,7 +1415,7 @@ int contains_predicate(char **string_parsed, ne_buffer * result_buf)
     /*Read 'contains' */
     if (match_fetch(string_parsed, "contains") == NE_ERROR) {
 	/*The case of <contains predicate> */
-	ne_set_error(session,
+	ne_set_error(session.sess,
 		     "Syntax error: A 'contains' is expected in the search condition.");
 	ne_buffer_destroy(contain_string);
 	return NE_ERROR;
@@ -1426,7 +1432,7 @@ int contains_predicate(char **string_parsed, ne_buffer * result_buf)
     else {
 	/* For the case of <wordstring> */
 	if (word_string(string_parsed, contain_string) == NE_ERROR) {
-	    ne_set_error(session,
+	    ne_set_error(session.sess,
 			 "Syntax error: A quoted string or a word string is expected in the search condition.");
 	    ne_buffer_destroy(contain_string);
 	    return NE_ERROR;	/*Parsing error */
@@ -1462,7 +1468,7 @@ static int quoted_string(char **string_parsed, ne_buffer * result_buf)
 
     /*Read a quotation mark */
     if (match_fetch(string_parsed, "'") == NE_ERROR) {
-	ne_set_error(session,
+	ne_set_error(session.sess,
 		     "Syntax error: A ' is expected in the search condition.");
 	return NE_ERROR;	/*Parsing error */
     }
@@ -1480,7 +1486,7 @@ static int quoted_string(char **string_parsed, ne_buffer * result_buf)
     }
 
     if (current_char != '\'') {	/*There should be a ending ' */
-	ne_set_error(session,
+	ne_set_error(session.sess,
 		     "An ending ' is expected in the search condition.");
 	return NE_ERROR;	/*parsing error */
     }
@@ -1572,7 +1578,7 @@ static int comparison_value(char **string_parsed, ne_buffer * result_buf)
 	}
 	else {			/* It is the case of a word string */
 	    if (word_string(string_parsed, comparing_value) == NE_ERROR) {
-		ne_set_error(session,
+		ne_set_error(session.sess,
 			     "Syntax error: An integer, quoted string or word string is expected in the search condition.");
 		ne_buffer_destroy(comparing_value);
 		return NE_ERROR;
