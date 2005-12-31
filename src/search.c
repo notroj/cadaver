@@ -1,5 +1,6 @@
 /* 
    'search' for cadaver
+   Copyright (C) 2004, Joe Orton <joe@manyfish.co.uk>
    Copyright (C) 2002, GRASE Lab, UCSC <grase@cse.ucsc.edu>, 
    except where otherwise indicated.
                                                                      
@@ -111,12 +112,14 @@ typedef struct
     int result_num;
     int start_prop;
     int err_code;
+
+    ne_buffer *cdata;
 }
 search_ctx;
 
 enum
 {
-    ELEM_multistatus = NE_ELM_207_UNUSED,
+    ELEM_multistatus = 1,
     ELEM_response,
     ELEM_href,
     ELEM_prop,
@@ -138,45 +141,40 @@ enum
     ELEM_supportedlock,
     ELEM_collection,
 
-    ELEM_ignore,
+    ELEM_ignore
 };
 
-static const struct ne_xml_elm search_elements[] = {
-    {"DAV:", "multistatus", ELEM_multistatus, 0},
-    {"DAV:", "response", ELEM_response, 0},
-    {"DAV:", "responsedescription", ELEM_responsedescription,
-     NE_XML_CDATA},
-    {"DAV:", "href", ELEM_href, NE_XML_CDATA},
-    {"DAV:", "propstat", ELEM_propstat, 0},
-    {"DAV:", "prop", ELEM_prop, 0},
-    {"DAV:", "status", ELEM_status, NE_XML_CDATA},
+static const struct ne_xml_idmap search_elements[] = {
+    {"DAV:", "multistatus", ELEM_multistatus},
+    {"DAV:", "response", ELEM_response},
+    {"DAV:", "responsedescription", ELEM_responsedescription},
+    {"DAV:", "href", ELEM_href},
+    {"DAV:", "propstat", ELEM_propstat},
+    {"DAV:", "prop", ELEM_prop},
+    {"DAV:", "status", ELEM_status},
 
     /* Live props */
-    {"DAV:", "creationdate", ELEM_creationdate, NE_XML_CDATA},
-    {"DAV:", "displayname", ELEM_displayname, NE_XML_CDATA},
-    {"DAV:", "getcontentlanguage", ELEM_getcontentlanguage, NE_XML_CDATA},
-    {"DAV:", "getcontentlength", ELEM_getcontentlength, NE_XML_CDATA},
-    {"DAV:", "getcontenttype", ELEM_getcontenttype, NE_XML_CDATA},
-    {"DAV:", "getetag", ELEM_getetag, NE_XML_CDATA},
-    {"DAV:", "getlastmodified", ELEM_getlastmodified, NE_XML_CDATA},
-    {"DAV:", "lockdiscovery", ELEM_lockdiscovery, NE_XML_CDATA},
-    {"DAV:", "resourcetype", ELEM_resourcetype, NE_XML_CDATA},
-    {"DAV:", "source", ELEM_source, NE_XML_CDATA},
-    {"DAV:", "supportedlock", ELEM_supportedlock, NE_XML_CDATA},
-    {"DAV:", "collection", ELEM_collection, NE_XML_CDATA},
+    {"DAV:", "creationdate", ELEM_creationdate},
+    {"DAV:", "displayname", ELEM_displayname},
+    {"DAV:", "getcontentlanguage", ELEM_getcontentlanguage},
+    {"DAV:", "getcontentlength", ELEM_getcontentlength},
+    {"DAV:", "getcontenttype", ELEM_getcontenttype},
+    {"DAV:", "getetag", ELEM_getetag},
+    {"DAV:", "getlastmodified", ELEM_getlastmodified},
+    {"DAV:", "lockdiscovery", ELEM_lockdiscovery},
+    {"DAV:", "resourcetype", ELEM_resourcetype},
+    {"DAV:", "source", ELEM_source},
+    {"DAV:", "supportedlock", ELEM_supportedlock},
+    {"DAV:", "collection", ELEM_collection},
 
     /* Ignore it for now */
-    {"DAV:", "lockentry", ELEM_ignore, NE_XML_CDATA},
-    {"DAV:", "lockscope", ELEM_ignore, NE_XML_CDATA},
-    {"DAV:", "locktype", ELEM_ignore, NE_XML_CDATA},
-    {"DAV:", "exclusive", ELEM_ignore, NE_XML_CDATA},
-    {"DAV:", "shared", ELEM_ignore, NE_XML_CDATA},
-    {"DAV:", "read", ELEM_ignore, NE_XML_CDATA},
-    {"DAV:", "write", ELEM_ignore, NE_XML_CDATA},
-
-    /* It deals all unknown elements */
-    {"", "", NE_ELM_unknown, NE_XML_COLLECT},
-    {NULL}
+    {"DAV:", "lockentry", ELEM_ignore},
+    {"DAV:", "lockscope", ELEM_ignore},
+    {"DAV:", "locktype", ELEM_ignore},
+    {"DAV:", "exclusive", ELEM_ignore},
+    {"DAV:", "shared", ELEM_ignore},
+    {"DAV:", "read", ELEM_ignore},
+    {"DAV:", "write", ELEM_ignore},
 };
 
 /* 
@@ -211,13 +209,6 @@ static int quoted_string(char **string_parsed, ne_buffer * result_buf);
 static int comparison_value(char **string_parsed, ne_buffer * result_buf);
 static int word_string(char **string_parsed, ne_buffer * result_buf);
 
-/* We do not validate at this piint */
-static int validate_search_elements(void *userdata,
-				    ne_xml_elmid parent, ne_xml_elmid child)
-{
-    return NE_XML_VALID;
-}
-
 /* Set xml parser error */
 static void set_xml_error(search_ctx * sctx, const char *format, ...)
 {
@@ -225,16 +216,23 @@ static void set_xml_error(search_ctx * sctx, const char *format, ...)
     ne_set_error(session, format);
 }
 
-static int start_element(void *userdata, const struct ne_xml_elm *elm,
+
+static int start_element(void *userdata, int parent,
+			 const char *nspace, 
+			 const char *name, 
 			 const char **atts)
 {
     search_ctx *sctx = (search_ctx *) userdata;
+    int state = ne_xml_mapid(search_elements, 
+			     NE_XML_MAPLEN(search_elements), nspace, name);
 
     /* Error occured, ignore remain part */
     if (sctx->err_code != NE_OK)
 	return sctx->err_code;
 
-    switch (elm->id) {
+    ne_buffer_clear(sctx->cdata);
+
+    switch (state) {
     case ELEM_ignore:
 	break;
 
@@ -252,7 +250,7 @@ static int start_element(void *userdata, const struct ne_xml_elm *elm,
     case ELEM_prop:		/* Start of prop */
 	if (sctx->curr == NULL) {
 	    set_xml_error(sctx, "XML : <%s> is in the wrong place",
-			  elm->name);
+			  name);
 	    break;
 	}
 	sctx->start_prop = 1;
@@ -263,49 +261,58 @@ static int start_element(void *userdata, const struct ne_xml_elm *elm,
 	    search_res *res = sctx->curr;
 	    res->dead_prop_num++;
 	    res->curr = (dead_prop *) ne_calloc(sizeof(dead_prop));
-	    res->curr->name = ne_strdup(elm->name);
-	    res->curr->nspace = ne_strdup(elm->nspace);
+	    res->curr->name = ne_strdup(name);
+	    res->curr->nspace = ne_strdup(nspace);
 	}
 	break;
     }
 
-    return NE_XML_VALID;
+    return state;
 }
 
 #define SEARCH_CP_ELEM(sctx, curr, name, desc, src) \
 do { \
       if ((curr) == NULL) \
          set_xml_error((sctx),  "XML : </%s> is in the wrong place", (name));\
-      else \
+      else if (src)\
          (desc) = ne_strdup(src);\
 } while (0)
 
 
-static int end_element(void *userdata, const struct ne_xml_elm *elm,
-		       const char *cdata)
+static int cdata_search(void *userdata, int state, const char *buf, size_t len)
 {
     search_ctx *sctx = (search_ctx *) userdata;
+    ne_buffer_append(sctx->cdata, buf, len);
+    return 0;
+}
+
+
+static int 
+end_element(void *userdata, int state, const char *nspace, const char *name)
+{
+    search_ctx *sctx = (search_ctx *) userdata;
+    const char *cdata = sctx->cdata->data;
 
     /* Error occured, ignore remain part */
     if (sctx->err_code != NE_OK)
 	return sctx->err_code;
 
-    switch (elm->id) {
+    switch (state) {
     case ELEM_ignore:
 	break;
-
+	
     case ELEM_response:	/* End of new response */
 	/* Nothing to add */
 	if (sctx->curr == NULL) {
 	    set_xml_error(sctx, "XML : </%s> is in the wrong place",
-			  elm->name);
+			  name);
 	    break;
 	}
 
 	/* No HREF */
 	if (sctx->curr->href == NULL) {
 	    set_xml_error(sctx, "XML : No href info in the <%s>...</%s>",
-			  elm->name, elm->name);
+			  name, name);
 	    break;
 	}
 	/* make link */
@@ -315,67 +322,67 @@ static int end_element(void *userdata, const struct ne_xml_elm *elm,
 	break;
 
     case ELEM_href:		/* href */
-	SEARCH_CP_ELEM(sctx, sctx->curr, elm->name, sctx->curr->href, cdata);
+	SEARCH_CP_ELEM(sctx, sctx->curr, name, sctx->curr->href, cdata);
 	break;
 
 	/* live props */
     case ELEM_creationdate:
-	SEARCH_CP_ELEM(sctx, sctx->curr, elm->name,
+	SEARCH_CP_ELEM(sctx, sctx->curr, name,
 		       sctx->curr->creationdate, cdata);
 	break;
 
     case ELEM_displayname:
-	SEARCH_CP_ELEM(sctx, sctx->curr, elm->name,
+	SEARCH_CP_ELEM(sctx, sctx->curr, name,
 		       sctx->curr->displayname, cdata);
 	break;
 
     case ELEM_getcontentlanguage:
-	SEARCH_CP_ELEM(sctx, sctx->curr, elm->name,
+	SEARCH_CP_ELEM(sctx, sctx->curr, name,
 		       sctx->curr->getcontentlanguage, cdata);
 	break;
 
     case ELEM_getcontentlength:
-	SEARCH_CP_ELEM(sctx, sctx->curr, elm->name,
+	SEARCH_CP_ELEM(sctx, sctx->curr, name,
 		       sctx->curr->getcontentlength, cdata);
 	break;
 
     case ELEM_getcontenttype:
-	SEARCH_CP_ELEM(sctx, sctx->curr, elm->name,
+	SEARCH_CP_ELEM(sctx, sctx->curr, name,
 		       sctx->curr->getcontenttype, cdata);
 	break;
 
     case ELEM_getetag:
-	SEARCH_CP_ELEM(sctx, sctx->curr, elm->name,
+	SEARCH_CP_ELEM(sctx, sctx->curr, name,
 		       sctx->curr->getetag, cdata);
 	break;
 
     case ELEM_getlastmodified:
-	SEARCH_CP_ELEM(sctx, sctx->curr, elm->name,
+	SEARCH_CP_ELEM(sctx, sctx->curr, name,
 		       sctx->curr->getlastmodified, cdata);
 	break;
 
     case ELEM_lockdiscovery:
-	SEARCH_CP_ELEM(sctx, sctx->curr, elm->name,
+	SEARCH_CP_ELEM(sctx, sctx->curr, name,
 		       sctx->curr->lockdiscovery, cdata);
 	break;
 
     case ELEM_resourcetype:
-	SEARCH_CP_ELEM(sctx, sctx->curr, elm->name,
+	SEARCH_CP_ELEM(sctx, sctx->curr, name,
 		       sctx->curr->resourcetype, cdata);
 	break;
 
     case ELEM_source:
-	SEARCH_CP_ELEM(sctx, sctx->curr, elm->name,
+	SEARCH_CP_ELEM(sctx, sctx->curr, name,
 		       sctx->curr->source, cdata);
 	break;
 
     case ELEM_supportedlock:
-	SEARCH_CP_ELEM(sctx, sctx->curr, elm->name,
+	SEARCH_CP_ELEM(sctx, sctx->curr, name,
 		       sctx->curr->supportedlock, cdata);
 	break;
 
     case ELEM_collection:
-	SEARCH_CP_ELEM(sctx, sctx->curr, elm->name,
+	SEARCH_CP_ELEM(sctx, sctx->curr, name,
 		       sctx->curr->collection, cdata);
 	break;
 
@@ -385,7 +392,7 @@ static int end_element(void *userdata, const struct ne_xml_elm *elm,
     case ELEM_prop:		/* Start of prop */
 	if (sctx->curr == NULL)
 	    set_xml_error(sctx, "XML : </%s> is in the wrong place",
-			  elm->name);
+			  name);
 	else			/* stop to props */
 	    sctx->start_prop = 0;
 	break;
@@ -402,33 +409,50 @@ static int end_element(void *userdata, const struct ne_xml_elm *elm,
 	break;
     }
 
-    return NE_XML_VALID;
+    return NE_OK;
 }
+
+#define RESULT_PER_PAGE 15
 
 /* displays search results */
 static int display_results(search_ctx * sctx)
 {
     search_res *res;
     dead_prop *dprop;
+    int i;
 
     if (sctx->err_code) {
 	return sctx->err_code;
     }
 
-    printf("Found %d results\n\n", sctx->result_num);
-    for (res = sctx->root; res; res = res->next) {
+    for (i=1, res = sctx->root; res; res = res->next, i++) {
 	long modtime = res->getlastmodified ?
 	    ne_httpdate_parse(res->getlastmodified) : 0;
 	int size = res->getcontentlength ? atol(res->getcontentlength) : 0;
 	char exec_char = ' ';
 
-	printf("%-40s%c %10d  %s <%.10s>\n", res->href, exec_char,
-	       size, format_time(modtime), res->getcontenttype);
+	if (i%RESULT_PER_PAGE ==1) {
+	    printf("Found %d results (%d-%d)\n\n", 
+		   sctx->result_num, i, 
+		   sctx->result_num<i+9?sctx->result_num:i+9);
+	}
+
+	printf("[%d] %-40s%c %10d  %s <%.10s>\n", i, res->href, exec_char,
+	       size, format_time(modtime), 
+	       res->getcontenttype?res->getcontenttype:"");
 
 	for (dprop = res->root;
 	     get_bool_option(opt_searchall) && dprop; dprop = dprop->next)
 	    printf("\t-  %s:%s = %s\n",	/* better way to show ? */
 		   dprop->nspace, dprop->name, dprop->value);
+	
+	if (i%RESULT_PER_PAGE == 0) {
+	    char buf[256];
+	    printf("-- Enter to More, 'q' to QUIT --");
+	    fgets(buf, 255, stdin);
+	    if (*buf=='q') break;
+	}
+	
     }
 
     return sctx->err_code;
@@ -438,6 +462,8 @@ static void search_ctx_destroy(search_ctx * sctx)
 {
     search_res *res, *res_free;
     dead_prop *dprop, *dprop_free;
+
+    ne_buffer_destroy(sctx->cdata);
 
     for (res = sctx->root; res;) {
 	NE_FREE(res->href);
@@ -524,11 +550,12 @@ static void order_props_destroy(ne_propname * props)
 	return;
 
     for (n = 0; props[n].name != NULL; n++) {
-	NE_FREE((char *) props[n].name);
-	NE_FREE((char *) props[n].nspace);
+	free((char *)props[n].name);
+	free((char *)props[n].nspace);
     }
 
-    NE_FREE(props);
+    free(props);
+    props = NULL;
 }
 
 /* Run search and get the data to sctx */
@@ -573,10 +600,10 @@ static int run_search(ne_session * sess, const char *uri,
 
     /* Plug our XML parser */
     search_parser = ne_xml_create();
-    ne_xml_push_handler(search_parser, search_elements,
-			validate_search_elements, start_element, end_element,
+    ne_xml_push_handler(search_parser, start_element, 
+			cdata_search, end_element,
 			sctx);
-
+    
     ne_add_request_header(req, "Content-Type", NE_XML_MEDIA_TYPE);
     ne_add_depth_header(req, depth);
 
@@ -611,9 +638,11 @@ void execute_search(int count, const char **args)
 {
     int ret;
     const char **pnt;
-    search_ctx *sctx = ne_calloc(sizeof(search_ctx));
     ne_buffer *query = ne_buffer_create();
-
+ 
+    search_ctx *sctx = ne_calloc(sizeof(search_ctx));
+    sctx->cdata = ne_buffer_create();
+ 
     /* default is success */
     sctx->err_code = NE_OK;
 

@@ -1,6 +1,6 @@
 /* 
    'ls' for cadaver
-   Copyright (C) 2000-2003, Joe Orton <joe@manyfish.co.uk>, 
+   Copyright (C) 2000-2004, Joe Orton <joe@manyfish.co.uk>, 
    except where otherwise indicated.
                                                                      
    This program is free software; you can redistribute it and/or modify
@@ -119,8 +119,10 @@ static void display_ls_line(struct resource *res)
 	       res->error_reason?res->error_reason:_("unknown"));
     } else {
 	exec_char = res->is_executable ? '*' : ' ';
-	vcr_char = res->is_vcr ? '^' : ' ';
-	printf("%5s %c%c%-29s %10d  %s\n", restype, vcr_char, exec_char, name,
+	/* 0: no vcr, 1: checkin, 2: checkout */
+	vcr_char = res->is_vcr==0 ? ' ' : (res->is_vcr==1? '>' : '<');
+	printf("%5s %c%c%-29s %10d  %s\n", 
+	       restype, vcr_char, exec_char, name,
 	       res->size, format_time(res->modtime));
     }
 
@@ -197,9 +199,9 @@ static void results(void *userdata, const char *uri,
 
     clength = ne_propset_value(set, &ls_props[0]);    
     modtime = ne_propset_value(set, &ls_props[1]);
-    isexec = ne_propset_value(set, &ls_props[3]);
-    checkin = ne_propset_value(set, &ls_props[5]);
-    checkout = ne_propset_value(set, &ls_props[6]);
+    isexec = ne_propset_value(set, &ls_props[2]);
+    checkin = ne_propset_value(set, &ls_props[4]);
+    checkout = ne_propset_value(set, &ls_props[5]);
 
     
     if (clength == NULL)
@@ -243,8 +245,10 @@ static void results(void *userdata, const char *uri,
 	newres->size = atoi(clength);
 
     /* is vcr */
-    if (checkout || checkin) {
+    if (checkin) {
 	newres->is_vcr = 1;
+    } else if (checkout) {
+	newres->is_vcr = 2;
     } else {
 	newres->is_vcr = 0;
     }

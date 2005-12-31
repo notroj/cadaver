@@ -117,6 +117,7 @@ void execute_edit(const char *remote)
     char fname[_POSIX_PATH_MAX] = "/tmp/cadaver-edit-XXXXXX";
     const char *pnt;
     int fd;
+    int is_checkout, is_checkin;
     
     real_remote = resolve_path(session.uri.path, remote, false);
 
@@ -170,6 +171,13 @@ void execute_edit(const char *remote)
     } else {
 	/* TODO: HEAD and get the Etag/modtime */
     }
+
+    /* Return 1: Checkin, 2: Checkout, 0: otherwise */
+    is_checkin = is_vcr(real_remote);
+    if (is_checkin==1) {
+    	execute_checkout(real_remote);
+    }
+    
     /* FIXME: copy'n'friggin'paste. */
     output(o_transfer, _("Downloading `%s' to %s"), real_remote, fname);
 
@@ -213,6 +221,12 @@ void execute_edit(const char *remote)
 	       strerror(errno));
     }	       
 
+    /* Return 1: Checkin, 2: Checkout, 0: otherwise */
+    is_checkout = is_vcr(real_remote);
+    if (is_checkout==2) {
+    	execute_checkin(real_remote);
+    }
+    
     /* UNLOCK it again whether we succeed or failed in our mission */
     if (can_lock) {
 	output(o_start, "Unlocking `%s':", remote);

@@ -1,7 +1,7 @@
 dnl configure script
 
 AC_PREREQ(2.53)
-AC_INIT(cadaver, 0.22.1, cadaver@webdav.org)
+AC_INIT(cadaver, 0.22.3, cadaver@webdav.org)
 
 AC_CONFIG_SRCDIR(src/cadaver.c)
 AC_CONFIG_HEADER(config.h)
@@ -106,8 +106,8 @@ nls_msg="Not built"
 
 NEON_WARNINGS
 
-# Pick up config.h
-CPPFLAGS="$CPPFLAGS -I\$(top_builddir) -I\$(top_srcdir)/lib"
+# Pick up config.h etc; and before any other paths.
+CPPFLAGS="-I\$(top_builddir) -I\$(top_srcdir)/lib $CPPFLAGS"
 
 AC_CONFIG_FILES([Makefile lib/neon/Makefile lib/intl/Makefile \
                  po/Makefile.in])

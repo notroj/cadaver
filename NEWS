@@ -1,8 +1,20 @@
-Changes in release 0.22.1:
+Changes in release 0.22.3:
 * Update to neon 0.25.4:
  - fix support for handling multiple authentication challenges
  - add support for the Negotiate (GSSAPI/Kerberos) protocol
 * Enable i18n support again.
+
+Changes in release 0.22.2:
+* Fix build issues on AIX (Tony Bennett).
+* Fix DeltaV commands on locked resources.
+* Update to neon 0.24.6:
+ - SECURITY (CVE CAN-2004-0398): fix for sscanf overflow in date parsing
+
+Changes in release 0.22.1:
+* Restore DASL/DeltaV support (GRASE team).
+* Fix to only use netrc on first attempt at authentication.
+* Update to neon 0.24.5:
+ - SECURITY (CVE CAN-2004-0179): fix for format string vulnerabilities
 
 Changes in release 0.22.0:
 * Fix build on BSD platforms, or if using bundled expat library.
