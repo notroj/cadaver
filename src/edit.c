@@ -1,6 +1,6 @@
 /* 
    cadaver, command-line DAV client
-   Copyright (C) 1999-2002, Joe Orton <joe@manyfish.co.uk>, 
+   Copyright (C) 1999-2006, Joe Orton <joe@manyfish.co.uk>, 
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -150,7 +150,11 @@ void execute_edit(const char *remote)
     }
 
     /* Sanity check on the file perms. */
+#ifdef HAVE_FCHMOD
     if (fchmod(fd, 0600) == -1) {
+#else
+    if (chmod(fname, 0600) == -1) {
+#endif
 	printf(_("Could not set file permissions for %s:\n%s\n"), fname,
 	       strerror(errno));
 	goto edit_bail;
