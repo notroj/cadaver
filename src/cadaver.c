@@ -1,6 +1,6 @@
 /* 
    cadaver, command-line DAV client
-   Copyright (C) 1999-2005, Joe Orton <joe@manyfish.co.uk>, 
+   Copyright (C) 1999-2006, Joe Orton <joe@manyfish.co.uk>, 
    except where otherwise indicated.
                                                                      
    This program is free software; you can redistribute it and/or modify
@@ -286,11 +286,10 @@ void open_connection(const char *url)
     int ret, use_ssl = 0;
     ne_session *sess;
 
-    ne_uri_free(&session.uri);
-
     if (session.connected) {
 	close_connection();
     } else {
+        ne_uri_free(&session.uri);
         if (session.lastwp) {
             ne_free(session.lastwp);
             session.lastwp = NULL;
