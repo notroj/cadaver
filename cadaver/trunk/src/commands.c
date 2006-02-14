@@ -1,6 +1,6 @@
 /* 
    cadaver, command-line DAV client
-   Copyright (C) 1999-2005, Joe Orton <joe@manyfish.co.uk>, 
+   Copyright (C) 1999-2006, Joe Orton <joe@manyfish.co.uk>, 
    except where otherwise indicated.
 
    This program is free software; you can redistribute it and/or modify
@@ -963,7 +963,8 @@ static void execute_get(const char *remote, const char *local)
 	filename = ne_strdup(local);
     }
     {
-	int fd = open(filename, O_CREAT|O_WRONLY|O_TRUNC, 0644);
+	int fd = open(filename, O_CREAT|O_WRONLY|O_TRUNC|OPEN_BINARY_FLAGS, 
+                      0644);
 	output(o_transfer, _("Downloading `%s' to %s:"), real_remote, filename);
 	if (fd < 0) {
 	    output(o_finish, _("failed:\n%s\n"), strerror(errno));
