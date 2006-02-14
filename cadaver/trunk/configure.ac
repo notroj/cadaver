@@ -83,7 +83,7 @@ AC_HEADER_DIRENT
 
 AC_TYPE_SIGNAL
 
-AC_CHECK_FUNCS(strdup strerror memcpy strcoll tcsetattr getpass stty)
+AC_CHECK_FUNCS(strdup strerror memcpy strcoll tcsetattr getpass stty fchmod)
 AC_CHECK_HEADERS(sys/time.h pwd.h stdarg.h vmsdir.h memory.h alloca.h ncurses.h sgtty.h termios.h termio.h)
 
 jm_FUNC_STRFTIME()
