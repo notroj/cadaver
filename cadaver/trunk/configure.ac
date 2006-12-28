@@ -53,6 +53,9 @@ NEON_VPATH_BUNDLED(['$(top_srcdir)/lib/neon'], [lib/neon], [
 	AC_CHECK_HEADERS(stdlib.h string.h strings.h unistd.h)
 ])
 
+
+NE_FORMAT_TIMET
+
 if test "$enable_netrc" = "yes"; then
    AC_LIBOBJ(lib/netrc)
    AC_DEFINE(ENABLE_NETRC, 1, [Define to enable netrc support])
@@ -125,3 +128,4 @@ AC_MSG_NOTICE([Configured to build cadaver ${PACKAGE_VERSION}:
   GNU readline support:	 ${msg_readline}
 ])
 
+test -d src || mkdir src
