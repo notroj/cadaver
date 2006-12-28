@@ -310,7 +310,7 @@ do {								\
 	    case 0: {
 		unsigned int n;
 		if (gl.gl_pathc > 1) {
-		    output(o_finish, _("%d matches.]\n"), gl.gl_pathc);
+		    output(o_finish, _("%ld matches.]\n"), (long)gl.gl_pathc);
 		} else {
 		    output(o_finish, _("1 match.]\n"));
 		}
