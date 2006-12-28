@@ -306,8 +306,8 @@ static int ls_startelm(void *userdata, int parent,
 
 void free_resource(struct resource *res)
 {
-    ne_free(res->uri);
-    ne_free(res->error_reason);
+    if (res->uri) ne_free(res->uri);
+    if (res->error_reason) ne_free(res->error_reason);
     free(res);
 }
 
