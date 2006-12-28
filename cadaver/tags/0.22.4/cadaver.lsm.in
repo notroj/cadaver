@@ -1,0 +1,14 @@
+Begin3
+Title:		cadaver
+Version:	@VERSION@
+Entered-date:	@DATE@
+Description:	Command-line WebDAV client. Supports file upload/download,
+		display and editing, namespace operations (move/copy), 
+		collection creation and deletion, and locking operations.
+Keywords:	WebDAV
+Author:		joe@manyfish.co.uk (Joe Orton)
+Primary-site:	sunsite.unc.edu /pub/Linux/apps/www/misc/
+		@SIZE@ cadaver-@VERSION@.tar.gz
+Platforms:	Linux, SunOS, maybe others...
+Copying-policy:	GPL
+End
