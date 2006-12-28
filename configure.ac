@@ -1,7 +1,7 @@
 dnl configure script
 
 AC_PREREQ(2.53)
-AC_INIT(cadaver, 0.22.3, cadaver@webdav.org)
+AC_INIT(cadaver, 0.22.4, cadaver@webdav.org)
 
 AC_CONFIG_SRCDIR(src/cadaver.c)
 AC_CONFIG_HEADER(config.h)
