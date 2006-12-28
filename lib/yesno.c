@@ -25,6 +25,8 @@
 #endif
 #include <stdio.h>
 
+#include "common.h"
+
 /* Read one line from standard input
    and return nonzero if that line begins with y or Y,
    otherwise return 0. */

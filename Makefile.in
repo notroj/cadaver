@@ -101,5 +101,5 @@ src/version.o: src/version.c src/utils.h src/cadaver.h config.h
 lib/netrc.o: lib/netrc.c lib/netrc.h config.h
 lib/getpass.o: lib/getpass.c lib/getpass.h config.h
 lib/tempname.o: lib/tempname.c config.h
-lib/mkstemp.o: lib/mkstemp.c config.h
-
+lib/mkstemp.o: lib/mkstemp.c src/common.h config.h
+lib/yesno.o: lib/yesno.c src/common.h config.h
