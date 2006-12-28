@@ -1,6 +1,6 @@
 /* 
    'search' for cadaver
-   Copyright (C) 2004, 2005, Joe Orton <joe@manyfish.co.uk>
+   Copyright (C) 2004-2006, Joe Orton <joe@manyfish.co.uk>
    Copyright (C) 2002, GRASE Lab, UCSC <grase@cse.ucsc.edu>, 
    except where otherwise indicated.
                                                                      
@@ -475,33 +475,33 @@ static void search_ctx_destroy(search_ctx * sctx)
     ne_buffer_destroy(sctx->cdata);
 
     for (res = sctx->root; res;) {
-	NE_FREE(res->href);
+	if (res->href) ne_free(res->href);
 	/* live props */
-	NE_FREE(res->creationdate);
-	NE_FREE(res->displayname);
-	NE_FREE(res->getcontentlanguage);
-	NE_FREE(res->getcontentlength);
-	NE_FREE(res->getcontenttype);
-	NE_FREE(res->getetag);
-	NE_FREE(res->getlastmodified);
-	NE_FREE(res->lockdiscovery);
-	NE_FREE(res->resourcetype);
-	NE_FREE(res->source);
-	NE_FREE(res->supportedlock);
-	NE_FREE(res->collection);
+	if (res->creationdate) ne_free(res->creationdate);
+	if (res->displayname) ne_free(res->displayname);
+	if (res->getcontentlanguage) ne_free(res->getcontentlanguage);
+	if (res->getcontentlength) ne_free(res->getcontentlength);
+	if (res->getcontenttype) ne_free(res->getcontenttype);
+	if (res->getetag) ne_free(res->getetag);
+	if (res->getlastmodified) ne_free(res->getlastmodified);
+	if (res->lockdiscovery) ne_free(res->lockdiscovery);
+	if (res->resourcetype) ne_free(res->resourcetype);
+	if (res->source) ne_free(res->source);
+	if (res->supportedlock) ne_free(res->supportedlock);
+	if (res->collection) ne_free(res->collection);
 
 	for (dprop = res->root; dprop;) {
-	    NE_FREE(dprop->nspace);
-	    NE_FREE(dprop->name);
-	    NE_FREE(dprop->value);
+	    if (dprop->nspace) ne_free(dprop->nspace);
+	    if (dprop->name) ne_free(dprop->name);
+	    if (dprop->value) ne_free(dprop->value);
 
 	    dprop_free = dprop;
 	    dprop = dprop->next;
-	    NE_FREE(dprop_free);
+	    ne_free(dprop_free);
 	}
 	res_free = res;
 	res = res->next;
-	NE_FREE(res_free);
+	ne_free(res_free);
     }
 }
 
@@ -534,7 +534,7 @@ static ne_propname *order_props_create(const char *str)
     props = ne_calloc(sizeof(ne_propname) * (num_props + 1));
 
     /* Set first token */
-    NE_FREE(buf);
+    ne_free(buf);
     buf = ne_strdup(str);
     tok = strtok(buf, delm);
 
@@ -547,7 +547,7 @@ static ne_propname *order_props_create(const char *str)
 	props[n].name = ne_strdup(tok);
     }
 
-    NE_FREE(buf);
+    ne_free(buf);
     return props;
 }
 
@@ -765,7 +765,7 @@ static int search_where_gen(const char *condition_str,
     ne_buffer_zappend(basic_search, "<D:where>" EOL);
 
     if (search_condition(&string_parsed, result_buf) == NE_ERROR) {
-	NE_FREE(ptr_backup);
+	ne_free(ptr_backup);
 	ne_buffer_destroy(result_buf);
 	return NE_ERROR;	/*Parsing error */
     }
@@ -773,7 +773,7 @@ static int search_where_gen(const char *condition_str,
     /*The ending of a condition must be an ENDBUF */
     if (read_aword(&string_parsed, identifier) != ENDBUF) {
 	ne_set_error(session.sess, "Syntax error in the search condition.");
-	NE_FREE(ptr_backup);
+	ne_free(ptr_backup);
 	ne_buffer_destroy(result_buf);
 	return NE_ERROR;
     }
@@ -783,7 +783,7 @@ static int search_where_gen(const char *condition_str,
 
     ne_buffer_zappend(basic_search, "</D:where>" EOL);
 
-    NE_FREE(ptr_backup);
+    ne_free(ptr_backup);
     ne_buffer_destroy(result_buf);
 
     return NE_OK;
@@ -1002,7 +1002,7 @@ static int first_word_equal(const char *string_parsed,
 
     read_aword(&string_buffer, first_word);
 
-    NE_FREE(ptr_backup);
+    ne_free(ptr_backup);
 
     if (strcasecmp(first_word, word_to_compare) == 0)
 	return 1;		/*equal */
@@ -1033,7 +1033,7 @@ static int first_word_integer(const char *string_parsed)
     else
 	ret = 0;
 
-    NE_FREE(ptr_backup);
+    ne_free(ptr_backup);
 
     return ret;
 }				/*End of first_word_compare */

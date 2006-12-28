@@ -1,6 +1,6 @@
 /* 
    'version' for cadaver
-   Copyright (C) 2003-2005, Joe Orton <joe@manyfish.co.uk>
+   Copyright (C) 2003-2006, Joe Orton <joe@manyfish.co.uk>
    Copyright (C) 2002-2003, GRASE Lab, UCSC <grase@cse.ucsc.edu>, 
                                                                      
    This program is free software; you can redistribute it and/or modify
@@ -280,17 +280,17 @@ static void report_ctx_destroy(report_ctx * sctx)
     ne_buffer_destroy(sctx->cdata);
 
     for (res = sctx->root; res;) {
-	NE_FREE(res->href);
+	ne_free(res->href);
 	
 	/* live props */
-	NE_FREE(res->version_name);
-	NE_FREE(res->creator_displayname);
-	NE_FREE(res->getcontentlength);
-	NE_FREE(res->getlastmodified);
+	if (res->version_name) ne_free(res->version_name);
+	if (res->creator_displayname) ne_free(res->creator_displayname);
+	if (res->getcontentlength) ne_free(res->getcontentlength);
+	if (res->getlastmodified) ne_free(res->getlastmodified);
 
 	res_free = res;
 	res = res->next;
-	NE_FREE(res_free);
+	ne_free(res_free);
     }
 }
 
@@ -505,7 +505,12 @@ static const ne_propname vcr_props[] = {
     { NULL }
 };
 
-static void vcr_results(void *userdata, const char *uri,
+static void vcr_results(void *userdata, 
+#if NE_VERSION_MINOR < 26
+                        const char *path,
+#else
+                        const ne_uri *uri,
+#endif
                         const ne_prop_result_set *set)
 {
     const char *checkin, *checkout;
