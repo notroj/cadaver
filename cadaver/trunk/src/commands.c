@@ -388,8 +388,13 @@ static void print_lock(const struct ne_lock *lock)
     free(uri);
 }
 
-static void discover_result(void *userdata, const struct ne_lock *lock, 
-			    const char *uri, const ne_status *status)
+static void discover_result(void *userdata, const struct ne_lock *lock,
+#if NE_VERSION_MINOR > 25
+                            const ne_uri *uri, 
+#else
+                            const char *path,
+#endif
+                            const ne_status *status)
 {
     int *count = userdata;
     if (lock) {
@@ -399,13 +404,23 @@ static void discover_result(void *userdata, const struct ne_lock *lock,
 	print_lock(lock);
 	*count += 1;
     } else {
-	printf(_("Failed on %s: %d %s\n"), uri, 
+	printf(_("Failed on %s: %d %s\n"), 
+#if NE_VERSION_MINOR > 25
+               uri->path,
+#else
+               path,
+#endif
 	       status->code, status->reason_phrase);
     }
 }
 
 static void steal_result(void *userdata, const struct ne_lock *lock, 
-			 const char *uri, const ne_status *status)
+#if NE_VERSION_MINOR > 25
+			 const ne_uri *uri, 
+#else
+                         const char *path,
+#endif
+                         const ne_status *status)
 {
     int *count = userdata;
     if (lock != NULL) {
@@ -417,7 +432,12 @@ static void steal_result(void *userdata, const struct ne_lock *lock,
 	ne_lockstore_add(session.locks, ne_lock_copy(lock));
 	*count += 1;
     } else {
-	printf(_("Failed on %s: %d %s\n"), uri,
+	printf(_("Failed on %s: %d %s\n"), 
+#if NE_VERSION_MINOR > 25
+               uri->path,
+#else
+               path,
+#endif
 	       status->code, status->reason_phrase);
     }
 }
@@ -560,7 +580,12 @@ static int all_iterator(void *userdata, const ne_propname *pname,
     return 0;
 }
 
-static void pget_results(void *userdata, const char *uri,
+static void pget_results(void *userdata, 
+#if NE_VERSION_MINOR > 25
+			 const ne_uri *uri, 
+#else
+                         const char *path,
+#endif
 			 const ne_prop_result_set *set)
 {
     ne_propname *pname = userdata;
@@ -674,7 +699,12 @@ static int propname_iterator(void *userdata, const ne_propname *pname,
     return 0;
 }
 
-static void propname_results(void *userdata, const char *href,
+static void propname_results(void *userdata, 
+#if NE_VERSION_MINOR > 25
+                             const ne_uri *uri, 
+#else
+                             const char *path,
+#endif
 			     const ne_prop_result_set *pset)
 {
     ne_propset_iterate(pset, propname_iterator, NULL);
@@ -686,7 +716,7 @@ static void execute_propnames(const char *res)
     remote = resolve_path(session.uri.path, res, false);
     out_start(_("Fetching property names"), res);
     if (out_handle(ne_propnames(session.sess, remote, NE_DEPTH_ZERO,
-				 propname_results, NULL))) { 
+                                propname_results, NULL))) { 
     }
     free(remote);
 }
