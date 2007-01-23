@@ -467,7 +467,7 @@ static void parse_args(int argc, char **argv)
 
 static char *read_command(void)
 {
-    static char prompt[BUFSIZ];
+    char prompt[BUFSIZ];
 
     if (session.uri.path) {
         char *p = ne_path_unescape(session.uri.path);
