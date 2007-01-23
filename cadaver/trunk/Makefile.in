@@ -52,7 +52,7 @@ INSTALL = @INSTALL@
 
 all: $(TARGET)
 
-.PHONY: subdirs install again clean
+.PHONY: subdirs install clean distclean
 
 $(TARGET): $(ALLOBJS) subdirs
 	$(CC) $(LDFLAGS) -o $(TARGET) $(ALLOBJS) $(LIBS)
@@ -67,7 +67,9 @@ clean:
 	rm -f $(OBJECTS) $(LIBOBJS) $(TARGET) *~
 	for d in $(SUBDIRS); do (cd $$d; $(MAKE) clean); done
 
-again: clean $(TARGET)
+distclean: clean
+	rm -f Makefile config.*
+	for d in $(SUBDIRS); do (cd $$d; $(MAKE) distclean); done
 
 install: $(TARGET) install-nls
 	@echo "Creating directories..."
