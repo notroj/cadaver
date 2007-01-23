@@ -14,6 +14,12 @@ client and the Samba Project's
 .BR smbclient (1). 
 A user familiar with these tools should be quite
 comfortable with cadaver.
+
+.B cadaver
+supports automatically logging in to servers requiring authentication via
+a .netrc file (similar to
+.BR ftp (1)
+- see section "THE .netrc FILE" below).
 .SH OPTIONS
 .IP "-e, --expect100"
 Enable sending of `Expect: 100-continue' header.
@@ -93,6 +99,55 @@ Print local working directory
 Logout of authentication session
 .IP "help [command]"
 Display help message
+.SH THE .netrc FILE
+The file
+.I ~/.netrc
+may be used to automatically login to a server requiring authentication. The
+following tokens (separated by spaces, tabs or newlines) may be used:
+
+.B machine
+.I host
+.RS
+Identify a remote machine
+.I host
+which is compared with the hostname given on the command line or as an
+argument to the
+.B open
+command.
+Any subsequent tokens up to the end of file or the next
+.B machine
+or
+.B default
+token are associated with this entry.
+.RE
+
+.B default
+.RS
+This is equivalent to the
+.B machine
+token but matches any hostname. Only one
+.B default
+token may be used and it must be after all
+.B machine
+tokens.
+.RE
+
+.B login
+.I username
+.RS
+Specifies the username to use when logging in to the remote machine.
+.RE
+
+.B password
+.I string
+.br
+.B passwd
+.I string
+.RS
+Specifies the password to use when logging in to the remote machine.
+.RE
+
+Any other tokens (as described in ftp(1)) are ignored.
 .SH EXAMPLES
 .IP "cadaver http://dav.example.com/"
 Connects to the server myserver.example.com, opening the root collection.
@@ -105,6 +160,9 @@ Connects to a server called secure.example.com using SSL.
 .SH FILES
 .IP "~/.cadaverrc"
 Individual user settings that can override cadaver defaults.
+.IP "~/.netrc"
+Login and initialization information used by the auto-login process. See
+section "THE .netrc FILE" for details.
 .SH AUTHOR
 Joe Orton <cadaver@webdav.org>
 .SH SEE ALSO
