@@ -1,3 +1,8 @@
+Changes in release 0.22.5:
+* Update to neon 0.26.3:
+ - fix security issue in URI parser, CVE-2007-0157
+* Document netrc support in man page (Sebastian Harl)
+
 Changes in release 0.22.4:
 * Update to neon 0.26.2 (thanks to Peter O'Gorman).
 * Fixes for OS/2 EMX (Andrew Belov).
