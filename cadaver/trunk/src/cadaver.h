@@ -107,10 +107,6 @@ int set_path(const char *newpath);
 
 extern int tolerant;
 
-extern int in_curses;
-
-void init_signals(void);
-
 #ifdef HAVE_LIBREADLINE
 char *command_generator(const char *text, int state);
 #else

@@ -569,7 +569,7 @@ static RETSIGTYPE quit_handler(int sig)
     }
 }
 
-void init_signals(void)
+static void init_signals(void)
 {
     signal(SIGTERM, quit_handler);
     signal(SIGABRT, quit_handler);
