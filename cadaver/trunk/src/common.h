@@ -64,10 +64,4 @@ int cad_mkstemp(char *template);
 char *strerror (int errnum);
 #endif
 
-#if NE_VERSION_MINOR == 24
-/* neon 0.24 compatibility */
-#define NE_FEATURE_SSL 1
-#define ne_has_support(x) ne_supports_ssl()
-#endif
-
 #endif /* COMMON_H */

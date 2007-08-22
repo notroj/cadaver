@@ -1,6 +1,6 @@
 /* 
    cadaver, command-line DAV client
-   Copyright (C) 1999-2006, Joe Orton <joe@manyfish.co.uk>, 
+   Copyright (C) 1999-2007, Joe Orton <joe@manyfish.co.uk>, 
    except where otherwise indicated.
                                                                      
    This program is free software; you can redistribute it and/or modify
@@ -103,18 +103,20 @@ int tolerant; /* tolerate DAV-enabledness failure */
 static enum out_state {
     out_none, /* not doing anything */
     out_incommand, /* doing a simple command */
-    out_transfer_start, /* transferring a file, not yet started */
+    out_transfer_upload, /* uploading a file, not yet started */
+    out_transfer_download, /* downloading a file, not yet started */
     out_transfer_plain, /* doing a plain ... transfer */
-    out_transfer_pretty /* doing a pretty progress bar transfer */
+    out_transfer_pretty, /* doing a pretty progress bar transfer */
+    out_transfer_done /* a complete transfer */
 } out_state;   
 
 /* Protoypes */
 
 static RETSIGTYPE quit_handler(int signo);
 
-static void transfer_progress(void *ud, off_t progress, off_t total);
-static void connection_status(void *ud, ne_conn_status status, 
-			      const char *info);
+static void notifier(void *ud, ne_session_status status, 
+                     const ne_session_status_info *info);
+static void pretty_progress_bar(ne_off_t progress, ne_off_t total);
 static int supply_creds_server(void *userdata, const char *realm, int attempt,
 			       char *username, char *password);
 static int supply_creds_proxy(void *userdata, const char *realm, int attempt,
@@ -340,8 +342,7 @@ void open_connection(const char *url)
 
     ne_lockstore_register(session.locks, sess);
     ne_redirect_register(sess);
-    ne_set_progress(sess, transfer_progress, NULL);
-    ne_set_status(sess, connection_status, NULL);
+    ne_set_notifier(sess, notifier, NULL);
 
     if (session.uri.path == NULL) {
 	session.uri.path = ne_strdup("/");
@@ -655,13 +656,13 @@ static char *remote_completion(const char *text, int state)
 	    }
 
 	    /* Hide the connection status */
-	    ne_set_status(session.sess, NULL, NULL);
+	    ne_set_notifier(session.sess, NULL, NULL);
 	    if (fetch_resource_list(session.sess, session.uri.path, 1, 0, 
                                     &reslist) != NE_OK) {
 		reslist = NULL;
 	    }
 	    /* Restore the session connection printing */
-	    ne_set_status(session.sess, connection_status, NULL);
+	    ne_set_notifier(session.sess, notifier, NULL);
 
 	    last_path = ne_strdup(session.uri.path);
 	}
@@ -759,9 +760,12 @@ void output(enum output_type t, const char *fmt, ...)
     case o_start:
 	out_state = out_incommand;
 	break;
-    case o_transfer:
-	out_state = out_transfer_start;
+    case o_upload:
+	out_state = out_transfer_upload;
 	break;
+    case o_download:
+        out_state = out_transfer_download;
+        break;
     case o_finish:
 	out_state = out_none;
 	break;
@@ -897,68 +901,97 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-static void connection_status(void *ud, ne_conn_status status, const char *info)
+static void notifier(void *ud, ne_session_status status, const ne_session_status_info *info)
 {
-    if (get_bool_option(opt_quiet)) {
-	return;
-    }
+    int quiet = get_bool_option(opt_quiet);
+
     switch (out_state) {
     case out_none:
+        if (quiet) break;
+
 	switch (status) {
-	case ne_conn_namelookup:
+	case ne_status_lookup:
 	    printf(_("Looking up hostname... "));
 	    break;
-	case ne_conn_connecting:
+	case ne_status_connecting:
 	    printf(_("Connecting to server... "));
 	    break;
-	case ne_conn_connected:
+	case ne_status_connected:
 	    printf(_("connected.\n"));
 	    break;
-	case ne_conn_secure:
-	    printf(_("Using secure connection: %s\n"), info);
-	    break;
+        default:
+            break;
 	}
 	break;
     case out_incommand:
-	/* fall-through */
-    case out_transfer_start:
+    case out_transfer_upload:
+    case out_transfer_download:
+    case out_transfer_done:
 	switch (status) {
-	case ne_conn_namelookup:
-	case ne_conn_secure:
-	    /* should never happen */
+	case ne_status_connecting:
+            if (!quiet) printf(_(" (reconnecting..."));
+            /* FIXME: should reset out_state here if transfer_done */
 	    break;
-	case ne_conn_connecting:
-	    printf(_(" (reconnecting..."));
+	case ne_status_connected:
+	    if (!quiet) printf(_("done)"));
 	    break;
-	case ne_conn_connected:
-	    printf(_("done)"));
-	    break;
+        case ne_status_recving:
+        case ne_status_sending:
+            /* Start of transfer: */
+            if ((out_state == out_transfer_download 
+                 && status == ne_status_recving)
+                || (out_state == out_transfer_upload 
+                    && status == ne_status_sending)) {
+                if (isatty(STDOUT_FILENO) && info->sr.total > 0) {
+                    out_state = out_transfer_pretty;
+                    putchar('\n');
+                    pretty_progress_bar(info->sr.progress, info->sr.total);
+                } else {
+                    out_state = out_transfer_plain;
+                    printf(" [.");
+                }
+            }
+            break;                
+        default:
+            break;
 	}
 	break;
     case out_transfer_plain:
 	switch (status) {
-	case ne_conn_namelookup:
-	case ne_conn_secure:
-	    break;
-	case ne_conn_connecting:
+	case ne_status_connecting:
 	    printf(_("] reconnecting: "));
 	    break;
-	case ne_conn_connected:
+	case ne_status_connected:
 	    printf(_("okay ["));
 	    break;
+        case ne_status_sending:
+        case ne_status_recving:
+            putchar('.');
+            fflush(stdout);
+            if (info->sr.progress == info->sr.total) {
+                out_state = out_transfer_done;
+            }
+            break;
+        default:
+            break;
 	}
 	break;
     case out_transfer_pretty:
 	switch (status) {
-	case ne_conn_namelookup:
-	case ne_conn_secure:
+	case ne_status_connecting:
+	    if (!quiet) printf(_("\rTransfer timed out, reconnecting... "));
 	    break;
-	case ne_conn_connecting:
-	    printf(_("\rTransfer timed out, reconnecting... "));
+	case ne_status_connected:
+	    if (!quiet) printf(_("okay."));
 	    break;
-	case ne_conn_connected:
-	    printf(_("okay."));
-	    break;
+        case ne_status_recving:
+        case ne_status_sending:
+	    pretty_progress_bar(info->sr.progress, info->sr.total);
+            if (info->sr.progress == info->sr.total) {
+                out_state = out_transfer_done;
+            }
+        default:
+            break;
 	}
 	break;	
     }
@@ -984,7 +1017,7 @@ sub_timeval(struct timeval *tdiff, struct timeval *t1, struct timeval *t0)
  * might give flicker, and would be bad if we are displaying on
  * a slow link anyway.
  */
-static void pretty_progress_bar(off_t progress, off_t total)
+static void pretty_progress_bar(ne_off_t progress, ne_off_t total)
 {
     int len, n;
     double pc;
@@ -1017,35 +1050,6 @@ static void pretty_progress_bar(off_t progress, off_t total)
     fflush(stdout);
 }
 
-static void transfer_progress(void *ud, off_t progress, off_t total)
-{
-    switch (out_state) {
-    case out_none:
-    case out_incommand:
-	/* Do nothing */
-	return;
-    case out_transfer_start:
-	if (isatty(STDOUT_FILENO) && total > 0) {
-	    out_state = out_transfer_pretty;
-	    putchar('\n');
-	    pretty_progress_bar(progress, total);
-	} else {
-	    out_state = out_transfer_plain;
-	    printf(" [.");
-	}
-	break;
-    case out_transfer_pretty:
-	if (total > 0) {
-	    pretty_progress_bar(progress, total);
-	}
-	break;
-    case out_transfer_plain:
-	putchar('.');
-	fflush(stdout);
-	break;
-    }
-}
-
 static int supply_creds(const char *prompt, const char *realm, const char *hostname,
 			char *username, char *password)
 {
@@ -1053,13 +1057,14 @@ static int supply_creds(const char *prompt, const char *realm, const char *hostn
 
     switch (out_state) {
     case out_transfer_pretty:
+    case out_transfer_done:
 	putchar('\n');
-	/*** fall-through ***/
+        break;
     case out_none:
 	break;
     case out_incommand:
-	/* fall-through */
-    case out_transfer_start:
+    case out_transfer_upload:
+    case out_transfer_download:
 	putchar(' ');
 	break;
     case out_transfer_plain:
@@ -1093,7 +1098,9 @@ static int supply_creds(const char *prompt, const char *realm, const char *hostn
     strcpy(password, tmp);
 	
     switch (out_state) {
-    case out_transfer_start:
+    case out_transfer_download:
+    case out_transfer_upload:
+    case out_transfer_done:
     case out_incommand:
 	printf(_("Retrying:"));
 	fflush(stdout);
