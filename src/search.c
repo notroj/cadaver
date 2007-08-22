@@ -1442,7 +1442,7 @@ int contains_predicate(char **string_parsed, ne_buffer * result_buf)
 	}
     }
 
-    ne_buffer_concat(result_buf, "<D:contains> EOL",
+    ne_buffer_concat(result_buf, "<D:contains>" EOL,
 		     contain_string->data, "</D:contains>" EOL, NULL);
 
     return NE_OK;		/*success */
