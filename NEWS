@@ -1,3 +1,8 @@
+Changes in reelase 0.23.0:
+* Update to neon 0.27.0; drop support for older versions of neon.
+* Fix "search contains" (thanks to Jack Bates)
+* Add DESTDIR support to "make install" (Dr Volker Zell)
+
 Changes in release 0.22.5:
 * Update to neon 0.26.3:
  - fix security issue in URI parser, CVE-2007-0157
