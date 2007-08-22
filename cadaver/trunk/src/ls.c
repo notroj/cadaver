@@ -171,17 +171,7 @@ static void results(void *userdata,
     const char *clength, *modtime, *isexec;
     const char *checkin, *checkout;
     const ne_status *status = NULL;
-    ne_uri u;
-            
-    if (ne_uri_parse(path, &u)) {
-        return;
-    }
-
-    if (u.path == NULL) {
-        ne_uri_free(&u);
-        return;
-    }
-    path = u.path;
+    const char *path = uri->path;
 
     newres = ne_propset_private(set);
 
@@ -327,7 +317,7 @@ int fetch_resource_list(ne_session *sess, const char *uri,
     ne_xml_push_handler(ne_propfind_get_parser(pfh), 
                         ls_startelm, NULL, NULL, pfh);
 
-    ne_propfind_set_private(pfh, create_private, NULL, NULL)
+    ne_propfind_set_private(pfh, create_private, NULL, NULL);
 
     ret = ne_propfind_named(pfh, ls_props, results, &ctx);
 
