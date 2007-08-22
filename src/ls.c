@@ -163,11 +163,7 @@ void execute_ls(const char *remote)
 }
 
 static void results(void *userdata, 
-#if NE_VERSION_MINOR < 26
-                    const char *path,
-#else
                     const ne_uri *uri,
-#endif
 		    const ne_prop_result_set *set)
 {
     struct fetch_context *ctx = userdata;
@@ -175,8 +171,6 @@ static void results(void *userdata,
     const char *clength, *modtime, *isexec;
     const char *checkin, *checkout;
     const ne_status *status = NULL;
-
-#if NE_VERSION_MINOR < 26
     ne_uri u;
             
     if (ne_uri_parse(path, &u)) {
@@ -188,9 +182,6 @@ static void results(void *userdata,
         return;
     }
     path = u.path;
-#else
-    const char *path = uri->path;
-#endif
 
     newres = ne_propset_private(set);
 
@@ -199,9 +190,6 @@ static void results(void *userdata,
 	NE_DEBUG(NE_DBG_HTTP, "Skipping target resource.\n");
 	/* Free the private structure. */
 	ne_free(newres);
-#if NE_VERSION_MINOR < 26
-        ne_uri_free(&u);
-#endif
 	return;
     }
 
@@ -277,10 +265,6 @@ static void results(void *userdata,
 	*ctx->list = newres;
     }
     newres->next = current;
-
-#if NE_VERSION_MINOR < 26
-    ne_uri_free(&u);
-#endif
 }
 
 static int ls_startelm(void *userdata, int parent, 
@@ -321,11 +305,7 @@ void free_resource_list(struct resource *res)
 }
 
 static void *create_private(void *userdata, 
-#if NE_VERSION_MINOR < 26
-                    const char *path
-#else
                     const ne_uri *uri
-#endif
     )
 {
     return ne_calloc(sizeof(struct resource));
@@ -347,11 +327,7 @@ int fetch_resource_list(ne_session *sess, const char *uri,
     ne_xml_push_handler(ne_propfind_get_parser(pfh), 
                         ls_startelm, NULL, NULL, pfh);
 
-    ne_propfind_set_private(pfh, create_private, NULL
-#if NE_VERSION_MINOR > 25
-                            ,NULL
-#endif
-        );
+    ne_propfind_set_private(pfh, create_private, NULL, NULL)
 
     ret = ne_propfind_named(pfh, ls_props, results, &ctx);
 

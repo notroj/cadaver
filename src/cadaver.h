@@ -164,7 +164,8 @@ int fetch_resource_list(ne_session *sess, const char *uri,
 /* Command feedback handling */
 enum output_type {
     o_start,
-    o_transfer,
+    o_upload,
+    o_download,
     o_finish
 };
 

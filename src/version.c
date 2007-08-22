@@ -505,12 +505,7 @@ static const ne_propname vcr_props[] = {
     { NULL }
 };
 
-static void vcr_results(void *userdata, 
-#if NE_VERSION_MINOR < 26
-                        const char *path,
-#else
-                        const ne_uri *uri,
-#endif
+static void vcr_results(void *userdata, const ne_uri *uri,
                         const ne_prop_result_set *set)
 {
     const char *checkin, *checkout;

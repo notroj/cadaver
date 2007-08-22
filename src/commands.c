@@ -1,6 +1,6 @@
 /* 
    cadaver, command-line DAV client
-   Copyright (C) 1999-2006, Joe Orton <joe@manyfish.co.uk>, 
+   Copyright (C) 1999-2007, Joe Orton <joe@manyfish.co.uk>, 
    except where otherwise indicated.
 
    This program is free software; you can redistribute it and/or modify
@@ -389,11 +389,7 @@ static void print_lock(const struct ne_lock *lock)
 }
 
 static void discover_result(void *userdata, const struct ne_lock *lock,
-#if NE_VERSION_MINOR > 25
                             const ne_uri *uri, 
-#else
-                            const char *path,
-#endif
                             const ne_status *status)
 {
     int *count = userdata;
@@ -404,22 +400,13 @@ static void discover_result(void *userdata, const struct ne_lock *lock,
 	print_lock(lock);
 	*count += 1;
     } else {
-	printf(_("Failed on %s: %d %s\n"), 
-#if NE_VERSION_MINOR > 25
-               uri->path,
-#else
-               path,
-#endif
+	printf(_("Failed on %s: %d %s\n"), uri->path,
 	       status->code, status->reason_phrase);
     }
 }
 
 static void steal_result(void *userdata, const struct ne_lock *lock, 
-#if NE_VERSION_MINOR > 25
 			 const ne_uri *uri, 
-#else
-                         const char *path,
-#endif
                          const ne_status *status)
 {
     int *count = userdata;
@@ -432,12 +419,7 @@ static void steal_result(void *userdata, const struct ne_lock *lock,
 	ne_lockstore_add(session.locks, ne_lock_copy(lock));
 	*count += 1;
     } else {
-	printf(_("Failed on %s: %d %s\n"), 
-#if NE_VERSION_MINOR > 25
-               uri->path,
-#else
-               path,
-#endif
+	printf(_("Failed on %s: %d %s\n"), uri->path,
 	       status->code, status->reason_phrase);
     }
 }
@@ -580,12 +562,7 @@ static int all_iterator(void *userdata, const ne_propname *pname,
     return 0;
 }
 
-static void pget_results(void *userdata, 
-#if NE_VERSION_MINOR > 25
-			 const ne_uri *uri, 
-#else
-                         const char *path,
-#endif
+static void pget_results(void *userdata, const ne_uri *uri, 
 			 const ne_prop_result_set *set)
 {
     ne_propname *pname = userdata;
@@ -699,12 +676,7 @@ static int propname_iterator(void *userdata, const ne_propname *pname,
     return 0;
 }
 
-static void propname_results(void *userdata, 
-#if NE_VERSION_MINOR > 25
-                             const ne_uri *uri, 
-#else
-                             const char *path,
-#endif
+static void propname_results(void *userdata, const ne_uri *uri, 
 			     const ne_prop_result_set *pset)
 {
     ne_propset_iterate(pset, propname_iterator, NULL);
@@ -995,7 +967,7 @@ static void execute_get(const char *remote, const char *local)
     {
 	int fd = open(filename, O_CREAT|O_WRONLY|O_TRUNC|OPEN_BINARY_FLAGS, 
                       0644);
-	output(o_transfer, _("Downloading `%s' to %s:"), real_remote, filename);
+	output(o_download, _("Downloading `%s' to %s:"), real_remote, filename);
 	if (fd < 0) {
 	    output(o_finish, _("failed:\n%s\n"), strerror(errno));
 	} else {
@@ -1016,7 +988,7 @@ static void execute_get(const char *remote, const char *local)
 static void simple_put(const char *local, const char *remote)
 {
     int fd = open(local, O_RDONLY | OPEN_BINARY_FLAGS);
-    output(o_transfer, _("Uploading %s to `%s':"), local, remote);
+    output(o_upload, _("Uploading %s to `%s':"), local, remote);
     if (fd < 0) {
 	output(o_finish, _("Could not open file: %s\n"), strerror(errno));
     } else {

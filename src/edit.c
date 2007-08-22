@@ -1,6 +1,6 @@
 /* 
    cadaver, command-line DAV client
-   Copyright (C) 1999-2006, Joe Orton <joe@manyfish.co.uk>, 
+   Copyright (C) 1999-2007, Joe Orton <joe@manyfish.co.uk>, 
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -182,8 +182,7 @@ void execute_edit(const char *remote)
     	execute_checkout(real_remote);
     }
     
-    /* FIXME: copy'n'friggin'paste. */
-    output(o_transfer, _("Downloading `%s' to %s"), real_remote, fname);
+    output(o_download, _("Downloading `%s' to %s"), real_remote, fname);
 
     /* Don't puke if get fails -- perhaps we are creating a new one? */
     out_result(ne_get(session.sess, real_remote, fd));
@@ -202,8 +201,7 @@ void execute_edit(const char *remote)
 		   strerror(errno));
 	} else {
 	    do {
-		output(o_transfer, _("Uploading changes to `%s'"), 
-		       real_remote);
+		output(o_upload, _("Uploading changes to `%s'"), real_remote);
 		/* FIXME: conditional PUT using fetched Etag/modtime if
 		 * !can_lock */
 		if (out_handle(ne_put(session.sess, real_remote, fd))) {
