@@ -73,12 +73,12 @@ distclean: clean
 
 install: $(TARGET) install-nls
 	@echo "Creating directories..."
-	$(INSTALL) -d $(bindir)
-	$(INSTALL) -d $(man1dir)
+	$(INSTALL) -d $(DESTDIR)$(bindir)
+	$(INSTALL) -d $(DESTDIR)$(man1dir)
 	@echo "Installing $(TARGET) executable..."
-	$(INSTALL_PROGRAM) $(TARGET) $(bindir)/$(TARGET)
+	$(INSTALL_PROGRAM) $(TARGET) $(DESTDIR)$(bindir)/$(TARGET)
 	@echo "Installing man page..."
-	$(INSTALL_DATA) $(top_srcdir)/doc/cadaver.1 $(man1dir)/cadaver.1
+	$(INSTALL_DATA) $(top_srcdir)/doc/cadaver.1 $(DESTDIR)$(man1dir)/cadaver.1
 
 install-nls:
 	@cd po && $(MAKE) install
