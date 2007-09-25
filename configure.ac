@@ -105,8 +105,6 @@ else
     nls_msg="Not built"
 fi
 
-nls_msg="Not built"
-
 NEON_WARNINGS
 
 # Pick up config.h etc; and before any other paths.
