@@ -1,0 +1,45 @@
+
+Known interop problems:
+
+mod_dav (0.9.14)
+
+- Collection locking broken
+(fixed in mod_dav-0.9.15): If a lockowner is sent, 'discover' and 'steal'
+will fail on the resource.
+
+IIS (as at dav.ics.uci.edu)
+
+- Can DELETE a LOCK'ed resource without submitting locktoken
+(fixed in cadaver-0.11.0): All methods broken, sending empty If: header
+
+webfolders.mydocsonline.com
+
+- MKCOL fails 501
+- COPY creates a duplicate resource in the collection, with the same name as
+the *original* resource. It also appears some kind of ghost resource
+appears at the Destination, which PROPFIND reports is a DAV:collection...
+- PROPFIND on a non-existent resource gives a 500 error, should be 404.
+
+www.driveway.com
+
+(fixed in cadaver-0.11.0) 'ls' broken due to unwanted properties in 
+PROPFIND response
+- MKCOL fails 500
+- COPY returns 204 but doesn't copy anything
+- GET/PROPFIND against non-existent resource gives 422, should be 404.
+
+Zope
+
+- Several reports about problems against Zope 2.1, but nobody will
+send me details!
+
+PyDAV (sandbox.xerox.com:8080)
+
+- Broken due to use of "Keep-Alive: " request-header field with no value.
+
+(fixed in cadaver-0.11.0): Extra newline after request body broke any
+requests with bodies.
+(fixed in cadaver-0.12.0): 'lock' and 'discover' broken due to missing
+Content-Type header in requests.
+(fixed in cadaver-0.12.0): 'lock' broken due upper-case I in infinity.
+

@@ -1,0 +1,24 @@
+Mon Sep  6 13:59:42 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* Makefile: Removed file.
+
+Wed Aug 25 08:47:24 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* gennmtab/.cvsignore: Add gennmtab
+
+Tue Aug 24 18:53:54 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* xmltok/xmltok.h: Added void to XmlGetUtf8InternalEncodingNS,
+	XmlGetUtf16InternalEncodingNS declarations to make them proper
+	prototypes.
+
+Tue Aug 24 18:52:37 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* */*. Import of expat-19990709 sources.
+
+	* sample/*, xmlwf/*: Removed unneeded code.
+
+	* bin/*, lib/*, */*.dsp, expat.dsw: Removed Win32-specific
+	files.
+	
+	* */*.[ch], expat.html: Elect to use GPL over MPL.
