@@ -1,0 +1,2280 @@
+Thu Jan  8 20:57:28 2004  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/cadaver.c (supply_creds_server): Only use credentials from
+	netrc on first attempt to authenticate.
+
+Thu Jul 31 20:52:01 2003  Joe Orton  <joe@manyfish.co.uk>
+
+	* configure.in: Fix included getopt build.
+
+Tue Jul  1 22:32:21 2003  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/commands.c (execute_mkcol): Cleanup.
+	(execute_get): Handle close() failure.
+
+Tue Jul  1 22:12:19 2003  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/commands.c (out_start): 
+
+Tue Jul  1 22:08:53 2003  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/ls.c (fetch_resource_list): Update for final neon 0.24 API.
+
+Tue Jul  1 22:07:21 2003  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/commands.c (multi_mput): Use resolve_path not clever_path;
+	fix mput into collection with escaped URI.
+
+Sun Jun 22 20:53:25 2003  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/cadaver.c (cert_verify): Update for neon final 0.24 SSL API.
+	(read_command): Unescape path before printing in prompt.
+
+Sun Jun 22 20:50:33 2003  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/commands.c (resolve_path): Fix URI-escaping for path=".".
+
+Wed Apr 23 14:38:29 2003  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/cadaver.c (privkey_prompt): Removed.
+	(cert_verify, setup_ssl): Adapt for new neon 0.24 SSL API.
+	(provide_clicert): New function.
+
+	* src/options.c: Replace opt_cert, opt_certkey with opt_clicert.
+
+Wed Apr 23 14:35:54 2003  Joe Orton  <joe@manyfish.co.uk>
+
+	Temporarily disable DeltaV and DASL code until ported to new XML
+	API.
+	
+	* src/commands.c (commands): Disable DeltaV and DASL commands
+	until ported to new XML API.
+
+	* Makefile.in (OBJECTS): Remove search.o and version.o.
+
+Wed Apr 23 14:34:01 2003  Joe Orton  <joe@manyfish.co.uk>
+
+	Update `ls' code for new XML API:
+
+	* src/ls.c (ls_idmap): Replaces complex_elms.
+	(ls_startelm): New function, replaces end_element and
+	check_context.
+	(ls_props): Remove displayname.
+	(free_resource): Remove displayname.
+	(fetch_resource_list
+
+Wed Apr 23 14:07:53 2003  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/cadaver.c (main): Call init_rcfile last.
+
+Tue Feb 11 20:53:14 2003  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/options.c (find_option, execute_describe): New functions.
+
+Sun Jan 12 14:34:59 2003  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/commands.c (clever_path): When appending basename of src to
+	a dest collection, escape the basename first.  (fixes 'mput' of
+	filenames which contain spaces).
+
+Fri Aug 30 23:48:59 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/cadaver.c (privkey_prompt, supply_creds_server): Use
+	strnzcpy.
+
+	* src/cmdline.c (davglob_readdir): Use ne_strnzcpy.
+
+Wed Aug 21 15:57:11 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/cadaver.c (open_connection): Use session error string for
+	NE_CONNECT and NE_LOOKUP errors too.
+
+Mon Aug 12 13:13:17 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/edit.c (execute_edit): Don't include extension in temporary
+	file name if there is a slash after the dot.
+
+Sat Aug  3 22:37:25 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* Makefile.in (all): Add before .PHONY to prevent problems with
+	non-GNU makes.
+	(.PHONY): Also include install, again, clean.
+
+Wed Jul 31 23:32:23 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* configure.in: Use jm_PREREQ_TEMPNAME for lib/tempname.c checks.
+
+Wed Jul 31 23:27:09 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/cadaver.c (init_options): Set 'quiet' option to on by
+	default.
+
+Wed Jul 31 23:25:46 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* m4/prereq.m4 (jm_PREREQ_TEMPNAME): Require jm_AC_TYPE_UINTMAX_T.
+
+Fri Jul 26 22:42:42 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/commands.c: Don't declare commands[] array as static;
+	fix non-GCC build.
+
+Sun Jul 14 18:14:35 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/commands.c (execute_less, execute_cat): Use ne_get in favour
+	of ne_read_file.
+
+Sun May 26 11:44:30 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/edit.c (ed_valid, ed_startelm, ed_endelm, free_srclist,
+	this_server, examine): New functions.
+	(is_lockable): Removed.
+	(execute_edit): Edit the source resource if one is defined, using
+	the {DAV:}source-set property proposal.  Drop support for editing
+	non-LOCK-able resources.
+
+Thu May 23 19:41:07 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/options.c (do_debug): Update for neon 0.21 ne_token API.
+
+Sun May 19 18:30:03 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/cadaver.c (main): Update for neon 0.21 socket API; use
+	ne_sock_init.  Also call ne_sock_exit() before returning.
+	Drop redirect support.
+
+Thu May 16 20:19:24 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/commands.c (cad_utf8_encode, cad_utf8_decode): Add back this
+	hack in a difference place, compensating for disappearance of
+	ne_utf8_{encode,decode}.
+	(utf8_encode, utf8_decode): Use them.
+
+Wed May 15 20:50:42 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* configure.in: Use AC_LIBOBJ; check for __secure_getenv for
+	lib/tempname.c, don't generate intl/Makefile.
+
+Wed May 15 20:49:33 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* lib/tempname.c: Fix all the warnings: s/_LIBC/defined(_LIBC),
+	prototype __path_search, __gen_tempname.
+	(__gen_tempname): Remove unused variable.
+
+Thu May  2 07:51:54 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/commands.c (out_result): Replace NE_AUTHPROXY with
+	NE_PROXYAUTH for neon 0.20.
+
+Wed May  1 22:05:38 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/cadaver.c (cert_verify): Don't prompt if !isatty(stdin).
+	(open_connection): Adjust for neon 0.20 default port from
+	ne_uri_parse.
+
+Thu Mar 28 10:58:30 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* configure.in: Always enable checks for mkstemp replacement.
+
+Thu Mar 14 22:14:03 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/commands.c (execute_cd): Disallow "cd -" when no previous
+	collection is set.
+
+Thu Mar 14 22:10:01 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/commands.c (choose_pager): Allow pager option to over-ride
+	env vars.
+
+	* src/options.h, src/options.c: Add opt_pager.
+
+Sun Mar 10 12:11:00 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/commands.c (execute_lock, execute_unlock): Use
+	ne_lock_create, ne_lock_destroy, and fix leaks.
+
+Sun Mar 10 12:09:21 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/cadaver.c (remote_completion): Remove double-malloc.
+
+Sat Mar  9 13:36:15 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/commands.c (execute_version): Include readline version.
+
+Sat Mar  9 08:48:24 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/commands.c (print_lock): Don't use print_uri, unparse
+	directly.
+
+Thu Mar  7 21:27:51 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/cadaver.c (open_connection): Better error handling for
+	NE_CONNECT and NE_LOOKUP errors.
+
+Thu Mar  7 20:06:06 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/commands.c (execute_pwd): Print current collection URL.
+
+Fri Mar  1 23:05:46 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/edit.c: New file.
+
+	* src/commands.c (getowner): Make public.
+	(run_editor, is_lockable, execute_edit): Split out from
+	commands.c.
+
+	* src/cadaver.h (execute_edit): Add prototype.
+
+	* src/commands.h (getowner): Add prototype.
+
+Fri Mar  1 23:04:26 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* lib/mkstemp.c (cad_mkstemp): Renamed from rpl_mkstemp.
+
+Fri Mar  1 23:03:27 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* lib/tempname.c (__gen_tempname): Allow XXXXXX's to appear
+	somewhere other than the end of the filename.
+
+Fri Mar  1 22:43:27 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/commands.c (do_discover): Factored out from execute_steal,
+	execute_discover.
+	(execute_steal, execute_discover): Use do_discover.
+
+Sat Feb 23 15:22:44 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	Update for neon 0.19 API:
+	
+	* src/cadaver.c (privkey_prompt): Remove filename argument.
+	(make_dn_string, cert_verify): New functions.
+	(setup_ssl, open_connection): Adjust for API changes.
+	(init_rcfile, readline): Use ne_shave rather than STRIP_EOL.
+
+Tue Feb 19 21:41:49 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* configure.in: Comment NLS section to remove dubious quoting.
+
+Sat Jan 26 15:48:27 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/cadaver.c (completion): Only do remote completion when
+	connection is established.
+
+Sun Jan 20 20:16:09 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/commands.c (execute_delete): Remove locks if delete
+	succeeds.
+
+2002-01-19  Joe Orton  <joe@monolith.fishnet>
+
+	* src/options.c (do_debug): Clear debug mask if unset given with
+	no arguments.
+
+Tue Jan 15 00:57:39 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/cadaver.c (close_connection, open_connection): Use lockstore
+	option.
+	(init_options): Fix initialization of lockscope option.
+	(main): Initialize lockstore option.
+
+Tue Jan 15 00:51:33 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/options.c (options): Add lockstore option.
+	(display_options): Vertically align.
+
+Mon Jan 14 22:54:14 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/cadaver.c (init_locking, finish_locking): Moved to and made
+	private here.
+
+Mon Jan 14 22:48:16 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/cadaver.h: Don't export execute_*, multi_*.
+
+	* src/cadaver.c: Made execute_*, multi_* static.
+
+Mon Jan 14 22:40:15 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/commands.c: Move commands[] array here.  For GCC, add
+	type-safety in initialization.
+	(execute_version): Moved here.
+
+	* src/cadaver.h (struct command): Add union for command functions.
+
+	* src/cadaver.c (execute_command): Eliminate casts of function
+	pointers.
+	(open_connection, close_connection): Made public.
+
+Mon Jan 14 20:45:56 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/options.c: Add `quiet' option.
+	
+	* src/cadaver.c (connection_status): If quiet is set, do nothing.
+
+Mon Jan 14 20:38:43 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/commands.c (print_lock): Print depth on the second line.
+	(get_timeout): Print 'seconds' for a seconds value.
+	(execute_lock): In-line true_path; use lockdepth setting for
+	any non-collection resource.
+	
+Mon Jan 14 20:00:47 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* Makefile.in (OBJECTS): Add utils.o.
+	(Makefile): New target.
+	(install): Install man page.
+
+Mon Jan 14 19:59:11 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/utils.c: New file.  (getrestype): Moved from
+	src/commands.c:is_collection; returns resource type.
+
+	* src/commands.c, src/cadaver.c, src/cmdline.c: All callers
+	changed.
+	
+Tue Jan  8 20:57:27 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/commands.c (execute_get): Fix local file permissions.
+
+Sun Jan  6 21:23:47 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/options.c: Add overwrite, lockdepth, lockscope options.
+
+Tue Jan  1 22:38:05 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* Makefile.in: Cleanups, fixes for VPATH builds, use CPPFLAGS
+	properly.
+
+Tue Jan  1 14:03:09 2002  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/commands.c (propop): Factored out from execute_propset.
+	(execute_propset): Use propop.  (execute_propdel): New function.
+
+Sat Nov 24 11:41:37 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/cadaver.c (remote_completion): New function (from Sean
+	Treadway).  (completion): Fixes for readline 4.2.
+	
+
+Mon Nov 12 15:53:48 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/ls.c (execute_ls): Resolve path to a collection.
+
+Tue Oct 30 20:23:07 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/commands.c (discover_results, steal_result, execute_steal,
+	execute_discover): Count number of locks found, and adjust output
+	accordingly.
+
+Wed Jun 20 21:49:41 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/ls.c (results): Fix detecting the 'executable' property.
+
+Sun Jun  3 23:39:54 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/commands.c (execute_edit): Adjust for FILE * -> int fd
+	change of ne_put/get.
+
+Sun Jun  3 23:31:51 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/options.c (do_debug): Use ne_token.
+
+Sat Jun  2 23:32:28 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* lib/glob.h: Kill -Wundef warning from '#if _FILE_OFFSET_BITS !=
+	64' conditional.
+
+Sat Jun  2 23:30:02 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/options.c, src/ls.c, src/commands.c, src/cadaver.c:
+	s/http_/ne_/g etc for neon 0.15 API.
+
+Sun Apr 22 16:50:42 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/ls.c (fetch_resource_list, results): Updated for neon 0.14
+	properties API.
+
+Mon Apr  2 21:12:52 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/ls.c (check_context): Fix return codes: decline everything
+	we don't like.
+
+Tue Mar 20 23:11:02 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/commands.c (execute_propget, execute_propset, pget_results,
+	all_iterator): Perform utf8_encode/decode on property names too.
+
+Tue Mar 20 23:10:07 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/ls.c (display_ls_line): Unescape URI since neon doesn't do
+	it for us any more.
+
+Tue Mar 20 22:39:31 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/commands.c (utf8_decode, utf8_encode): Perform UTF8
+	decoding/encoding if utf8 option is set.  (execute_propset,
+	all_iterator, pget_results): Use utf8_encode/decode.
+
+Tue Mar 20 22:37:39 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/commands.c (resolve_path): Escape paths too. 
+
+Tue Mar 20 20:31:59 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/cadaver.c (init_options): Turn on utf8 option if the string
+	"UTF-8" is found in one of the locale environment variables, in 
+	accordance with the Markus Kahn Unicode Unicode FAQ.
+	
+Tue Mar 20 20:30:48 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/cadaver.c: Adjust for neon 0.13 connection status/progress
+	API.
+
+Mon Mar 19 18:41:59 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/options.c (get_bool_option): New function.
+
+Mon Mar 19 18:41:53 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/options.c: Add utf8 option.
+
+Mon Mar 19 18:28:22 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/commands.c (execute_propnames, propname_results,
+	propname_iterator): New functions.
+
+Mon Mar  5 00:24:05 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/cadaver.c (supply_creds_proxy, supply_creds_server): Removed
+	hostname argument as per neon 0.13 change.
+
+Mon Mar  5 00:05:04 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/commands.c (execute_logout): New function.
+
+Tue Feb 27 09:22:14 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* configure.in: Bumped version to 0.17.1.
+
+Tue Feb 27 09:18:31 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* configure.in: Add -lintl to LIBS if using included libintl.
+	Turn off NLS.
+
+Mon Feb 26 22:08:14 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* configure.in: Bumped version to 0.17.0.
+
+Mon Feb 26 22:02:39 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* configure.in: Remove checks duplicated with neon.m4.
+
+Sun Feb 25 18:11:23 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/options.c: Added 'opt_namespace' string option.
+
+	* src/cadaver.c (DEFAULT_NAMESPACE): New macro. (init_options):
+	Set default for namespace.
+
+	* src/commands.c (execute_propset, execute_propget): Use
+	opt_namespace as default namespace.
+
+Sun Feb 25 17:51:37 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/commands.c (execute_propset): New command.
+
+	* src/cadaver.c: Added 'propset' command.
+
+Fri Feb 23 23:02:19 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/cadaver.c: Allow one or two argument to propget to allow
+	allprop requests.
+
+Fri Feb 23 22:59:50 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/commands.c (pget_results): If NULL list of propnames is
+	given, use the allprop iterator.  (execute_propget): Use
+	dav_simple_propfind.
+
+Fri Feb 23 22:35:14 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/cadaver.c (close_connection): Call finish_locking to avoid
+	leaking the locking session.
+
+Thu Feb 22 21:22:28 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/commands.c (pget_results): Handle NULL return from
+	dav_propset_status.  (execute_propget): Fail if the property name
+	has a ':' in it, until namespace support is there.
+
+Thu Feb 22 21:16:55 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/cadaver.c: Fix netrc support.  (supply_creds_server): Check
+	whether server_username and server_password are set, if so, pass
+	creds straight back.
+
+Thu Feb 15 23:03:24 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* configure.in: Add AC_C_BIGENDIAN.
+
+Sun Feb  4 14:34:47 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/cadaver.c (give_creds): Handle fm_getpassword returning
+	NULL.  Zero out password buffer after copying it.
+
+Sun Feb  4 14:33:34 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/cadaver.c (privkey_prompt): New function.  (setup_ssl): New
+	function, split down from open_connection.  Sets privkey_prompt as
+	private key password callback.
+
+Sun Feb  4 14:14:51 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* lib/getpass.c (fm_getpassword): If EOF is encountered, return
+	NULL.
+
+Sun Feb  4 11:49:22 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* configure.in: Now require neon 0.11.
+
+Sun Feb  4 11:45:47 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/cadaver.c: Make nssl_context live as long as an
+	http_session.
+
+Sun Feb  4 10:57:44 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/cadaver.c (open_connection): Create an SSL context. If cert
+	option set, set the client cert, and pass the SSL context through
+	the the HTTP session.
+
+Sun Feb  4 10:56:05 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/options.c: Added 'cert' and 'certkey' options.
+
+Sun Feb  4 10:50:09 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* src/cmdline.c (davglob_opendir): Store the length of the root
+	collection in the context.  (davglob_readdir): Don't put the root
+	collection in the d_name of the returned dirent object.
+
+Sun Jan 28 22:53:00 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* Makefile.in: Remove obsoleted NLS stuff.
+
+Sun Jan 28 22:52:24 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* configure.in: Add intl and po to SUBDIRS for NLS builds, use
+	NEON_REQUIRE to require neon 0.10 or later.
+
+Sun Jan 28 22:51:12 2001  Joe Orton  <joe@manyfish.co.uk>
+
+	* lib/getpass.c: Include stdlib.h to fix 'exit undefined' warning.
+
+Thu Jan 18 00:05:16 2001  Joe Orton  <joe@light.plus.com>
+
+	* configure.in: Use top_builddir prefix in bundled expat path.
+
+Thu Jan 18 00:03:39 2001  Joe Orton  <joe@light.plus.com>
+
+	* po/Makefile.in.in: Make cat-id-tbl.c and stamp-cat-id target
+	names always have $(srcdir) prefix.
+
+Thu Jan 18 00:02:30 2001  Joe Orton  <joe@light.plus.com>
+
+	* Makefile.in (clean): Recurse into SUBDIRS too.
+
+Wed Jan 17 23:39:21 2001  Joe Orton  <joe@light.plus.com>
+
+	* configure.in: Don't check for getlogin_r at all, it's not
+	portable.
+
+Wed Jan 17 23:22:49 2001  Joe Orton  <joe@light.plus.com>
+
+	* Makefile.in: Modified for neon 0.10 recursive make.
+
+Wed Jan 17 23:17:01 2001  Joe Orton  <joe@light.plus.com>
+
+	* src/ls.c (results): Don't leak the private structure when
+	skipping the target resource.
+
+Wed Jan 17 23:01:15 2001  Joe Orton  <joe@light.plus.com>
+
+	* lib/glob.c (glob): Only use sysconf if _SC_LOGIN_NAME_MAX is
+	defined, else default the buffer size to 20 chars.
+
+Wed Jan 17 20:00:01 2001  Joe Orton  <joe@light.plus.com>
+
+	* src/commands.c (execute_edit): Don't give up if the edit fails,
+	allowing edit to create new content.  (Tres Seaver
+	<tseaver@digicool.com>)
+
+Wed Jan 17 19:59:33 2001  Joe Orton  <joe@light.plus.com>
+
+	* src/commands.c (execute_edit): Use mkstemp() to create temporary
+	file (so the security warning goes away).
+
+Wed Jan 17 19:45:32 2001  Joe Orton  <joe@light.plus.com>
+
+	* src/ls.c (create_private): New function.  (fetch_resource_list):
+	Change for dav_propfind_set_complex from neon 0.10.
+
+Thu Jan 11 20:41:24 2001  Joe Orton  <joe@light.plus.com>
+
+	* configure.in: Use even newer NEON_VPATH_BUNDLED macro to build
+	neon.
+
+Sun Jan  7 21:31:33 2001  Joe Orton  <joe@light.plus.com>
+
+	* configure.in: Use new NEON_BUNDLED macro for building.  Moved
+	readline stuff into the CHECK_READLINE macro in
+	macros/readline.m4.
+
+Sun Jan  7 00:04:04 2001  Joe Orton  <joe@light.plus.com>
+
+	* src/cadaver.c (execute_propget): New command.
+
+Sat Jan  6 23:52:23 2001  Joe Orton  <joe@light.plus.com>
+
+	* src/cadaver.c: Don't cast the command function to (void *)
+	everywhere, since this is incorrect.
+
+Sat Jan  6 23:49:40 2001  Joe Orton  <joe@light.plus.com>
+
+	* src/ls.c: Ported to neon 0.9 dav_propfind_* API.
+
+Sat Jan  6 22:55:50 2001  Joe Orton  <joe@light.plus.com>
+
+	* src/commands.c (steal_result, discover_result): New
+	functions. (execute_discover, execute_steal): Ported to neon 0.9
+	lock discovery API.
+
+Sat Jan  6 22:46:41 2001  Joe Orton  <joe@light.plus.com>
+
+	* src/cadaver.h (struct command): Make the handler function a
+	void (*handler)() - a function pointer, so should be compatible.
+
+Sun Nov  5 20:34:36 2000  Joe Orton  <joe@light.plus.com>
+
+	* configure.in: Bumped version to 0.15.4.
+
+Sun Nov  5 20:34:05 2000  Joe Orton  <joe@light.plus.com>
+
+	* src/cadaver.c: 'showlocks' command only allowed when connected.
+
+Sun Nov  5 14:45:33 2000  Joe Orton  <joe@light.plus.com>
+
+	* configure.in: Bumped version to 0.15.3.
+
+Thu Oct 26 22:51:08 2000  Joe Orton  <joe@light.plus.com>
+
+	* configure.in: Bumped version to 0.15.2.
+
+Thu Oct 26 22:40:58 2000  Joe Orton  <joe@light.plus.com>
+
+	* src/cadaver.c (open_connection): Only use the scheme-default
+	port if a specific port is not given (Jeff Costlow
+	<j.costlow@f5.com>).
+
+Sat Oct 14 20:00:53 2000  Joe Orton  <joe@light.plus.com>
+
+	* src/cadaver.c (parse_args): Fix proxy option (Sunny Gulati
+	<sunny@eai.com>).
+
+Sun Sep 17 18:49:15 2000  Joe Orton  <joe@light.plus.com>
+
+	* src/cadaver.c (supply_creds_server, supply_creds_proxy): Switch
+	messages round.
+
+Mon Sep 11 20:24:36 2000  Joe Orton  <joe@light.plus.com>
+
+	* configure.in: Bumped version to 0.15.1.
+
+Mon Sep 11 20:22:11 2000  Joe Orton  <joe@light.plus.com>
+
+	* src/cadaver.c (readline): Don't print prompt if it is NULL.
+
+Mon Sep 11 20:19:17 2000  Joe Orton  <joe@light.plus.com>
+
+	* src/cadaver.c (open_connection): Un-#if 0 out the trailing slash
+	test.
+
+Mon Sep 11 17:50:55 2000  Joe Orton  <joe@light.plus.com>
+
+	* configure.in: Bumped version to 0.15.0.
+
+Mon Sep 11 17:42:42 2000  Joe Orton  <joe@light.plus.com>
+
+	* src/cadaver.c (supply_creds): Use fm_getpassword rather than
+	getpass.
+
+	* src/cadaver.c (redirect_notify): Notify user of a redirect.
+	(open_connection): Register redirect notify callback, and allow
+	automatic redirections.
+
+	* src/cadaver.c (usage): Updated, you have to pass a whole URL on
+	the command-line now.
+
+Mon Sep 11 17:42:07 2000  Joe Orton  <joe@light.plus.com>
+
+	* src/commands.c (execute_delete): Only remove locks after use if
+	the DELETE succeeds.
+
+Mon Sep 11 17:40:25 2000  Joe Orton  <joe@light.plus.com>
+
+	* src/ls.c (compare_alpha): Removed function.
+
+	* src/ls.c (fetch_resource_list): Call dav_propfind_destroy to
+	destroy PROPFIND handler.
+
+Mon Sep 11 17:37:54 2000  Joe Orton  <joe@light.plus.com>
+
+	* configure.in: Add extra headers to AC_CHECK_HEADERS for
+	getpass.o build.
+
+	* lib/strftime.c: New file.
+
+	* configure.in: Call jm_FUNC_STRFTIME() to see whether strftime
+	needs replacing.
+
+Mon Sep 11 17:34:59 2000  Joe Orton  <joe@light.plus.com>
+
+	* Makefile.in (NEONOBJS): Added http_redirect.o.  (LIBOBJS): Added
+	lib/getpass.o.  (lib/getpass.o): Added deps.
+
+Mon Sep 11 17:32:15 2000  Joe Orton  <joe@light.plus.com>
+
+	* lib/glob.c (glob): Patch to enable BeOS build (from David Reid
+	<david@jetnet.co.uk>)
+
+Mon Sep 11 17:27:37 2000  Joe Orton  <joe@light.plus.com>
+
+	* lib/getpass.c (fm_getpassword): const the prompt parameter.
+
+Mon Sep 11 17:27:05 2000  Joe Orton  <joe@light.plus.com>
+
+	* lib/getpass.c: New file, Carl Harris's getpass replacement, from
+	fetchmail.
+
+Sat Aug  5 00:32:23 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/commands.c (execute_delete): Only forget the locks if the
+	delete succeeds.
+
+Thu Aug  3 10:34:14 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in: Bump version to 0.14.1.
+
+Thu Aug  3 10:07:31 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* Makefile.in: Replace xalloc.h with ne_alloc.o in NEONOBJS.
+
+Thu Aug  3 09:55:42 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/*.c: Use ne_* allocation functions rather than x*.
+
+Thu Aug  3 09:47:17 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in: Add check for 'filename_completion_function'. Only
+	checks for readline headers if readline is enabled.
+
+Wed Aug  2 23:40:28 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/ls.c: Include string.h for strrchr prototype.
+
+Wed Aug  2 02:17:42 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c: Remove cookie hooks.  (transfer_progress): Use
+	'off_t' not 'size_t'.  (completion): Conditionally compile if
+	HAVE_FILENAME_COMPLETION_FUCNCTION.
+
+Wed Aug  2 02:16:47 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/commands.c (execute_edit): Fixed.
+
+Wed Aug  2 01:55:30 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/commands.c (execute_lock): Use exclusive lock not shared.
+
+Fri Jul 28 12:23:30 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in: Bump version to 0.14.0.
+
+Fri Jul 28 12:22:44 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in: Substitute SDEFS.
+
+	* Makefile.in: Add @SDEFS@ to CFLAGS.
+
+Fri Jul 28 12:21:53 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/commands.c (execute_edit): Zero-out lock structure.
+
+Fri Jul 28 11:48:04 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (main): Call bindtextdomain/textdomain if NLS is
+	enabled.
+
+Fri Jul 28 11:45:56 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in: Bumped version to 0.14.0.
+
+Fri Jul 28 11:45:05 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* Makefile.in: Changes for intl/ build.
+
+Fri Jul 28 11:41:21 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (parse_args): Allow passing no argumemts again.
+
+Fri Jul 28 11:40:29 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/common.h: Always define DEBUG_FILES.
+
+Fri Jul 28 11:34:43 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in: Added gettext stuff, and build configuration
+	message.
+
+Thu Jul 27 17:00:57 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/i18n.h: New file.
+
+Thu Jul 27 16:22:00 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cmdline.c (davglob_closedir): Free resource list after use.
+
+Thu Jul 27 16:20:48 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in: Use NEON_WARNINGS macro for --enable-warnings.
+	Added --disable-readline option.
+
+Thu Jul 20 15:28:35 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (completion): Free command name after use.
+
+Thu Jul 20 15:23:01 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in: Pass correct parameters for new NEON_LIBRARY.
+
+Sun Jul 16 16:30:55 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/common.c (debug): Removed function.
+
+Sun Jul 16 16:29:28 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/commands.c (execute_lock, execute_discover,
+	execute_showlocks, execute_unlock): Ported to new neon locking
+	code.
+
+	* src/davlocks.[ch]: Moved into neon.
+
+Sun Jul 16 16:26:32 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* Makefile.in: Update for neon builds.
+
+	* configure.in: Mostly moved into neon macros.
+
+Tue May 23 20:50:51 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c, src/commands.c, cmdline.c, src/options.c: Ported
+	to neon.
+
+	* src/ls.c: New file.
+
+	* src/davfetch.c, src/protocol.h, src/frontend.h,
+	src/davprops.[ch], src/socket.[ch], src/httpdav.[ch]: Removed
+	files.
+
+Tue Mar 21 15:17:21 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/options.c: Fix options initializer.
+
+Tue Mar 21 15:15:42 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in: Added --enable-libxml option to skip expat check.
+
+Tue Mar 21 14:11:10 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in: Bumped version to 0.13.0.
+
+Tue Mar 21 14:06:24 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cmdline.c (davglob_opendir): Set errno to EACCES for auth
+	failures, else ENOENT.
+
+Tue Mar 21 14:04:12 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/davfetch.c (dav_fetch): Return errors from http_request
+	as-is.
+
+Tue Mar 21 13:48:33 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/socket.c: Use ssize_t appropriately.  Don't call perror().
+
+Tue Mar 21 13:43:09 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/httpdav.c (http_response_read): Use strtol not sscanf for
+	reading chunk size.  (http_request): Ripped out "can authenticate"
+	state.  Handle dead connections better.  Read Proxy-Auth.-Info
+	header.  Authenticate server response before reading challenges.
+
+Mon Mar 20 19:05:22 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* lib/string_utils.c (split_string_c, pair_string): Return NULL on
+	malloc failure.
+
+Wed Mar 15 18:50:42 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/httpdav.c (http_response_read): Display response body blocks
+	using DEBUG_HTTPBODY channel.
+
+Wed Mar 15 18:49:35 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/options.c: Added "proxy" and "proxy-port" options. Added
+	"httpbody" debug channel.
+
+Wed Mar 15 18:41:15 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/httpdav.c (http_request_init): Store abs_path and
+	absoluteURI separately.  (http_request) Use absoluteURI for proxy
+	authentication, and abs_path for server authentication.  Send
+	absoluteURI as Request-URI to proxy, or abs_path to server.
+
+Wed Mar 15 18:37:11 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/davfetch.c: Use DEBUG_XML debugging channel not DEBUG_HTTP.
+
+Wed Mar 15 18:33:57 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (open_connection): Support proxy server.
+	(set_proxy): New function.  (fe_login): Support new authentication
+	interface.  (parse_args):  Support --proxy option.
+	(fe_connection): Minor cosmetics.
+
+Mon Mar 13 15:06:06 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/httpdav.c (http_request): Use an sbuffer for reading request
+	headers (unlimited length possible).  Close the connection if the
+	server is < HTTP/1.1 compliant and doesn't send a Keep-Alive.
+	Added proxy authentication.  Send no-cache directive if sending a
+	If: header.  [USE_BROKEN_PROPFIND]: Removed all code.
+
+Mon Mar 13 14:26:03 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* lib/string_utils.c (pair_string, pair_string_free): Fix the leaks.
+
+Mon Mar 13 14:24:53 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* lib/string_utils.c (sbuffer_grow): Made public.
+	(sbuffer_create_sized): New function.  (sbuffer_create): Use it.
+
+Wed Mar  8 20:39:43 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in: Bumped versio to 0.12.2.
+
+Wed Mar  8 20:37:35 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/davlocks.c, src/httpdav.h: Renamed 'lock_list' ->
+	'submit_locks'.
+
+	src/davlocks.c (dav_submit_lock): Take request target URI.
+	(dav_lock_ifheader): Use request target URI not lock URI in
+	tagged-list.
+
+Wed Mar  8 20:29:26 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* lib/dates.c: Relicensed LGPL/GPL dual.
+
+Wed Mar  8 20:27:23 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* lib/string_utils.c: Relicensed LGPL/GPL dual.
+
+Wed Mar  8 20:24:51 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* lib/base64.c: Relicensed LGPL/GPL dual.
+
+Wed Mar  8 14:33:17 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/davlocks.c (dav_submit_lock): Renamed from dav_locklist_add.
+
+Wed Mar  8 14:30:45 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/davfetch.c (dav_fetch): Fixed error cases.
+
+Wed Mar  8 14:25:00 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* Makefile.in, configure.in: Move OBJECTS and LIBOBJS into
+	Makefile.in.
+
+Sun Mar  5 21:28:23 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* lib/glob.h: Define __PMT if it is not already.
+
+Fri Mar  3 23:38:59 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in: Bumped version to 0.12.1.
+
+Fri Mar  3 23:20:02 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cmdline.c (davglob_errfunc, parse_command): Minor globbing
+	feedback fixes.
+
+Fri Mar  3 23:17:16 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (set_path): New function, from the heart of
+	execute_cd.  (open_connection): Insist on using a proper path
+	segment (trailing and leading slashes). Use set_path.
+
+	* src/commands.c (execute_cd): Use set_path.
+
+Fri Mar  3 23:16:37 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* lib/string_utils.h (SAFE_FREE): New macro, copy of HTTP_FREE.
+
+Fri Mar  3 22:37:53 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c: Don't include inttypes.h.
+	(fe_transfer_progress): Use plain progress bar if total file size
+	is not known.
+
+Tue Feb 29 19:27:43 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cmdline.c (gettoken): Ignore everything after a '#' in
+	non-quoted text.
+
+Tue Feb 29 19:26:50 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (fe_login): Print auth required message on a new
+	line if we are doing a pretty progress bar.
+
+Tue Feb 22 23:43:05 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in: Bumped version to 0.12.0.
+
+Tue Feb 22 23:40:37 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/davfetch.c (dav_fetch): Don't return PROTO_FAILED.
+
+Tue Feb 22 00:15:10 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c [!HAVE_LIBREADLINE] (readline): Simple readline()
+	replacement.
+
+Mon Feb 21 23:21:09 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/commands.c (out_handle): New function.  (out_failed):
+	Removed function.  (many): Replaced calls to out_success +
+	out_failed with out_handle.
+
+Mon Feb 21 23:17:21 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (sub_timeval, pretty_progress_bar): New functions.
+	(fe_transfer_progress): Pretty or plain progress bars.
+
+Mon Feb 21 23:14:07 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/httpdav.c (http_request) [HTTP_HANDLE_ERROR]: New macro.
+	Write meaningful error string in some cases.  Return PROTO_AUTH if
+	status is 401.  (http_get): Pass request structure to get
+	callback.  (http_get_callback): Pass true response body length to
+	fe_transfer_progress.
+
+Thu Feb 17 18:15:59 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/davlocks.c (dav_lock): Lower-case "I" in "infinity" for the
+	Depth: header.
+
+Thu Feb 17 16:52:46 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/socket.c (read_line): Use sock_recv.  (transfer): Call
+	fe_transfer_progress at end of transfer.
+
+Thu Feb 17 15:16:45 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/commands.c (compare_alpha, sort_files_list): New functions.
+	(execute_ls): Use them.
+
+Wed Feb 16 17:50:52 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/commands.c (out_start, out_success, out_failed): New
+	functions. (many places): Call them.	
+
+Wed Feb 16 17:07:26 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/httpdav.c (dav_207_write_errors): Fix segfault and new-lines
+	problem.
+
+Wed Feb 16 17:05:32 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/frontend.h (fe_login): Return integer value.
+
+	* src/httpdav.c: Return fe_login value.
+
+	* src/cadaver.c (fe_login): Return error if readline() returns
+	NULL, else success.
+
+Wed Feb 16 17:03:19 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/davfetch.c (fetch_free): Fix segfault.
+
+Wed Feb 16 17:01:23 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* lib/string_utils.h (STRIP_EOL): Use strrchr rather than strchr.
+
+Wed Feb 16 16:27:47 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/davlocks.c (dav_lock_using_resource): Check whether resource
+	is the child of a depth-infinity collection lock.
+	(dav_locklist_free): New function.
+
+Wed Feb 16 16:24:21 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cmdline.c (parse_command): Use output() for "Matching..."
+	message.
+
+Wed Feb 16 16:23:34 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (main): Quit if getenv("HOME") fails.
+
+Wed Feb 16 16:22:57 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.[ch]: Renamed globscope to parmscope.
+
+Wed Feb 16 15:37:27 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c: Added out_state, removed transfer_state.
+	(output): New function.  (fe_*): Rewritten to use out_state.
+
+	* src/commands.c (everywhere): Use output() for output messages.
+	(out_handle): Easy handling of output messages using output().
+
+Wed Feb 16 15:18:03 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/httpdav.c (dav_mkcol): Got rid of MKDIR/dummy PUT.
+
+Sat Feb 12 16:42:12 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/httpdav.c (http_request): Set error string if the connection
+	cannot be opened.
+
+Fri Feb 11 17:39:46 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/httpdav.c (dav_mkcol): Back out bad http_request_end call.
+
+Fri Feb 11 17:25:54 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* cadaver.spec.in: RPM specfile from Lee Mallabone
+	<lee0@callnetuk.com>.
+
+Fri Feb 11 17:14:02 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/options.c: Added editor option.
+
+Fri Feb 11 17:09:34 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c: Added dav_collection global. (init_readline): New
+	function.  (parse_args): Allow the connection to stay open if
+	previously opened.  (read_command): Use '?' in prompt if
+	dav_collections is false, else '>'.  (execute_command): More
+	descriptive help message when the needs_connection precondition
+	fails.  (completion): New function.  (init_options): New function.
+	(main): Call init_options and init_readline appropriately.
+
+Fri Feb 11 13:39:08 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/davlocks.c: Store a list of locks to be submitted in the If:
+	header.  (dav_locklist_add, dav_locklist_find): New functions.
+	(dav_lock_using_resource, dav_lock_using_parent): Manipulate the
+	lock list, never submit a lock twice.  (dav_lock_using_resource):
+	Submit the locktoken for a depth-infinity collection lock which is
+	a parent of the given resource.  (dav_lock): Pass back the correct
+	lock timeout and depth.  (dav_lock_ifheader): Build the header
+	from the lock list.
+
+Fri Feb 11 13:35:23 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/commands.c (clever_path): Free temporary variable.
+	(execute_pwd): New function.  (command_generator): New function,
+	command name geneator for readline completion.  (format_time,
+	display_ls_line): New functions.  (execute_ls): Use
+	display_ls_line.  (get_depth): "infinity" not "infinite".
+	(run_editor):  Use editor option.
+
+Thu Feb 10 19:59:58 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/httpdav.c (http_request_init): Default to a want_body of
+	2xx.  (http_request): Presume we always have a want_body callback.
+	(dav_mkcol): Always call http_request_end.
+
+Wed Feb  9 13:56:08 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* lib/string_utils.c (sbuffer_finish): New function.
+
+Wed Feb  9 13:20:35 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cmdline.c (parse_command): Free a token which was
+	glob-expanded.
+
+Wed Feb  9 13:14:23 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cmdline.c (davglob_closedir): Free context.
+
+Wed Feb  9 00:36:12 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/davlocks.c (dav_lock_discover, dav_lock): Send Content-Type
+	header with request.
+
+Tue Feb  8 15:06:55 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in: Bumped version to 0.11.0.
+
+Tue Feb  8 14:53:45 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (execute_command): Display incorrect # of
+	arguments message correctly if no short help for the command.
+
+Tue Feb  8 13:58:45 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/commands.c (execute_edit): Free locks properly. If locking
+	fails, return.
+
+Tue Feb  8 13:54:49 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/davlocks.c (dav_lock_using_parent): Do nothing if URI has no
+	parent.
+
+Tue Feb  8 13:13:11 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in: Added lib/rpmatch.o and lib/yesno.o.
+
+	* lib/rpmatch.c, lib/yesno.c: New files.	
+
+Tue Feb  8 13:12:15 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/options.c (display_options): Display 'unset' for string
+	options.
+
+Tue Feb  8 13:11:26 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/httpdav.c (http_get): Pass flags and mode to open() as
+	arguments.
+
+Tue Feb  8 13:00:30 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/commands.c: (execute_cat): Only display error message if the
+	download fails.  (execute_edit, run_editor): New functions.
+	(execute_lock): Don't display locktoken.  (execute_get): Use new
+	http_get arguments.
+
+Sat Feb  5 11:07:38 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (parse_args): Accept an http: URL, parse out
+	the hostport and abspath segments.
+
+Wed Feb  2 22:14:44 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/davfetch.c (check_context, endelm_props, dav_fetch): Added
+	DAV:redirectref resource type.
+
+Wed Feb  2 22:10:27 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/commands.c (execute_delete): Friendly message if the user
+	tries to use 'rm' on a collection.
+
+Wed Feb  2 21:55:29 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/davlocks.c (endelm_locks, parse_timeout): Parse lock timeout
+	correctly.  (dav_lock_free): New function.  (dav_lock,
+	dav_lock_discover): Call http_request_end.
+
+Wed Feb  2 21:49:07 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/httpdav.c (http_request): Don't send a newline after the
+	request body.  Inverted response values for
+	http_auth_verify_response and http_auth_challenge.  (dav_mkref,
+	dav_chref, dav_rmref): Removed functions.
+
+Sun Jan 30 21:37:31 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/commands.c (simple_put, execute_get): Better error messages.
+
+Sat Jan 29 20:25:10 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* lib/string_utils.[ch]: Made sbuffer_grow private.
+
+Sat Jan 29 20:23:24 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* lib/string_utils.[ch]: sbuffer is a pointer to a private type.
+	(sbuffer_size, sbuffer_data): New functions.
+
+	* src/davlocks.c, src/httpdav.[ch]: Changed for above.
+
+Sat Jan 29 18:25:58 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* lib/string_utils.h (CONCAT*): Check for malloc() returning NULL.
+
+Sat Jan 29 18:07:58 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (init_rcfile): Only display error message if
+	rcfile exists bug cannot be opened.
+
+Sat Jan 29 16:51:54 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* lib/string_utils.[ch]: Added sbuffer handling, renamed from
+	http_buffer, made type definition private.
+
+	* src/httpdav.[ch]: Converted from http_buffer to sbuffer.
+
+	* src/davlocks.c: Similarly.
+
+Sat Jan 29 16:19:30 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* lib/string_utils.c (pair_string_free, split_string_free): Free
+	the array too.
+
+Sat Jan 29 16:10:42 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/davfetch.c (dav_fetch, check_context): Ignore unknown
+	elements in DAV:prop.
+
+Sat Jan 29 13:53:53 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/httpdav.[ch]: Added http_webdav_locking global.
+	(http_options): Set http_webdav_locking if server reports class 2
+	compliance.
+
+Mon Jan 24 21:45:15 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/options.[ch]: Simplified options interface.
+
+	* src/cadaver.c, src/commands.c: Use it.
+
+Mon Jan 24 21:21:58 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/davprops.c (dav_prop_getnames): Return PROTO_ERROR on
+	request error / non-207 return status.
+
+Mon Jan 24 21:21:13 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/common.h: bool clashes with curses bool, redefine as char
+	for the time being.
+
+Mon Jan 24 21:19:02 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/commands.c (execute_propnames): Cosmetics.  (getowner):
+	Return lock owner from option.
+
+Mon Jan 24 21:15:56 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c: Update help message for 'copy'.  (init_signals):
+	Global scope not local.  (init_rcfile): New function.  (main): Set
+	lockowner to $USER@$HOSTNAME by default.  (fe_connection): Inline
+	reconnection messages properly when mid-upload.
+	(fe_transfer_progress, fe_login): Don't display anything when in
+	curses interface.
+
+Mon Jan 24 21:14:50 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/httpdav.c (http_parse_status, http_request): Use STRIP_EOL.
+
+Mon Jan 24 21:12:47 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in, config.h.in: Check for ncurses.h, define
+	HAVE_NCURSES_H appropriately.
+
+Mon Jan 24 21:09:36 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/davlocks.c (dav_lock_ifheader): Don't submit empty If:
+	headers.  (endelm_locks): Renamed from got_element.
+
+Mon Jan 24 21:05:29 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* lib/string_utils.h (STRIP_EOL): New macro.  (CONCAT[2-4]): Made
+	inline-safe.
+
+Tue Jan 18 14:45:36 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* libdav/ChangeLog: Started new ChangeLog.
+
+Wed Jan 12 20:43:05 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* libdav/hip_xml.c (hip_xml_currentline): New function.
+	[CURRENT_LINE]: Removed macro.  (start_element): Pass name and
+	atributes to start-element callback.  (everywhere): Changed many
+	debugging messages to use DEBUG_XMLPARSE for clearer output.
+
+	* libdav/dav_207.c (dav_207_getcurrentpropstat): New function.
+	(dav_207_startelm): Changed for startelm prototype.
+
+	* src/davfetch.c (dav_fetch): Use dav_207_gcp, and changed for
+	startelm prototype.
+
+	* src/davprops.c (startelm_getnames): Changed for startelm
+	prototype, and use dav_207_gcp.
+
+Wed Jan 12 20:19:12 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/davprops.c (dav_prop_getnames): Changed for 207 rejig.
+
+Wed Jan 12 20:12:16 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* libdav/http_utils.[ch]: Added 'struct http_status'.
+	(http_parse_statusline): New function.
+
+	* libdav/dav_207.[ch]: Added http_status structure to dav_propstat
+	and dav_response.  (dav_207_endelm): Parse DAV:status cdata into
+	status structure.
+
+Wed Jan 12 20:09:21 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* libdav/dav_207.[ch]: Renamed dav_207context to dav_207_parser.
+	(dav_207_init, dav_207_finish, dav_207_free): Changed as above.
+
+	* src/davfetch (dav_fetch): Changed as above.
+
+	* src/davlocks.c (dav_lock, dav_lock_discover): Changed as above.
+
+	* src/httpdav.c (init_207errors, finish_207errors): Changed as
+	above.
+
+Wed Jan 12 00:40:12 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/davprops.[ch]: New files. (dav_prop_getnames): New function.
+
+	* src/cadaver.[ch]: Added 'propnames' command
+
+	* src/commands.[ch] (execute_propnames): New function.
+
+Wed Jan 12 00:39:17 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/davfetch.c (dav_fetch): Added static to const members.
+
+Tue Jan 11 20:36:37 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* */*.[ch]: Added Y2K to copyright notices.
+
+Mon Jan 10 23:47:57 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in: Bumped version to 0.10.0.
+
+Mon Jan 10 23:40:32 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/davfetch.c (dav_fetch): Correct error handling.
+
+	* libdav/hip_xml.c (start_element): Use descriptive errors.
+
+Mon Jan 10 23:29:19 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/davlocks.c (dav_lock, dav_lock_discover): Rewritten for 207
+	response handling changes.
+
+	* libdav/dav_207.c (dav_207_init, dav_207_finish): Put the element
+	list on the end of the supplied one rather than the beginning.
+
+	* src/httpdav.[ch] (dav_207_write_errors): New function.
+
+Mon Jan 10 11:46:05 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* libdav/dav_207.[ch], src/davfetch.c, src/davlocks.c,
+	src/httpdav.[ch]: Renaming dav_xml_* to hip_xml_*.
+
+Mon Jan 10 11:29:34 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* libdav/hip_xml.[ch]: Renamed from dav_xml.[ch]. dav_xml_*
+	renamed to hip_xml_*. Implemented libxml SAX interface as
+	alternative to expat.  (everywhere): Use 'hip_xml_char' as
+	character type. (parse_element): Accept NULL attributes list.
+	(hip_xml_finish): Initialize expat or libxml push parser
+	appropriately.  (hip_xml_parse): Call expat or libxml parsing
+	function appropriately.  (CURRENT_LINE): New macro, returns
+	current parse line for given parser.  (hip_xml_parse_v): Cast
+	'const char *' input to 'const hip_xml_char *'.  (hip_xml_finish):
+	Free expat or libxml parser appropriately.
+
+	* Makefile.in, configure.in: Modified for file rename as above.
+
+	* configure.in: Check for libxml if no expat.
+
+	* config.h.in: Added HAVE_LIBXML.
+
+Sun Jan  9 21:06:48 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/davfetch.c (dav_fetch): Pass only 207 responses to
+	parser. Use parser error if parse failed.
+
+Thu Jan  6 19:50:02 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c: Renamed version() to execute_version.  Added
+	cmd_version.
+
+Tue Jan  4 10:58:55 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* libdav/dav_207.[ch] (dav_207_free): New function.
+
+Tue Jan  4 10:57:48 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* libdav/http_utils.h: Define min(x,y) macro.
+
+Tue Jan  4 10:54:53 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/httpdav.c (http_request): Finer grained control over whether
+	the response body callback is passed the body.  (init_207errors,
+	finish_207errors, dummy_check): New functions.  (dav_copy,
+	dav_mkcol, dav_move, http_delete): Use 207 error handling.
+
+Mon Jan  3 14:52:07 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/httpdav.h (dav_free_fileslist): New function.
+	(http_request_end) [USE_DAV_LOCKS]: Destroy the if_header buffer.
+
+	* src/davfetch.c (dav_free_fileslist): Implementation.
+	
+	* src/cmdline.c (davglob_opendir): Use it.
+
+	* src/commands.c (is_collection): Use it.
+
+	* src/davfetch.c (fetch_free): Fix leaks.
+
+Mon Jan  3 14:27:16 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/common.h (DEBUG_FATAL): New macro.
+
+Mon Jan  3 14:21:47 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* libdav/uri.c (uri_compare): Treat a URI with a trailing slash
+	and one with as equivalent.
+
+Mon Jan  3 14:19:03 2000  Joe Orton  <joe@orton.demon.co.uk>
+
+	* libdav/dav_xml.[ch]: Rewritten for multiple handlers.
+
+	* libdav/dav_207.[ch]: Implementation of generic 207 response
+	handling.
+
+	* src/davfetch.c: Reimplemented to use above.
+
+Fri Dec 31 01:12:56 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* libdav/dav_207.[ch]: New files.
+
+Thu Dec 30 19:19:53 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* lib/dirname.[ch]: Deprecated by uri_parent.
+
+Thu Dec 30 19:18:57 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/commands.c (clever_path): Use uri_parent.
+
+Thu Dec 30 19:18:19 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/davfetch.c (dav_fetch): Use dav_lock_using_resource.
+
+Thu Dec 30 19:15:59 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/davlocks.c (dav_lock_using_resource, dav_lock_using_parent):
+	New functions.
+
+	* src/httpdav.c (all methods): Indicate which resources the method
+	operates on, and whether it needs to read or write to them, using
+	above functions.
+
+Thu Dec 30 19:14:42 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* libdav/uri.h (uri_childof): Switched return values.
+	(uri_parent): New function.
+
+Thu Dec 30 13:52:44 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* libdav/uri.h (uri_has_trailing_slash): New function.
+
+	* src/commands.c (has_trailing_slash): Removed function.
+	(true_path, execute_lock): Use uri_ form.
+
+Thu Dec 30 13:29:33 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in: Bumped version to 0.9.0.
+
+Thu Dec 30 13:26:20 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/davlocks.c (execute_lock): Submit depth header.
+
+Thu Dec 30 13:23:32 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/commands.c (print_lock): New function.  (execute_discover,
+	execute_showlocks): Use it.
+
+Thu Dec 30 12:16:31 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* libdav/dav_xml.c (dav_xml_finish): Don't free the root state
+	twice.
+
+Thu Dec 30 12:03:04 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/commands.c (execute_discover): Handle PROTO_NONE return code
+	appropriately.
+
+Thu Dec 30 11:58:38 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* libdav/dav_xml.c: Added 'error' field to parser structure.
+	(parse_element): Write error description in failure cases.
+	(dav_xml_parse): Write expat error string if parse fails.
+
+	* src/protocol.h: Added new return code PROTO_NONE.
+
+	* src/davlocks.c (dav_lock_discover): Return PROTO_NONE if no
+	locks found.  Write parser error to http_error if parse failed.
+
+Thu Dec 30 11:01:36 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (main): Call init_locking and finish_locking.
+
+	* src/commands.c (finish_locking): New function.
+
+Thu Dec 30 10:57:54 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in: Added AC_HEADER_DIRENT, AC_TYPE_SIGNAL.
+
+	* config.h.in: Defines for above.
+
+	* src/commands.c (quit_handler): Return type RETSIGTYPE.
+
+Thu Dec 30 10:49:03 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/davlocks.[ch]: Removed lock_list.  (dav_lock_add,
+	dav_lock_remove, dav_lock_find): Pass lock list as argument.
+	(dav_lock_ifheader): Search whole lock list for matches.
+
+	* src/httpdav.[ch]: Added dav_lock_list global. (http_request,
+	dav_copy, dav_move): Pass dav_lock_list to ifheader.
+
+	* src/commands.c: Added lock_list global.  (init_locking): New
+	function.  (execute_lock, execute_unlock): Pass lock_list.
+
+Thu Dec 30 10:46:49 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/options.c (execute_unset): Allow passing no value to unset,
+	display error if handler returns NULL.  (do_debug): Return NULL if
+	no value passed.
+	
+Thu Dec 30 10:09:35 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/commands.c (get_timeout, get_lockscope, get_locktype): New
+	functions.  (execute_discover): Use above.  (getowner): Return "".
+	(execute_showlocks): New function.
+
+	* src/cadaver.[ch]: Added showlocks command.
+
+Wed Dec 29 17:52:46 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c: Added steal and discover commands.
+
+	* src/commands.[ch] (execute_steal, execute_discover): New
+	functions.
+
+	* src/davlocks.[ch] (dav_lock_discover): New function.
+
+Wed Dec 29 17:52:19 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (open_connection): Do allow the initial OPTIONS.
+
+Wed Dec 29 16:38:58 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/common.h: Added DEBUG_XMLPARSE debugging channel.
+	
+	* libdav/dav_xml.c: Use DEBUG_XMLPARSE for namespace handling etc.
+
+	* src/options.c: Added xmlparse debug option.
+
+Wed Dec 29 15:18:57 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/commands.c (execute_unlock): Don't accept zero-length
+	locktoken from user.
+
+Wed Dec 29 15:08:34 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* libdav/uri.[ch] (uri_compare, uri_childof): New functions.
+	
+	* src/davlocks.c (dav_lock_find): Use above, check for
+	infinite-depth locks.
+
+Wed Dec 29 15:05:38 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/commands.c (true_path, has_trailing_slash): New functions.
+	(execute_lock): Use above, set lock depth to infinite for
+	collections.  (execute_unlock): Use above.  (execute_rmcol): Force
+	trailing slash in resolve_path.
+
+Wed Dec 29 14:25:48 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/httpdav.c (dav_copy, dav_move) [USE_DAV_LOCKS]: Supply If:
+	header if any locks cover destination URI.
+
+Wed Dec 29 14:20:26 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c: Added lock and unlock commands.
+
+	* src/commands.[ch] (execute_lock, execute_unlock): New functions.
+
+	* src/davlocks.[ch]: New files, basic locking implementation.
+
+	* src/httpdav.c (http_request) [USE_DAV_LOCKS]: Get If: header for
+	any locked resource at Request-URI.
+
+	* src/options.c: Added 'locks' debug option.
+
+Wed Dec 29 14:20:07 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (parse_args): Fixed options parsing.
+
+Mon Dec 27 21:50:49 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in (OBJECTS): Updated for new sources.
+
+	* Makefile.in: Update deps for new sources.
+
+Mon Dec 27 21:49:58 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* libdav/dav_xml.c (dav_xml_finish): Free placeholder root
+	element.
+
+Mon Dec 27 21:46:11 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/davfetch.c: New file, reimplementation of dav_fetch()
+	using generic XML handling routines.
+
+	* src/httpdav.c: Removed all XML handling.  (dav_fetch,
+	dav_fetch_*, dav_xml_*): Removed.
+
+Mon Dec 27 21:45:44 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* libdav/uri.[ch]: New files.
+
+	* src/httpdav.c (uri_*): Removed functions.
+
+Mon Dec 27 21:44:35 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* libdav/http_utils.c (http_buffer_create): Create buffer
+	initially.
+
+	* libdav/http_utils.h (http_buffer_clear): Wipe buffer clean.
+
+Mon Dec 27 21:08:53 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* libdav/dav_xml.c (destroy_state): New function.  (exp_endelm,
+	dav_xml_finish): Use it.
+
+Mon Dec 27 21:07:58 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* libdav/http_utils.c (http_buffer_create): Initialize buffer to NULL.
+
+Mon Dec 27 19:01:12 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/httpdav.c (http_dateparse): Removed function.
+
+Mon Dec 27 18:11:18 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* libdav/dav_xml.[ch]: Generic WebDAV XML response handling.
+
+	* libdav/http_utils.[ch]: Utility functions.
+
+	* configure.in, Makefile.in: Build changes for above.
+
+Mon Dec 27 11:19:35 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in: Bumped version to 0.8.0.
+
+Mon Dec 27 11:12:17 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.[ch]: Added rmcol command.
+
+	* src/commands.c: Added rmcol alias. (execute_rmcol, multi_rmcol):
+	New functions.
+
+Mon Dec 27 11:06:33 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/commands.c (execute_delete): Refuse to delete collection
+	resources.
+
+Mon Dec 27 10:59:39 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/commands.c (is_collection): Check resource type properly.
+	(execute_ls): Modified for dav_fetch change.
+
+	* src/cmdline.c (davglob_opendir): Modified for dav_fetch change.
+	(davglob_stat): Use is_collection.
+	
+Mon Dec 27 10:57:48 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/httpdav.[ch] (dav_fetch, dav_fetch_gotresource): Added flag
+	to include/exclude resource at Request-URI in list of resources
+	returned by PROPFIND.
+
+Mon Dec 27 10:33:21 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* lib/glob.c: Fix the broken fix (Ulrich Drepper).
+
+Mon Dec 27 10:24:29 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in: Added check for libncurses if libcurses isn't
+	found.
+
+	* Makefile.in: Added 'install' target.
+
+Mon Dec 27 01:02:19 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/commands.c (dispatch, dispatch2): New functions.
+	(execute_{mkcol,delete}, simple_{copy,move}): Consistent output
+	using dispatch[2].
+
+Mon Dec 27 01:01:48 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* lib/glob.c: Only define __P if it's not already defined.
+
+Mon Dec 27 00:15:15 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/commands.c (display_help_message): Only display help message
+	if there is one.
+
+Thu Dec 23 01:25:50 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in: Bumped version to 0.7.3.
+
+Thu Dec 23 01:25:18 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* lib/glob.c: Make __P be ().
+
+Thu Dec 23 01:13:30 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c: Cast the handler value to (void *) to quieten 
+	some compiler warnings on SunOS cc.
+
+Thu Dec 23 00:21:06 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* lib/glob.c: Moved the __glob_pattern_p prototype below glob.h so
+	we have __P.
+
+	* configure.in, config.h.in: Added checks for many dir*.h's. Added
+	fnmatch check.
+
+	* src/httpauth.c: snprint.h->snprintf.h, typo fixed.
+
+	* lib/fnmatch.[ch]: New files, needed by glob().
+
+Wed Dec 22 23:56:39 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in: Bumped version to 0.7.1.
+
+Wed Dec 22 23:49:15 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/commands.c, src/cadaver.c, src/httpauth.c [!HAVE_SNPRINTF]:
+	Include snprintf.h.
+
+	* configure.in: Add check for stdarg.h.
+
+	* Makefile.in: Pick up the correct CC from configure.
+
+Wed Dec 22 21:03:38 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in: Bumped version to 0.7.0.
+
+Wed Dec 22 20:58:03 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c: 'copy' takes multiple arguments.
+
+	* src/commands.c (do_copymove): Handler for multiple-arg
+	copy/move.  (multi_move): Use it.  (multi_copy): New function.
+
+Wed Dec 22 20:15:23 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.[ch]: Added mget, mput commands.
+
+	* src/commands.[ch] (simple_put, multi_mget, multi_mput): New
+	functions.
+
+Wed Dec 22 19:56:05 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in (LIBOBJS): Added lib/glob.o
+
+Wed Dec 22 19:54:57 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/options.c: Added "files" debugging option, for debugging
+	the globbing functions.
+
+Wed Dec 22 19:47:56 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.[ch]: Added globbing scope (local,remote,none) to
+	commands.
+
+	* src/cmdline.c (parse_command): Removed old globbing interface.
+	Glob locally or remotely according to the scope of the command.
+
+Wed Dec 22 18:41:55 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cmdline.c [ENABLE_FULL_GLOBBING]: Proper remote filename
+	globbing.  (davglob_{opendir,readdir,closedir,stat,errfunc}): New
+	functions.  (parse_command): Use glob to expand globs.
+
+Wed Dec 22 18:38:05 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/commands.c (execute_ls): Free the resource filename after
+	displaying it.  (simple_move, execute_copy): Display status
+	message on the same line as action message.
+
+Wed Dec 22 18:37:09 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/httpdav.c (dav_fetch): Free the temporary resource store
+	when we're done.
+
+Wed Dec 22 18:31:31 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (execute_command): Don't leak the tokens list.
+
+Wed Dec 22 18:19:14 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/httpdav.c (dav_fetch): Free the resource name of the root
+	collection, which we skip.
+
+Wed Dec 22 18:13:51 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/httpdav.c (dav_fetch): Free the cdata buffer when we're done.
+
+Wed Dec 22 18:07:11 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/httpdav.c (dav_xml_endelm): Free namespace name/value
+	strings too, we were leaking them.
+
+Wed Dec 22 17:37:15 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* lib/glob.c: Define SHELL.
+
+Wed Dec 22 17:25:44 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* lib/glob.[ch]: Added from glibc-2.1.2. Modified to pass down
+	alternate dirfuncs correctly, and to build cleanly outside of
+	glibc source tree.
+
+Tue Dec 21 21:30:38 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in: Bumped version to 0.6.0.
+
+Tue Dec 21 21:10:39 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* Makefile.in (again): Added new target.
+
+Tue Dec 21 21:04:05 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* doc/cadaver.1: Added skeleton man page.
+
+Tue Dec 21 20:44:25 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/options.c: Added help message for debug options. Added
+	cleartext debug option.  (execute_set): Display help message when
+	no value given for handled debug options.  (execute_set):
+	Likewise.
+
+Tue Dec 21 20:40:41 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c: Removed command_names array. (get_command):
+	Removed function.
+
+	* src/command.c: Added command_names array. (get_command): Added
+	function. (execute_help): Optionally takes one argument.
+
+Sun Dec 19 02:21:19 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (execute_command): Say 'no arguments' instead of
+	'at most 0 arguments'.
+
+Sun Dec 19 01:47:01 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* INSTALL: Added generic install file.
+
+Sun Dec 19 01:33:04 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/commands.[ch] (execute_debug): Removed function.
+
+	* src/cadaver.[ch]: Removed cmd_debug.
+
+Thu Dec 16 17:10:51 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cmdline.[ch], src/commands.[ch], src/options.[ch],
+	src/cadaver.h: New files.
+
+	* src/cadaver.c: Split out command execution, command-line parser
+	interface, and options handling.
+
+	* configure.in (OBJECTS): Added new files.
+
+	* Makefile.in: Added dependancies for new files.
+
+Thu Dec 16 16:58:01 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c: Options implemented: boolean or specific handler.
+	(execute_set, execute_unset): Altered accordingly.  (set_debug,
+	unset_debug, disp_debug, do_debug): Handling for 'debug' option.
+	Path handling: if path is NULL, no path available.
+	(read_command, close_connection, open_connection): Altered
+	accordingly
+
+Wed Dec 15 00:36:03 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (parse_args): Added --tolerant (-t) option.
+
+Tue Dec 14 23:58:24 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c: Placed command help in data structure.
+	(execute_help): Rewriten for this.  (execute_command): Display
+	help message if incorrect # of arguments given.
+
+Tue Dec 14 23:29:50 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (parse_args) [HAVE_ADD_HISTORY]: Add an 'open'
+	command into history list equivalent to the invocation arguments.
+
+Tue Dec 14 23:28:24 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* lib/string_utils.h: Added CONCAT4.
+
+Tue Dec 14 23:08:41 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (execute_set, display_options): New functions.
+	(execute_lls): Takes multiple arguments.  (execute_cd): Tolerate
+	non-WebDAV collections if 'tolerant' option is set.
+	(parse_command): Only try to expand globs if we have a connection.
+
+Sat Dec 11 18:54:45 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c: Fixed quitting.
+
+Sat Dec 11 17:07:29 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (multi_move, simple_move, map_multi): New
+	functions.  (multi_{mkcol,delete,cat,less}): New functions.
+	(is_collection): New function.  (execute_cd): Use is_collection.
+	(execute_move): Removed function.  (has_glob_pattern): New
+	function.  (parse_command): Use has_glob_pattern.
+
+Sat Dec 11 14:42:24 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (parse_args): Handle path properly.
+
+Sat Dec 11 14:40:29 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* Makefile.in: Added clean target.
+
+Sat Dec 11 02:13:07 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (open_connection): Use execute_cd to check for
+	DAV-enabled collection.
+
+Sat Dec 11 02:04:43 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (execute_cd): Moved set_path logic here.  Check
+	for DAV-enabled collection using PROPFIND/depth=0.
+
+Sat Dec 11 01:53:30 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/httpdav.c (dav_fetch): Take depth argument (0,1,infinite).
+
+Sat Dec 11 01:15:32 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (gettoken, parse_command): New command-line
+	parser.  Expands globs where appropriate using dav_fetch.
+	(execute_command): Modified to use parse_command.
+
+	* src/cadaver.c: Commands can take 'many' arguments (as an array).
+	(execute_command): Modified for this.  (execute_echo): Demo this.
+
+Fri Dec 10 17:42:03 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in: Bumped version to 0.5.0.
+
+Fri Dec 10 17:38:08 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (execute_ls): Don't leak the files list.
+
+Fri Dec 10 17:06:44 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (execute_command): Fix leaks.
+
+Fri Dec 10 16:42:02 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c: Lemons extracted, and other cosmetics.
+	(execute_lcd): If no argument given, change to home directory.
+
+Fri Dec 10 16:00:28 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (execute_put, execute_get): Close the bracket in
+	the output on failure.  (execute_command): Control flow slightly
+	simplified.  Trim zero-length strings from split_string return
+	list.
+
+Fri Dec 10 15:00:41 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (execute_command): Pluralize "incorrect arguments"
+	message correctly.
+
+Fri Dec 10 14:54:58 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c: Command structure specifies minimum and maximum
+	number of arguments, and a handler function. (execute_command):
+	Call handler function appropriately. (set_path): Save previous
+	path in old_path. Swap previous path and current if argument is
+	"-".
+
+Fri Dec 10 13:25:13 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* lib/string_utils.c (pair_string): Use split_string_c.
+
+Fri Dec 10 13:21:38 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* lib/string_utils.h (split_string_c): Like split_string except
+	gives the count of items too.
+
+Fri Dec 10 13:16:02 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c: Split command struct and name->command mappings.
+	(get_command): Modified accordingly.
+
+Tue Nov 30 01:28:14 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in: Bumped version to 0.4.0.
+
+Tue Nov 30 01:15:30 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c: Added exit,bye,h,? aliases. (execute_command):
+	Added 'lls', 'lpwd', 'lcd' commands. Better unknown command
+	message. (main): Print newline on CTRL-D.
+
+Wed Nov 24 17:08:42 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in: Bumped version to 0.3.4.
+
+Wed Nov 24 17:07:06 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in: Check for socket in -lsocket or -linet.
+
+Wed Nov 24 17:06:00 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in: Check for gethostbyname in -lnsl.
+
+Wed Nov 24 17:04:00 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (main): Quit when read_command returns NULL.
+
+Sun Nov 21 23:13:12 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in: Bumped version to 0.3.3.
+
+Sun Nov 21 23:10:57 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (resolve_path): Ignore '/../' as leading segment
+	in paths.
+
+Sat Oct  9 14:43:53 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in: Bumped version to 0.3.2.
+
+Sat Oct  9 14:32:18 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (resolve_path): Resolve filename of `.' as equal
+	to path, so `cat .' etc does get on current collection.
+
+Wed Oct  6 15:26:59 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (init_signals): Don't trap SIGTSTP.
+	(resolve_path): Remove `/./' segments.
+
+Fri Oct  1 17:20:39 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in: Bumped version to 0.3.1.
+
+Fri Oct  1 17:20:08 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* Makefile.in (.c.o): New target, should fix non-GNU make builds.
+
+Fri Oct  1 09:08:13 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in: Bumped version to 0.3.0.
+
+Thu Sep 30 22:47:42 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (init_netrc): New function.  (main) Call
+	init_netrc.  (open_connection): Check for username/password in
+	netrc entries.
+
+	* lib/netrc.c, lib/netrc.h: New files.
+	
+	* configure.in, config.h.in: netrc support, compile-time option.
+
+Thu Sep 30 19:03:44 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/httpdav.c (dav_move, dav_copy): Send the 'Overwrite: F'
+	header.
+
+Thu Sep 30 18:39:30 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (choose_pager, spawn_pager, execute_less,
+	execute_cat): 'cat' and 'less' commands implemented.
+	(quit_handler): Ignore signals when a child is running.
+	(execute_move, execute_copy, clever_path): 'move' and 'copy'
+	commands implemented.
+
+Thu Sep 30 16:25:22 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/httpdav.c (dav_copy): New function.
+
+Thu Sep 30 16:17:49 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/httpdav.c (http_request): Don't pass a second 401 challenge
+	on to the auth code.
+
+Thu Sep 30 15:48:01 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c: Updated help string.  Use collection/resource not
+	directory/file when talking about the server.  Allow opening
+	connections with no specific path, defaulting to '/'.
+
+Thu Sep 30 15:42:52 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* Makefile.in: Added dependancies.
+
+Thu Sep 30 15:35:05 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* config.h.in, configure.in: Added history.h location,
+	add_history() presence.
+
+	* src/cadaver.c (main) [HAVE_ADD_HISTORY]: Use add_history.
+
+Thu Sep 30 15:33:33 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* configure.in: Bumped version to 0.2.0.
+
+Thu Sep 30 13:29:15 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (execute_put, execute_get, execute_mkcol,
+	execute_delete, resolve_path): New functions.
+
+Thu Sep 30 00:16:46 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c (parse_args): Added long options.
+
+Thu Sep 30 00:02:00 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/httpdav.c (http_give_creds): Modified for interactive
+	prompting. (dav_fetch): Modified for depth: infinite or
+	depth: 1.
+
+Thu Sep 30 00:00:44 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/*, lib/*, configure.in, config.h.in: Mostly ripped from
+	sitecopy.
+
+Wed Sep 29 23:59:31 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* Makefile.in, README: Initial version.
+
+Wed Sep 29 23:58:53 1999  Joe Orton  <joe@orton.demon.co.uk>
+
+	* src/cadaver.c: Initial version.
+

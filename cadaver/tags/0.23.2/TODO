@@ -1,0 +1,130 @@
+
+** Bugs **
+
+- mput will try to upload directories
+
+** Requested Features **
+
+From Jules <jules@jules.com>:
+> Now the request: I use gvim -f as my editor and it would be great if 
+> there was an option for Cadaver to upload the file on each :w (or a
+> switch in my ~/.cadaverrc). That way I wouldn't have to save and quit
+> gvim each time I wanted the file to go back on the server.
+
+** Definitely Required Features **
+
+- Abort download/uploads?
+- Places where a server request is made before an UI feedback is given after
+  running a command: do_copymove
+- Copy/move over existing file gives 412 failed. PROPFIND the destination
+  and prompt/fail (option!).
+- restart downloads/uploads if they time out: use byte ranges? 
+- If PUT in 'edit' sequence fails, offer to save locally (idea from Lee M)
+- redirectref: What command to use? 'ln' == HARD links == DAV BIND !=
+  DAV refres. 'alias' might be good, since it is like Apache's Alias
+  directive, and is equivalent. Or 'mkref', like the old spec had MKREF.
+- 'rget' and 'rput' to do recursive get/put: mkcol/mkdir where necessary
+  ...use infinite-depth PROPFIND?
+- configurable sort order of 'ls' response
+- the need for some kind of resource state caching is increasing: 
+  remote glob expansion needs it. we need to know whether ANY resources
+  we act on are collections to do locking properly, so locking needs it too.
+  we really want to do this is a little hash table, indexed by URI, which
+  is only used for one command execution cycle:
+   parse -> expand globs -> add trailing slashes -> execute
+  We are very chatty over the wire at the moment.
+  One way of implementing this would be on TOP of neon (i.e., cache the 
+  decoded RESULTS of the PROPFIND).  Another way to do this would be
+  INSIDE of neon: cache (like a normal Web browser caches stuff) the 
+  PROPFIND response entity-body and supply that on demand.  But the RFCs
+  say no-go to caching PROPFINDs, so probably not an option.
+- Test progress bar over slow links.
+    - Show activity with a spinning bar |/-\
+    - Bytes done / todo as human-readable strings: 15k/200k
+    - Maybe a speed too, but these are often misleading/badly calculated
+    - Danger of information overload.
+
+  Download  [===============>            ] 88% (15K/2Mb) at 2.5Kb/s /
+
+- Some better handling of mv/cp over same resource: 'mv foo foo' could
+  give better error.
+- ls is inflexible, should take multi-args, maybe not default to 'ls -l'
+  style... allow different properties to be displayed.
+  would be ultra-swish: dav> dcls
+  Type  Name             Title
+  Res   rfc2518.txt      HTTP Extensions for Distributed Authoring -- WEBDAV
+  Res   rfc2616.txt      Hypertext Transfer Protocol -- HTTP/1.1
+  Completely configurable fields/widths/orders would be nice.
+  It would be rather groovy to have a DAV-enabled Dublin-Core indexed RFC archive.
+- properties: display all... display from namespace 
+  (draft-stracke-webdav-propfind-space)... display Dublin Core...
+  set specific. Lots of scope.
+- verbosity level for connection status messages
+- man page
+- PROPFIND issues, try http://sandbox.xerox.com:8080/joe.orton/
+
+** Longer-term Required Features **
+
+- DASL searching, redirect references, ordered colls, binding... 
+  some server support for the last three would be nice first ;)
+  We have better XML response support now, so these shouldn't be quite
+  such a beach to implement.
+
+** Code Issues **
+
+- Maybe put a union in struct command to get better typesafeness...
+  the Apache 2 config uses some GCC trickery to help.
+- set_path/is_collection is screwy.
+- may have to consider some "proper" URI handling, i.e., using a URI
+  ADT... this is bothersome, since thus far, we have managed to cope
+  with just using strings (i.e. the absPath segment), which makes for
+  a nice simple, efficient, easy-to-use API.
+- should probably get rid of the global state in cadaver.c/commands.c etc
+- Better mapping between aliases and commands: ideally, the aliases would
+  be declared statically in the command structure, but I can't see any
+  way to do this in C. It would be nice to be able to do command->aliases
+  mapping easily, too.
+
+** WebDAV issues **
+
+** WebDAV Locking Issues **
+
+- 'capable' command, or something, for capability discovery.
+  this could be not specific to locking, doing OPTIONS too?
+- shared locks
+- put full URI in lock->uri
+- have locks follow MOVE's?
+
+** Possible features **
+
+- Have edit poll for changes, and PUT on modification?
+- Run a command from the command line, e.g.
+       cadaver --command="get asda.txt" http://www.wherever.com/some/where/
+- at the mo, 'cd' does a PROPFIND/depth0... could (optionally?) do a
+  PROPFIND/depth1 instead to save a round-trip, and cache the results.
+  ditto for globbing.
+- Generic mechanism for running commands locally (optionally, passing
+  a downloaded remote file?)... abstract out "edit" functionality, which
+  has two parts:
+     1) the LOCK -> (do stuff) -> UNLOCK  sequence
+     2) Download resource to temp file, execute command, passing temp file
+- could also interpret known status-codes with more friendly responses.
+  e.g. 423... 401... 404... maybe some extra explanation for 5xx responses,
+  since they tend to be "something is broken" type errors.
+- command options
+- color 'ls'
+- read sitecopyrc file for host/username/password+proxy
+- netrc files are a bit outdated... maybe extend the syntax
+  somewhat? Better, invent "~/.inetrc"? index by URL:
+   location http://www.wherever.com/mysite/
+     username joe
+     password secret
+   location ftp://ftp.server.com etc etc.
+  would be nice, can store different username/passwords for
+  different services then... imap:// too etc.
+
+** Misfeatures (a.k.a. known bugs) **
+
+- See INTEROP for known interoperability problems
+- rm * is a bit dangerous... 'interactive' option makes like -i option
+  to shell tools.
