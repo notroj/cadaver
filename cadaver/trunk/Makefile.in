@@ -12,6 +12,7 @@ exec_prefix = @exec_prefix@
 bindir = @bindir@
 mandir = @mandir@
 man1dir = $(mandir)/man1
+datarootdir = @datarootdir@
 datadir = $(prefix)/share
 docdir = $(prefix)/doc/cadaver
 
