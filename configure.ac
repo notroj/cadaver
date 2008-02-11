@@ -1,7 +1,7 @@
 dnl configure script
 
 AC_PREREQ(2.53)
-AC_INIT(cadaver, 0.23.0, cadaver@webdav.org)
+AC_INIT(cadaver, 0.23.1, cadaver@webdav.org)
 
 AC_CONFIG_SRCDIR(src/cadaver.c)
 AC_CONFIG_HEADER(config.h)
@@ -33,7 +33,7 @@ AC_ARG_ENABLE(netrc,
 AC_HELP_STRING([--disable-netrc], [enable .netrc support]),,
 enable_netrc=yes)
 
-NE_REQUIRE_VERSIONS([0], [27])
+NE_REQUIRE_VERSIONS([0], [27 28])
 
 dnl Don't enable zlib or ACL support in neon
 NEON_WITHOUT_ZLIB

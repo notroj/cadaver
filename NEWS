@@ -1,4 +1,7 @@
-Changes in reelase 0.23.0:
+Changes in release 0.23.1:
+* Update to neon 0.28.0.
+
+Changes in release 0.23.0:
 * Update to neon 0.27.0; drop support for older versions of neon.
 * Fix "search contains" (thanks to Jack Bates)
 * Add DESTDIR support to "make install" (Dr Volker Zell)
