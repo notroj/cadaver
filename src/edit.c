@@ -1,6 +1,6 @@
 /* 
    cadaver, command-line DAV client
-   Copyright (C) 1999-2007, Joe Orton <joe@manyfish.co.uk>, 
+   Copyright (C) 1999-2008, Joe Orton <joe@manyfish.co.uk>, 
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -100,8 +100,8 @@ static int is_lockable(const char *uri)
     return caps.dav_class2;
 }
 
-#ifndef _POSIX_PATH_MAX
-#define _POSIX_PATH_MAX (256)
+#ifndef PATH_MAX
+#define PATH_MAX (256)
 #endif
 
 /* TODO: this is great big heap of steaming trout.  */
@@ -114,7 +114,7 @@ void execute_edit(const char *remote)
     char *real_remote;
     unsigned int can_lock; /* can we LOCK it? */
     struct ne_lock *lock = NULL;
-    char fname[_POSIX_PATH_MAX] = "/tmp/cadaver-edit-XXXXXX";
+    char fname[PATH_MAX] = "/tmp/cadaver-edit-XXXXXX";
     const char *pnt;
     int fd;
     int is_checkout, is_checkin;
@@ -138,8 +138,8 @@ void execute_edit(const char *remote)
      * so the editor can have a stab at the content-type. */
     pnt = strrchr(real_remote, '.');
     if (pnt != NULL && strchr(pnt, '/') == NULL) {
-	strncat(fname, pnt, _POSIX_PATH_MAX);
-	fname[_POSIX_PATH_MAX-1] = '\0';
+	strncat(fname, pnt, PATH_MAX);
+	fname[PATH_MAX-1] = '\0';
     }
 
     fd = cad_mkstemp(fname);
