@@ -1,6 +1,6 @@
 /* 
    'ls' for cadaver
-   Copyright (C) 2000-2004, 2006, Joe Orton <joe@manyfish.co.uk>, 
+   Copyright (C) 2000-2004, 2006, 2008, Joe Orton <joe@manyfish.co.uk>, 
    except where otherwise indicated.
                                                                      
    This program is free software; you can redistribute it and/or modify
@@ -121,7 +121,7 @@ static void display_ls_line(struct resource *res)
 	exec_char = res->is_executable ? '*' : ' ';
 	/* 0: no vcr, 1: checkin, 2: checkout */
 	vcr_char = res->is_vcr==0 ? ' ' : (res->is_vcr==1? '>' : '<');
-	printf("%5s %c%c%-29s %10" NE_FMT_TIME_T "  %s\n", 
+	printf("%5s %c%c%-29s %10" FMT_DAV_SIZE_T "u  %s\n", 
 	       restype, vcr_char, exec_char, name,
 	       res->size, format_time(res->modtime));
     }
@@ -229,8 +229,14 @@ static void results(void *userdata,
     if (modtime)
 	newres->modtime = ne_httpdate_parse(modtime);
 
-    if (clength)
-	newres->size = atoi(clength);
+    if (clength) {
+        char *p;
+
+        newres->size = DAV_STRTOL(clength, &p, 10);
+        if (*p) {
+            newres->size = 0;
+        }
+    }
 
     /* is vcr */
     if (checkin) {
