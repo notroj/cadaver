@@ -1046,7 +1046,7 @@ static void pretty_progress_bar(ne_off_t progress, ne_off_t total)
 	putchar((n<len-1)?'=':
 		 (n==(len-1)?'>':' '));
     }
-    printf(_("] %5.1f%% of %" NE_FMT_OFF_T " bytes"), pc*100, total);
+    printf(_("] %5.1f%% of %" NE_FMT_NE_OFF_T " bytes"), pc*100, total);
     fflush(stdout);
 }
 
