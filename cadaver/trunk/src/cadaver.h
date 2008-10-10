@@ -1,6 +1,6 @@
 /* 
    cadaver, command-line DAV client
-   Copyright (C) 1999-2005, Joe Orton <joe@orton.demon.co.uk>
+   Copyright (C) 1999-2005, 2008, Joe Orton <joe@orton.demon.co.uk>
                                                                      
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -121,11 +121,26 @@ enum resource_type {
     resr_error
 };
 
+#ifdef HAVE_UNSIGNED_LONG_LONG
+typedef unsigned long long dav_size_t;
+#define FMT_DAV_SIZE_T "ll"
+#ifdef HAVE_STRTOULL
+#define DAV_STRTOL strtoull
+#endif
+#else
+typedef unsigned long dav_size_t;
+#define FMT_DAV_SIZE_T "l"
+#endif
+
+#ifndef DAV_STRTOL
+#define DAV_STRTOL strtol
+#endif
+
 struct resource {
     char *uri;
     char *displayname;
     enum resource_type type;
-    size_t size;
+    dav_size_t size;
     time_t modtime;
     int is_executable;
     int is_vcr;    /* Is version resource. 0: no vcr, 1 checkin 2 checkout */
