@@ -60,6 +60,10 @@ int cad_mkstemp(char *template);
 #define OPEN_BINARY_FLAGS 0
 #endif
 
+#ifndef O_LARGEFILE
+#define O_LARGEFILE (0)
+#endif
+
 #if !HAVE_STRERROR && !defined(strerror)
 char *strerror (int errnum);
 #endif

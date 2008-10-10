@@ -965,7 +965,7 @@ static void execute_get(const char *remote, const char *local)
 	filename = ne_strdup(local);
     }
     {
-	int fd = open(filename, O_CREAT|O_WRONLY|O_TRUNC|OPEN_BINARY_FLAGS, 
+	int fd = open(filename, O_CREAT|O_WRONLY|O_TRUNC|OPEN_BINARY_FLAGS|O_LARGEFILE, 
                       0644);
 	output(o_download, _("Downloading `%s' to %s:"), real_remote, filename);
 	if (fd < 0) {
@@ -987,7 +987,7 @@ static void execute_get(const char *remote, const char *local)
 
 static void simple_put(const char *local, const char *remote)
 {
-    int fd = open(local, O_RDONLY | OPEN_BINARY_FLAGS);
+    int fd = open(local, O_RDONLY | OPEN_BINARY_FLAGS | O_LARGEFILE);
     output(o_upload, _("Uploading %s to `%s':"), local, remote);
     if (fd < 0) {
 	output(o_finish, _("Could not open file: %s\n"), strerror(errno));
