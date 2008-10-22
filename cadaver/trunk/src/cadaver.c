@@ -90,6 +90,8 @@ char *proxy_hostname;
 int proxy_port;
 char *server_username = NULL, *server_password = NULL;
 
+char *rcfile;
+
 /* Current session state. */
 struct session session;
 
@@ -128,9 +130,11 @@ static void usage(void)
 "Usage: %s [OPTIONS] http://hostname[:port]/path\n"
 "  Port defaults to 80, path defaults to '/'\n"
 "Options:\n"
-"  -t, --tolerant   Allow cd/open into non-WebDAV enabled collection.\n"
-"  -V, --version    Display version information.\n"
-"  -h, --help       Display this help message.\n"
+"  -t, --tolerant            Allow cd/open into non-WebDAV enabled collection.\n"
+"  -r, --rcfile=FILE         Read script from FILE instead of ~/.cadaverrc.\n"
+"  -p, --proxy=PROXY[:PORT]  Use proxy host PROXY and optional proxy port PORT.\n"
+"  -V, --version             Display version information.\n"
+"  -h, --help                Display this help message.\n"
 "Please send bug reports and feature requests to <cadaver@webdav.org>\n"), progname);
 }
 
@@ -435,15 +439,17 @@ static void parse_args(int argc, char **argv)
 	{ "help", no_argument, NULL, 'h' },
 	{ "proxy", required_argument, NULL, 'p' },
 	{ "tolerant", no_argument, NULL, 't' },
+	{ "rcfile", required_argument, NULL, 'r' },
 	{ 0, 0, 0, 0 }
     };
     int optc;
-    while ((optc = getopt_long(argc, argv, "ehtp:V", opts, NULL)) != -1) {
+    while ((optc = getopt_long(argc, argv, "ehtp:r:V", opts, NULL)) != -1) {
 	switch (optc) {
 	case 'h': usage(); exit(-1);
 	case 'V': execute_about(); exit(-1);
 	case 'p': set_proxy(optarg); break;
 	case 't': tolerant = 1; break;
+	case 'r': rcfile = strdup(optarg); break;
 	case '?': 
 	default:
 	    printf(_("Try `%s --help' for more information.\n"), progname);
@@ -589,30 +595,35 @@ static void init_netrc(void)
 static int init_rcfile(void)
 {
     int ret = 0;
-    char *rcfile, buf[BUFSIZ];
+    char buf[BUFSIZ];
     struct stat st;
     FILE *f;
-    rcfile = ne_concat(getenv("HOME"), "/.cadaverrc", NULL);
-    if (stat(rcfile, &st) != 0) {
-	NE_DEBUG(DEBUG_FILES, "No rcfile.\n");
-    } else {
-	f = fopen(rcfile, "r");
-	if (f == NULL) {
-	    printf(_("Could not read rcfile %s: %s\n"), rcfile, 
-		   strerror(errno));
-	} else {
-	    for (;;) {
-		if (fgets(buf, BUFSIZ, f) != NULL) {
-		    ret = execute_command(ne_shave(buf, "\r\n"));
 
-		    if (ret != 0)
-		        break;
-		} else {
-		    break;
-		}
-	    }
-	    fclose(f);
+    if (rcfile == NULL) {
+	rcfile = ne_concat(getenv("HOME"), "/.cadaverrc", NULL);
+
+	if (stat(rcfile, &st) != 0) {
+	    NE_DEBUG(DEBUG_FILES, "No rcfile\n");
+	    free(rcfile);
+	    return 0;
 	}
+    }
+
+    f = fopen(rcfile, "r");
+    if (f == NULL) {
+        printf(_("Could not read rcfile %s: %s\n"), rcfile, 
+	   strerror(errno));
+    } else {
+	for (;;) {
+	    if (fgets(buf, BUFSIZ, f) != NULL) {
+		ret = execute_command(ne_shave(buf, "\r\n"));
+		if (ret != 0)
+		    break;
+	    } else {
+		break;
+	    }
+	}
+	fclose(f);
     }
     free(rcfile);
     return ret;
@@ -872,10 +883,10 @@ int main(int argc, char *argv[])
 
     init_signals();
     init_locking();
-
-    ret = init_rcfile();
     
     parse_args(argc, argv);
+
+    ret = init_rcfile();
 
     init_readline();
 
