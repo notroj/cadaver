@@ -2,7 +2,7 @@
 .SH NAME
 cadaver \- A command\-line WebDAV client for Unix. 
 .SH SYNOPSIS
-cadaver [-etrp[-r file][-p host[:port]]][-V][-h] http://hostname[:port]/path
+cadaver [-trp[-r file][-p host[:port]]][-V][-h] http://hostname[:port]/path
 .SH DESCRIPTION
 .B cadaver 
 supports file upload, download, on-screen display, namespace operations
@@ -21,8 +21,6 @@ a .netrc file (similar to
 .BR ftp (1)
 - see section "THE .netrc FILE" below).
 .SH OPTIONS
-.IP "-e, --expect100"
-Enable sending of `Expect: 100-continue' header.
 .IP "-t, --tolerant"
 Allow cd/open into non-WebDAV enabled collection; use if the server
 or proxy server has WebDAV compliance problems.
