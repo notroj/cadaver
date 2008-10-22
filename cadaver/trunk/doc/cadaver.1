@@ -2,7 +2,7 @@
 .SH NAME
 cadaver \- A command\-line WebDAV client for Unix. 
 .SH SYNOPSIS
-cadaver [-et][-V][-h] http://hostname[:port]/path
+cadaver [-etrp[-r file][-p host[:port]]][-V][-h] http://hostname[:port]/path
 .SH DESCRIPTION
 .B cadaver 
 supports file upload, download, on-screen display, namespace operations
@@ -26,6 +26,11 @@ Enable sending of `Expect: 100-continue' header.
 .IP "-t, --tolerant"
 Allow cd/open into non-WebDAV enabled collection; use if the server
 or proxy server has WebDAV compliance problems.
+.IP "-r, --rcfile=file"
+Use this rcfile rather than the default of 
+.I ~/.cadaverrc
+.IP "-p, --proxy=host[:port]"
+Connect using the proxy host "host" and optional proxy port "port".
 .IP "-V, --version"
 Display version information and exit.
 .IP "-h, --help"
@@ -159,7 +164,7 @@ Connects to a server called secure.example.com using SSL.
 .IP
 .SH FILES
 .IP "~/.cadaverrc"
-Individual user settings that can override cadaver defaults.
+Individual user settings that can override cadaver defaults and to script cadaver. Can be changed by the "--rcfile" option.
 .IP "~/.netrc"
 Login and initialization information used by the auto-login process. See
 section "THE .netrc FILE" for details.
