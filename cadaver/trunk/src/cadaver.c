@@ -82,22 +82,20 @@
 static netrc_entry *netrc_list; /* list of netrc entries */
 #endif
 
+/* Module-private state: */
 const char *lock_store_fn = NULL;
-
 static char *progname; /* argv[0] */
+static char *rcfile;
 
+/* Global state: */
 char *proxy_hostname;
 int proxy_port;
 char *server_username = NULL, *server_password = NULL;
-
-char *rcfile;
 
 /* Current session state. */
 struct session session;
 
 ne_ssl_client_cert *client_cert;
-
-/* Global options */
 
 int tolerant; /* tolerate DAV-enabledness failure */
 
