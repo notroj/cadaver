@@ -586,8 +586,9 @@ static void init_netrc(void)
 #endif
 }
 
-static void init_rcfile(void)
+static int init_rcfile(void)
 {
+    int ret = 0;
     char *rcfile, buf[BUFSIZ];
     struct stat st;
     FILE *f;
@@ -602,7 +603,10 @@ static void init_rcfile(void)
 	} else {
 	    for (;;) {
 		if (fgets(buf, BUFSIZ, f) != NULL) {
-		    execute_command(ne_shave(buf, "\r\n"));
+		    ret = execute_command(ne_shave(buf, "\r\n"));
+
+		    if (ret != 0)
+		        break;
 		} else {
 		    break;
 		}
@@ -611,6 +615,7 @@ static void init_rcfile(void)
 	}
     }
     free(rcfile);
+    return ret;
 }
 
 
@@ -867,7 +872,8 @@ int main(int argc, char *argv[])
 
     init_signals();
     init_locking();
-    init_rcfile();
+
+    ret = init_rcfile();
     
     parse_args(argc, argv);
 
