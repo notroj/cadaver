@@ -204,7 +204,7 @@ void execute_edit(const char *remote)
 		output(o_upload, _("Uploading changes to `%s'"), real_remote);
 		/* FIXME: conditional PUT using fetched Etag/modtime if
 		 * !can_lock */
-		if (out_handle(ne_put(session.sess, real_remote, fd))) {
+		if (out_handle(cadaver_put(session.sess, real_remote, fd))) {
 		    upload_okay = 1;
 		} else {
 		    /* TODO: offer to save locally instead */

@@ -985,6 +985,43 @@ static void execute_get(const char *remote, const char *local)
     free(filename);
 }
 
+/* internal version of ne_put since we might have to set
+ * Expect: 100 if told so by the options */
+int cadaver_put(ne_session *sess, const char *uri, int fd) 
+{
+    ne_request *req;
+    struct stat st;
+    int ret;
+
+    if (fstat(fd, &st)) {
+        int errnum = errno;
+        char buf[200];
+
+        ne_set_error(sess, _("Could not determine file size: %s"),
+                     ne_strerror(errnum, buf, sizeof buf));
+        return NE_ERROR;
+    }
+    
+    req = ne_request_create(sess, "PUT", uri);
+
+    if (get_bool_option (opt_expect100) != 0)
+	ne_set_request_flag(req, NE_REQFLAG_EXPECT100, 1);
+
+    ne_lock_using_resource(req, uri, 0);
+    ne_lock_using_parent(req, uri);
+
+    ne_set_request_body_fd(req, fd, 0, st.st_size);
+	
+    ret = ne_request_dispatch(req);
+    
+    if (ret == NE_OK && ne_get_status(req)->klass != 2)
+	ret = NE_ERROR;
+
+    ne_request_destroy(req);
+
+    return ret;
+}
+
 static void simple_put(const char *local, const char *remote)
 {
     int fd = open(local, O_RDONLY | OPEN_BINARY_FLAGS | O_LARGEFILE);
@@ -992,7 +1029,7 @@ static void simple_put(const char *local, const char *remote)
     if (fd < 0) {
 	output(o_finish, _("Could not open file: %s\n"), strerror(errno));
     } else {
-	out_result(ne_put(session.sess, remote, fd));
+	out_result(cadaver_put(session.sess, remote, fd));
 	(void) close(fd);
     }
 }
