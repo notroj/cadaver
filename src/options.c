@@ -425,13 +425,16 @@ void *get_option(enum option_id id)
 int get_bool_option(enum option_id id)
 {
     int *ret = get_option(id);
+    if (ret == NULL)
+	return 0;
     return *ret;
 }
 
 void set_bool_option(enum option_id id, int truth)
 {
     int *opt = get_option(id);
-    *opt = truth;
+    if (opt != NULL)
+	*opt = truth;
 }
 
 void set_option(enum option_id id, void *newval)
