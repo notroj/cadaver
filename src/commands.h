@@ -50,7 +50,4 @@ void out_start(const char *verb, const char *noun);
 void out_result(int ret);
 int out_handle(int ret);
 
-/* version of ne_put which can set "Expect: 100" if needed */
-int cadaver_put(ne_session *sess, const char *uri, int fd);
-
 #endif /* COMMANDS_H */
