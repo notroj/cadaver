@@ -378,6 +378,9 @@ void open_connection(const char *url)
 	}
     }
 #endif /* ENABLE_NETRC */
+#ifdef NE_SESSFLAG_EXPECT100
+	ne_set_session_flag(session.sess, NE_SESSFLAG_EXPECT100, get_bool_option(opt_expect100));
+#endif /* NE_SESSFLAG_EXPECT100 */
     session.connected = 0;
 
     ne_set_useragent(session.sess, "cadaver/" PACKAGE_VERSION);

@@ -88,7 +88,9 @@ static struct option {
     /* Booleans */
     B(tolerant, &tolerant, "Tolerate non-WebDAV collections"),
     B(overwrite, &overwrite, "Enable overwrite (e.g. on copy/move operations"),
+#ifdef NE_SESSFLAG_EXPECT100
     B(expect100, &enable_expect, "Enable use of 'Expect: 100-continue' header"),
+#endif /* NE_SESSFLAG_EXPECT100 */
     B(utf8, &presume_utf8, "Presume filenames etc are UTF-8 encoded"),
     B(quiet, &quiet, "Whether to display connection status messages"),
     B(searchall, &searchall, "Whether to search and display all props including dead props"),
@@ -147,6 +149,18 @@ static const struct {
     { "locks", NE_DBG_LOCKS },
     { NULL, 0 }
 };
+
+#ifdef NE_SESSFLAG_EXPECT100
+static void setunset_expect100(void)
+{
+    if (session.connected)
+	return;
+
+    ne_set_session_flag(session.sess, NE_SESSFLAG_EXPECT100, get_bool_option(opt_expect100));
+}
+#else
+#define setunset_expect100() {}
+#endif /* NE_SESSFLAG_EXPECT100 */
 
 static void display_options(void) 
 {
@@ -336,6 +350,7 @@ void execute_set(const char *opt, const char *newv)
 			printf("%s is a boolean option.\n", opt);
 		    } else {
 			*(int *)options[n].holder = 1;
+			setunset_expect100();
 		    }
 		    break;
 		case opt_string:
@@ -376,6 +391,7 @@ void execute_unset(const char *opt, const char *newv)
 		    printf("%s ia a boolean option.\n", opt);
 		} else {
 		    *(int *)options[n].holder = 0;
+		    setunset_expect100();
 		}
 		break;
 	    case opt_string:
@@ -433,8 +449,10 @@ int get_bool_option(enum option_id id)
 void set_bool_option(enum option_id id, int truth)
 {
     int *opt = get_option(id);
-    if (opt != NULL)
+    if (opt != NULL) {
 	*opt = truth;
+	setunset_expect100();
+    }
 }
 
 void set_option(enum option_id id, void *newval)
@@ -443,6 +461,7 @@ void set_option(enum option_id id, void *newval)
     for (n = 0; options[n].name != NULL; n++) {
 	if (options[n].id == id) {
 	    options[n].holder = newval;
+	    setunset_expect100();
 	    return;
 	}
     }
