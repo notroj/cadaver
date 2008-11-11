@@ -550,14 +550,16 @@ static void execute_mkcol(const char *name)
 static int all_iterator(void *userdata, const ne_propname *pname,
 			 const char *value, const ne_status *status)
 {
+    char *dnspace = utf8_decode(pname->nspace);
     char *dname = utf8_decode(pname->name);
     if (value != NULL) {
 	char *dval = utf8_decode(value);
-	printf("%s = %s\n", dname, dval);
+	printf("%s %s = %s\n", dnspace, dname, dval);
 	free(dval);
     } else if (status != NULL) {
-	printf(_("%s failed: %s\n"), dname, status->reason_phrase);
+	printf(_("%s %s failed: %s\n"), dnspace, dname, status->reason_phrase);
     }
+    free(dnspace);
     free(dname);
     return 0;
 }
