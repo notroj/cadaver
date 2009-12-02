@@ -33,7 +33,7 @@ AC_ARG_ENABLE(netrc,
 AC_HELP_STRING([--disable-netrc], [enable .netrc support]),,
 enable_netrc=yes)
 
-NE_REQUIRE_VERSIONS([0], [27 28])
+NE_REQUIRE_VERSIONS([0], [27 28 29])
 
 dnl Don't enable zlib or ACL support in neon
 NEON_WITHOUT_ZLIB
