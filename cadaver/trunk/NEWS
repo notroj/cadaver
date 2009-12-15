@@ -1,3 +1,6 @@
+Changes in release 0.23.3:
+* Update to neon 0.29.1.
+
 Changes in release 0.23.2:
 * Fix "make install" with NLS builds.
 
