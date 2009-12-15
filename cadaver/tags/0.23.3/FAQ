@@ -1,0 +1,43 @@
+
+Frequently Asked Questions
+--------------------------
+
+-> Why this horrible name? 
+
+It's a play on words: WebDAV - DAV - caDAVer. Gettit?
+
+-> Why not something... nicer?
+
+Suggestions are very welcome: if you can come up with something
+better, I'm willing to change the name.
+
+-> Why doesn't the "edit" command work with gvim?
+
+Because gvim forks and runs in the background by default.  Set the
+EDITOR environment variable to "gvim -f", or put in ~/.cadaverrc
+
+  set editor "gvim -f"
+
+to make the edit command work properly.
+
+(thanks to Joshua Penix <jpenix@projectdesign.com>)
+
+-> How do I read my HotMail e-mail using cadaver?
+
+Run:
+
+./cadaver -t http://law14.oe.hotmail.com/cgi-bin/hmdata/foobar@hotmail.com/folders/ACTIVE/
+
+replacing 'foobar' with your real account name. Login when prompted
+using your username (without @hotmail.com) and your password.  Then
+use 'ls' and you'll get a mailbox listing.  Use 'less' or 'cat' to
+display message contents. 'cd ..' to get a list of your folders.
+
+You MUST use the '-t' switch to cadaver since the HotMail servers
+support a specific subset of DAV operations.  You MUST also have
+built against libxml, otherwise you get XML encoding errors.
+
+-> That's a really horrible way of reading e-mail though
+
+Yup. Now go add WebDAV support to fetchmail.
+
