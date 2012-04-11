@@ -132,16 +132,17 @@ static void display_ls_line(struct resource *res)
 void execute_ls(const char *remote)
 {
     int ret;
-    char *real_remote;
+    char *real_remote, *escaped_path;
     struct resource *reslist = NULL, *current, *next;
 
     if (remote != NULL) {
-	real_remote = resolve_path(session.uri.path, remote, true);
+	escaped_path = resolve_path(session.uri.path, remote, true);
     } else {
-	real_remote = ne_strdup(session.uri.path);
+	escaped_path = ne_strdup(session.uri.path);
     }
+    real_remote = ne_path_unescape(escaped_path);
     out_start(_("Listing collection"), real_remote);
-    ret = fetch_resource_list(session.sess, real_remote, 1, 0, &reslist);
+    ret = fetch_resource_list(session.sess, escaped_path, 1, 0, &reslist);
     if (ret == NE_OK) {
 	/* Easy this, eh? */
 	if (reslist == NULL) {
@@ -150,7 +151,7 @@ void execute_ls(const char *remote)
 	    out_success();
 	    for (current = reslist; current!=NULL; current = next) {
 		next = current->next;
-		if (strlen(current->uri) > strlen(real_remote)) {
+		if (strlen(current->uri) > strlen(escaped_path)) {
 		    display_ls_line(current);
 		}
 		free_resource(current);
@@ -159,7 +160,8 @@ void execute_ls(const char *remote)
     } else {
 	out_result(ret);
     }
-    free(real_remote);
+    ne_free(real_remote);
+    free(escaped_path);
 }
 
 static void results(void *userdata, 
