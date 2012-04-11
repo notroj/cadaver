@@ -755,7 +755,8 @@ static char *escape_path(const char *p)
     return ne_path_escape(p);
 }
 
-/* Like resolve_path except more intelligent. */
+/* Like resolve_path except more intelligent. 'p' must be
+ * already URI-escaped; 'src' and 'dest' must not be. */
 static char *clever_path(const char *p, const char *src, 
 			 const char *dest)
 {
@@ -818,12 +819,14 @@ static void kill_pager(FILE *p)
 
 static void execute_less(const char *resource)
 {
-    char *real_res;
+    char *real_res, *unescaped_res;
     const char *pager;
     FILE *p;
     real_res = resolve_path(session.uri.path, resource, false);
+    unescaped_res = ne_path_unescape(real_res);
     pager = choose_pager();
-    printf(_("Displaying `%s':\n"), real_res);
+    printf(_("Displaying `%s':\n"), unescaped_res);
+    ne_free(unescaped_res);
     p = spawn_pager(pager);
     if (p == NULL) {
 	printf(_("Error! Could not spawn pager `%s':\n%s\n"), pager,
@@ -839,8 +842,11 @@ static void execute_less(const char *resource)
 
 static void execute_cat(const char *resource)
 {
+    char *unescaped_res;
     char *real_res = resolve_path(session.uri.path, resource, false);
-    printf(_("Displaying `%s':\n"), real_res);
+    unescaped_res = ne_path_unescape(real_res);
+    printf(_("Displaying `%s':\n"), unescaped_res);
+    ne_free(unescaped_res);
     if (ne_get(session.sess, real_res, STDOUT_FILENO) != NE_OK) {
 	printf(_("Failed: %s\n"), ne_get_error(session.sess));
     }
@@ -856,19 +862,26 @@ static void do_copymove(int argc, const char *argv[],
     dest = resolve_path(session.uri.path, argv[argc-1], true);
     if (getrestype(dest) == resr_collection) {
 	int n;
-	char *real_src, *real_dest;
+	char *real_src, *real_dest, *unescaped_dest;
+	unescaped_dest = ne_path_unescape(dest);
 	for(n = 0; n < argc-1; n++) {
 	    real_src = resolve_path(session.uri.path, argv[n], false);
-	    real_dest = clever_path(session.uri.path, argv[n], dest);
+	    real_dest = clever_path(session.uri.path, argv[n], unescaped_dest);
 	    if (strcmp(real_src, real_dest) == 0) {
+		char *unescaped_src, *unescaped_dst;
+		unescaped_src = ne_path_unescape(real_src);
+		unescaped_dst = ne_path_unescape(real_dest);
 		printf(_("%s: %s and %s are the same resource.\n"), v2,
-                       real_src, real_dest);
+                       unescaped_src, unescaped_dest);
+		ne_free(unescaped_dst);
+		ne_free(unescaped_src);
 	    } else {
 		(*cb)(real_src, real_dest);
 	    }
 	    free(real_src);
 	    free(real_dest);
 	}
+	ne_free(unescaped_dest);
     } else if (argc > 2) {
 	printf(_("When %s multiple resources, the last "
                  "argument must be a collection.\n"), v1);
@@ -886,13 +899,23 @@ static void do_copymove(int argc, const char *argv[],
 
 static void simple_move(const char *src, const char *dest) 
 {
-    output(o_start, _("Moving `%s' to `%s': "), src, dest);
+    char *unescaped_src, *unescaped_dest;
+    unescaped_src = ne_path_unescape(src);
+    unescaped_dest = ne_path_unescape(dest);
+    output(o_start, _("Moving `%s' to `%s': "), unescaped_src, unescaped_dest);
+    ne_free(unescaped_dest);
+    ne_free(unescaped_src);
     out_result(ne_move(session.sess, get_bool_option(opt_overwrite), src, dest));
 }
 
 static void simple_copy(const char *src, const char *dest) 
 {
-    output(o_start, _("Copying `%s' to `%s': "), src, dest);
+    char *unescaped_src, *unescaped_dest;
+    unescaped_src = ne_path_unescape(src);
+    unescaped_dest = ne_path_unescape(dest);
+    output(o_start, _("Copying `%s' to `%s': "), unescaped_src, unescaped_dest);
+    ne_free(unescaped_dest);
+    ne_free(unescaped_src);
     out_result(ne_copy(session.sess, get_bool_option(opt_overwrite), 
 		       NE_DEPTH_INFINITE, src, dest));
 }
@@ -944,8 +967,9 @@ char *resolve_path(const char *p, const char *filename, int iscoll)
 
 static void execute_get(const char *remote, const char *local)
 {
-    char *filename, *real_remote;
+    char *filename, *real_remote, *unescaped_remote;
     real_remote = resolve_path(session.uri.path, remote, false);
+    unescaped_remote = ne_path_unescape(real_remote);
     if (local == NULL) {
 	struct stat st;
 	/* Choose an appropriate local filename */
@@ -953,10 +977,11 @@ static void execute_get(const char *remote, const char *local)
 	    char buf[BUFSIZ];
 	    /* File already exists... don't overwrite */
 	    snprintf(buf, BUFSIZ, _("Enter local filename for `%s': "),
-		     real_remote);
+		     unescaped_remote);
 	    filename = readline(buf);
 	    if (filename == NULL) {
 		free(real_remote);
+		ne_free(unescaped_remote);
 		printf(_("cancelled.\n"));
 		return;
 	    }
@@ -969,7 +994,7 @@ static void execute_get(const char *remote, const char *local)
     {
 	int fd = open(filename, O_CREAT|O_WRONLY|O_TRUNC|OPEN_BINARY_FLAGS|O_LARGEFILE, 
                       0644);
-	output(o_download, _("Downloading `%s' to %s:"), real_remote, filename);
+	output(o_download, _("Downloading `%s' to %s:"), unescaped_remote, filename);
 	if (fd < 0) {
 	    output(o_finish, _("failed:\n%s\n"), strerror(errno));
 	} else {
@@ -983,6 +1008,7 @@ static void execute_get(const char *remote, const char *local)
 	    out_result(ret);
 	}
     }
+    ne_free(unescaped_remote);
     free(real_remote);
     free(filename);
 }

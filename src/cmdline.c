@@ -315,7 +315,13 @@ do {								\
 		    output(o_finish, _("1 match.]\n"));
 		}
 		for (n = 0; n < gl.gl_pathc; n++) {
-		    ADDTOK(ne_strdup(gl.gl_pathv[n]));
+		    /* Remote glob expanded to the escaped URIs, so we
+		       need to unescape them. Local glob needs to be only
+		       copied. */
+		    if (cmd->scope == parmscope_remote)
+			ADDTOK(ne_path_unescape(gl.gl_pathv[n]));
+		    else
+			ADDTOK(ne_strdup(gl.gl_pathv[n]));
 		}
 		matches++;
 	    } break;
