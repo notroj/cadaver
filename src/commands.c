@@ -281,6 +281,9 @@ static char *cad_utf8_decode(const char *str)
  * presume 'str' is ISO-8859-1, and UTF-8 encode it. */
 static char *utf8_encode(const char *str)
 {
+    if (str == NULL)
+        return NULL;
+
     if (get_bool_option(opt_utf8)) {
 	return ne_strdup(str);
     } else {
@@ -298,6 +301,9 @@ static char *utf8_encode(const char *str)
  */
 static char *utf8_decode(const char *str)
 {
+    if (str == NULL)
+        return NULL;
+
     /* decoded version can be at most as long as encoded version. */
     if (get_bool_option(opt_utf8)) {
 	return ne_strdup(str);
