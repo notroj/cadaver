@@ -93,15 +93,10 @@ AC_CHECK_HEADERS(sys/time.h pwd.h stdarg.h vmsdir.h memory.h alloca.h ncurses.h 
 
 jm_FUNC_STRFTIME()
 
-AM_GNU_GETTEXT([no-libtool],,[\$(top_builddir)/lib/intl])
+AM_GNU_GETTEXT([external])
 
 if test "$USE_NLS" = "yes"; then
-    if test "$USE_INCLUDED_LIBINTL" = "yes"; then
-	nls_msg="Built using included libintl"
-        CPPFLAGS="$CPPFLAGS -I\$(top_builddir)/lib/intl"
-    else
-	nls_msg="Built using native support"
-    fi
+    nls_msg="Built using native support"
     LIBS="$LIBS $LIBINTL"
 else
     nls_msg="Not built"
@@ -112,7 +107,7 @@ NEON_WARNINGS
 # Pick up config.h etc; and before any other paths.
 CPPFLAGS="-I\$(top_builddir) -I\$(top_srcdir)/lib $CPPFLAGS"
 
-AC_CONFIG_FILES([Makefile lib/neon/Makefile lib/intl/Makefile \
+AC_CONFIG_FILES([Makefile lib/neon/Makefile \
                  po/Makefile.in])
 
 AC_OUTPUT
