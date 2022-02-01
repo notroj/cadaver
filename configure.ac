@@ -6,6 +6,8 @@ AC_INIT(cadaver, 0.23.3, cadaver@webdav.org)
 AC_CONFIG_SRCDIR(src/cadaver.c)
 AC_CONFIG_HEADER(config.h)
 
+AC_USE_SYSTEM_EXTENSIONS
+
 AC_DEFINE([_GNU_SOURCE], 1, [Define to enable GNU extensions])
 
 NEON_WITH_LIBS
@@ -33,7 +35,7 @@ AC_ARG_ENABLE(netrc,
 AC_HELP_STRING([--disable-netrc], [enable .netrc support]),,
 enable_netrc=yes)
 
-NE_REQUIRE_VERSIONS([0], [27 28 29 30 31])
+NE_REQUIRE_VERSIONS([0], [27 28 29 30 31 32])
 
 dnl Don't enable zlib or ACL support in neon
 NEON_WITHOUT_ZLIB
@@ -41,18 +43,7 @@ NEON_WITHOUT_ACL
 
 AC_PROVIDE([NE_SNPRINTF])
 
-dnl Build neon. We support a VPATH build.
-NEON_VPATH_BUNDLED(['$(top_srcdir)/lib/neon'], [lib/neon], [
-	# We are using a bundled build, do the necessary stuff...
-	# we have a bundled expat, and we don't need zlib support
-        NEON_XML_PARSER([\$(top_srcdir)/lib/expat], [\$(top_builddir)/lib/expat])
-	NEON_NORMAL_BUILD
-], [
-	# Not using a bundled build... do stuff.
-	AC_C_CONST
-	AC_CHECK_HEADERS(stdlib.h string.h strings.h unistd.h)
-])
-
+NEON_LIBRARY
 
 NE_FORMAT_TIMET
 
