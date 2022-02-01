@@ -1,0 +1,17 @@
+name: Build and test
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-18.04, ubuntu-20.04]
+    steps:
+    - uses: actions/checkout@v2
+    - run: ./autogen.sh
+    - run: sudo apt-get update && sudo apt-get -y install libneon-dev
+    - run: ./configure
+    - run: make
