@@ -13,7 +13,6 @@ AC_DEFINE([_GNU_SOURCE], 1, [Define to enable GNU extensions])
 
 NEON_WITH_LIBS
 
-AC_ISC_POSIX
 AC_PROG_CC
 AC_PROG_INSTALL
 AC_LANG([C])
