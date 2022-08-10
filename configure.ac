@@ -78,6 +78,7 @@ AC_CHECK_HEADERS(sys/time.h pwd.h stdarg.h vmsdir.h memory.h alloca.h ncurses.h 
 
 jm_FUNC_STRFTIME()
 
+AM_GNU_GETTEXT_VERSION([0.20])
 AM_GNU_GETTEXT([external])
 
 if test "$USE_NLS" = "yes"; then
