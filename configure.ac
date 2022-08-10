@@ -1,10 +1,10 @@
 dnl configure script
 
-AC_PREREQ(2.53)
-AC_INIT(cadaver, 0.23.3, cadaver@webdav.org)
+AC_PREREQ([2.71])
+AC_INIT([cadaver],[0.23.3],[cadaver@webdav.org])
 
 AC_CONFIG_SRCDIR(src/cadaver.c)
-AC_CONFIG_HEADER(config.h)
+AC_CONFIG_HEADERS([config.h])
 
 AC_USE_SYSTEM_EXTENSIONS
 
@@ -15,15 +15,15 @@ NEON_WITH_LIBS
 AC_ISC_POSIX
 AC_PROG_CC
 AC_PROG_INSTALL
-AC_LANG_C
-AC_SET_MAKE
+AC_LANG([C])
+AC_PROG_MAKE_SET
 AC_PROG_RANLIB
 
 AC_HEADER_STDC
 
 AC_ARG_ENABLE(debugging,
-AC_HELP_STRING([--disable-debugging],[disable runtime debugging messages]),,
-enable_debug=yes)
+AS_HELP_STRING([--disable-debugging], [disable runtime debugging messages]),,
+    enable_debug=yes)
 
 if test "$enable_debug" = "yes"; then
    AC_DEFINE(NE_DEBUGGING, 1, [Define to enable debugging])
@@ -32,8 +32,8 @@ fi
 CHECK_READLINE()
 
 AC_ARG_ENABLE(netrc,
-AC_HELP_STRING([--disable-netrc], [enable .netrc support]),,
-enable_netrc=yes)
+AS_HELP_STRING([--disable-netrc],[enable .netrc support]),,
+    enable_netrc=yes)
 
 NE_REQUIRE_VERSIONS([0], [27 28 29 30 31 32])
 
