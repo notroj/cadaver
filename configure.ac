@@ -11,13 +11,13 @@ AC_USE_SYSTEM_EXTENSIONS
 
 AC_DEFINE([_GNU_SOURCE], 1, [Define to enable GNU extensions])
 
-NEON_WITH_LIBS
-
 AC_PROG_CC
 AC_PROG_INSTALL
 AC_LANG([C])
 AC_PROG_MAKE_SET
 AC_PROG_RANLIB
+
+PKG_PROG_PKG_CONFIG
 
 AC_ARG_ENABLE(debugging,
 AS_HELP_STRING([--disable-debugging], [disable runtime debugging messages]),,
@@ -32,6 +32,8 @@ CHECK_READLINE()
 AC_ARG_ENABLE(netrc,
 AS_HELP_STRING([--disable-netrc],[enable .netrc support]),,
     enable_netrc=yes)
+
+NEON_WITH_LIBS
 
 NE_REQUIRE_VERSIONS([0], [27 28 29 30 31 32])
 
