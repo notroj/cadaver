@@ -60,8 +60,6 @@ AC_LIBOBJ(lib/getopt1)])
 dnl Check for strcasecmp
 AC_CHECK_FUNC(strcasecmp,,[AC_LIBOBJ(lib/strcasecmp)])
 
-AC_HEADER_TIME
-
 jm_PREREQ_TEMPNAME
 
 NEON_REPLACE_SNPRINTF()
