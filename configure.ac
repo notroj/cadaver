@@ -62,8 +62,6 @@ AC_LIBOBJ(lib/getopt1)])
 dnl Check for strcasecmp
 AC_CHECK_FUNC(strcasecmp,,[AC_LIBOBJ(lib/strcasecmp)])
 
-jm_PREREQ_TEMPNAME
-
 NEON_REPLACE_SNPRINTF()
 
 AC_FUNC_FNMATCH
@@ -77,8 +75,6 @@ AC_TYPE_UNSIGNED_LONG_LONG_INT
 
 AC_CHECK_FUNCS(strdup strerror memcpy strcoll tcsetattr getpass stty fchmod strtoull)
 AC_CHECK_HEADERS(sys/time.h pwd.h stdarg.h vmsdir.h memory.h alloca.h ncurses.h sgtty.h termios.h termio.h locale.h)
-
-jm_FUNC_STRFTIME()
 
 AM_GNU_GETTEXT_VERSION([0.20])
 AM_GNU_GETTEXT([external])
