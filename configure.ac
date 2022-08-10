@@ -19,8 +19,6 @@ AC_LANG([C])
 AC_PROG_MAKE_SET
 AC_PROG_RANLIB
 
-AC_HEADER_STDC
-
 AC_ARG_ENABLE(debugging,
 AS_HELP_STRING([--disable-debugging], [disable runtime debugging messages]),,
     enable_debug=yes)
