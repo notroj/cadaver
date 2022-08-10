@@ -71,8 +71,6 @@ fi
 
 AC_HEADER_DIRENT
 
-AC_TYPE_SIGNAL
-
 AC_TYPE_UNSIGNED_LONG_LONG_INT
 
 AC_CHECK_FUNCS(strdup strerror memcpy strcoll tcsetattr getpass stty fchmod strtoull)
