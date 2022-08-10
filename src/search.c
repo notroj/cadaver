@@ -29,6 +29,7 @@
 #include <string.h>
 #endif
 
+#include <ctype.h>
 #include <time.h>
 
 #include <ne_basic.h>
