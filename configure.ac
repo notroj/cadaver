@@ -73,7 +73,7 @@ AC_HEADER_DIRENT
 
 AC_TYPE_UNSIGNED_LONG_LONG_INT
 
-AC_CHECK_HEADERS(sys/time.h pwd.h stdarg.h vmsdir.h memory.h alloca.h ncurses.h sgtty.h termios.h termio.h locale.h)
+AC_CHECK_HEADERS(sys/time.h fcntl.h pwd.h stdarg.h vmsdir.h memory.h alloca.h ncurses.h sgtty.h termios.h termio.h locale.h)
 
 AC_CHECK_FUNCS(strdup strerror memcpy strcoll tcsetattr getpass stty fchmod strtoull gettimeofday)
 
