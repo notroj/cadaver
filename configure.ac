@@ -5,6 +5,7 @@ AC_INIT([cadaver],[0.23.3],[cadaver@webdav.org])
 
 AC_CONFIG_SRCDIR(src/cadaver.c)
 AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_MACRO_DIRS([m4 m4/neon])
 
 AC_USE_SYSTEM_EXTENSIONS
 
