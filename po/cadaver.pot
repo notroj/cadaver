@@ -1413,7 +1413,7 @@ msgid "Display list of owned locks"
 msgstr ""
 
 #: src/commands.c:1331
-msgid "verrsion resource"
+msgid "version resource"
 msgstr ""
 
 #: src/commands.c:1331

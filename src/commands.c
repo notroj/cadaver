@@ -1360,7 +1360,7 @@ const struct command commands[] = {
       "showlocks", N_("Display list of owned locks") },
 
     /*** DeltaV commands ***/
-    C1(version, N_("verrsion resource"), N_("Place given resource under version control")),
+    C1(version, N_("version resource"), N_("Place given resource under version control")),
     C1(checkin, N_("checkin resource"), N_("Checkin given resource")),
     C1(checkout, N_("checkout resource"), N_("Checkout given resource")),
     C1(uncheckout, N_("uncheckin resource"), N_("Uncheckout given resource")),
