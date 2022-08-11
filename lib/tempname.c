@@ -104,8 +104,8 @@
 # define __xstat64(version, path, buf) stat (path, buf)
 #endif
 
-#if ! (HAVE___SECURE_GETENV || defined(_LIBC))
-# define __secure_getenv getenv
+#if ! (HAVE_SECURE_GETENV || defined(_LIBC))
+# define secure_getenv getenv
 #endif
 
 #ifdef _LIBC
@@ -178,7 +178,7 @@ __path_search (char *tmpl, size_t tmpl_len, const char *dir, const char *pfx,
 
   if (try_tmpdir)
     {
-      d = __secure_getenv ("TMPDIR");
+      d = secure_getenv ("TMPDIR");
       if (d != NULL && direxists (d))
 	dir = d;
       else if (dir != NULL && direxists (dir))
