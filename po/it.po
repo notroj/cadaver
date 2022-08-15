@@ -716,7 +716,7 @@ msgid ""
 "Please send bug reports and feature requests to <cadaver@webdav.org>\n"
 msgstr ""
 "Uso: %s [OPZIONI] http://hostname[:porta]/percorso\n"
-"  Il valore predefinito per la porta è 80, per il percorso è '/'\n"
+"  Il valore predefinito per la porta \E8 80, per il percorso \E8 '/'\n"
 "Opzioni:\n"
 "  -e, --expect100  Trasmette l'header \"Expect: 100-continue\".\n"
 "    Attenzione: per server Apache, usare solo con versioni successive a "
@@ -738,7 +738,7 @@ msgid ""
 "Ignored error: %s not WebDAV-enabled:\n"
 "%s\n"
 msgstr ""
-"Errore ignorato: %s non è abilitato per WebDAV:\n"
+"Errore ignorato: %s non \E8 abilitato per WebDAV:\n"
 "%s\n"
 
 #: src/cadaver.c:178
@@ -862,7 +862,7 @@ msgid ""
 "The `%s' command can only be used when connected to the server.\n"
 "Try running `open' first (see `help open' for more details).\n"
 msgstr ""
-"Il comando \"%s\" può essere usato solo se si è connessi al server.\n"
+"Il comando \"%s\" pu\F2 essere usato solo se si \E8 connessi al server.\n"
 "Provare prima `open' (si veda `help open' per maggiori dettagli).\n"
 
 #: src/cadaver.c:572
@@ -1059,7 +1059,7 @@ msgstr ""
 
 #: src/commands.c:359
 msgid "infinity"
-msgstr "infinità"
+msgstr "infinit\E0"
 
 #: src/commands.c:380
 #, fuzzy, c-format
@@ -1071,7 +1071,7 @@ msgid ""
 msgstr ""
 "Lock <%s> su %s:\n"
 "  Ampiezza: %s  Tipo: %s  Scadenza: %s\n"
-"  Proprietario: %s  Profondità: %s\n"
+"  Proprietario: %s  Profondit\E0: %s\n"
 
 #: src/commands.c:387
 msgid "(none)"
@@ -1127,12 +1127,12 @@ msgstr ""
 #: src/commands.c:587
 #, c-format
 msgid "Value of %s is: %s\n"
-msgstr "Il valore di %s è: %s\n"
+msgstr "Il valore di %s \E8: %s\n"
 
 #: src/commands.c:593
 #, c-format
 msgid "Could not fetch property: %d %s\n"
-msgstr "Impossibile recuperare la proprietà: %d %s\n"
+msgstr "Impossibile recuperare la propriet\E0: %d %s\n"
 
 #: src/commands.c:596
 #, c-format
@@ -1142,21 +1142,21 @@ msgstr "Il server non ha restituito alcun risultato per %s\n"
 #: src/commands.c:637
 #, fuzzy
 msgid "Setting property on"
-msgstr "Impostazione della proprietà per "
+msgstr "Impostazione della propriet\E0 per "
 
 #: src/commands.c:642
 #, fuzzy
 msgid "Deleting property on"
-msgstr "Impostazione della proprietà per "
+msgstr "Impostazione della propriet\E0 per "
 
 #: src/commands.c:660
 msgid "Fetching properties for"
-msgstr "Recupero delle proprietà per"
+msgstr "Recupero delle propriet\E0 per"
 
 #: src/commands.c:691
 #, fuzzy
 msgid "Fetching property names"
-msgstr "Recupero delle proprietà per"
+msgstr "Recupero delle propriet\E0 per"
 
 #: src/commands.c:720
 msgid "Deleting"
@@ -1169,8 +1169,8 @@ msgid ""
 "The `rm' command cannot be used to delete a collection.\n"
 "Use `rmcol %s' to delete this collection and ALL its contents.\n"
 msgstr ""
-"è una collezione.\n"
-"Il comando `rm' non può essere usato per cancellare una collezione.\n"
+"\E8 una collezione.\n"
+"Il comando `rm' non pu\F2 essere usato per cancellare una collezione.\n"
 "Si usi `rmcol %s' per cancellare questa collezione e TUTTI i suoi "
 "contenuti.\n"
 
@@ -1185,8 +1185,8 @@ msgid ""
 "The `rmcol' command can only be used to delete collections.\n"
 "Use `rm %s' to delete this resource.\n"
 msgstr ""
-"non è una collezione.\n"
-"Il comando `rmcol' può essere usato solo per cancellare collezioni.\n"
+"non \E8 una collezione.\n"
+"Il comando `rmcol' pu\F2 essere usato solo per cancellare collezioni.\n"
 "Si usi `rm %s' per cancellare questa risorsa.\n"
 
 #: src/commands.c:826 src/commands.c:843
@@ -1217,7 +1217,7 @@ msgstr ""
 #, c-format
 msgid "When %s multiple resources, the last argument must be a collection.\n"
 msgstr ""
-"Quando si %s più risorse, l'ultimo argomento dev'essere una collezione.\n"
+"Quando si %s pi\F9 risorse, l'ultimo argomento dev'essere una collezione.\n"
 
 #: src/commands.c:889
 #, c-format
@@ -1289,7 +1289,7 @@ msgstr "Impostazione di isexecutable"
 
 #: src/commands.c:1108
 msgid "The server does not support the 'isexecutable' property."
-msgstr "Il server non supporta la proprietà 'isexecutable'."
+msgstr "Il server non supporta la propriet\E0 'isexecutable'."
 
 #: src/commands.c:1123
 #, c-format
@@ -1323,7 +1323,7 @@ msgstr ""
 #: src/commands.c:1173
 #, fuzzy, c-format
 msgid "Current collection is `%s'.\n"
-msgstr "La collezione attuale è \"%s\", sul server \"%s\"\n"
+msgstr "La collezione attuale \E8 \"%s\", sul server \"%s\"\n"
 
 #: src/commands.c:1183
 #, fuzzy, c-format
@@ -1347,7 +1347,7 @@ msgstr ""
 #: src/commands.c:1239
 #, c-format
 msgid "This command can only be used when connected to a server.\n"
-msgstr "Questo comando può essere usato solo se si è connessi a un server.\n"
+msgstr "Questo comando pu\F2 essere usato solo se si \E8 connessi a un server.\n"
 
 #: src/commands.c:1242
 #, c-format
@@ -1428,7 +1428,7 @@ msgstr "mkcol remoto..."
 
 #: src/commands.c:1312
 msgid "Create remote collection(s)"
-msgstr "Crea una o più collezioni remote"
+msgstr "Crea una o pi\F9 collezioni remote"
 
 #: src/commands.c:1313
 msgid "cat remote..."
@@ -1436,7 +1436,7 @@ msgstr "cat remoto..."
 
 #: src/commands.c:1313
 msgid "Display remote resource(s)"
-msgstr "Mostra una o più risorse remote"
+msgstr "Mostra una o pi\F9 risorse remote"
 
 #: src/commands.c:1314
 msgid "delete remote..."
@@ -1508,7 +1508,7 @@ msgstr "Mostra la lista dei lock posseduti"
 
 #: src/commands.c:1331
 #, fuzzy
-msgid "verrsion resource"
+msgid "version resource"
 msgstr "edit risorsa"
 
 #: src/commands.c:1331
@@ -1553,7 +1553,7 @@ msgstr "discover risorsa"
 #: src/commands.c:1335
 #, fuzzy
 msgid "Show version history of resource"
-msgstr "Imposta le proprietà su una risorsa"
+msgstr "Imposta le propriet\E0 su una risorsa"
 
 #: src/commands.c:1338
 msgid "label res [add|set|remove] labelname"
@@ -1567,7 +1567,7 @@ msgstr "Modifica la risorsa specificata"
 #: src/commands.c:1343
 #, fuzzy
 msgid "Names of properties defined on resource"
-msgstr "Imposta le proprietà su una risorsa"
+msgstr "Imposta le propriet\E0 su una risorsa"
 
 #: src/commands.c:1346
 msgid "chexec [+|-] remote"
@@ -1575,35 +1575,35 @@ msgstr "chexec [+|-] remoto"
 
 #: src/commands.c:1346
 msgid "Change isexecutable property of resource"
-msgstr "Modifica la proprietà \"isexecutable\" per una risorsa"
+msgstr "Modifica la propriet\E0 \"isexecutable\" per una risorsa"
 
 #: src/commands.c:1349
 #, fuzzy
 msgid "propget res [propname]"
-msgstr "propget risorsa [proprietà]"
+msgstr "propget risorsa [propriet\E0]"
 
 #: src/commands.c:1350
 msgid "Retrieve properties of resource"
-msgstr "Recupera le proprietà di una risorsa"
+msgstr "Recupera le propriet\E0 di una risorsa"
 
 #: src/commands.c:1352
 #, fuzzy
 msgid "propdel res propname"
-msgstr "propget risorsa [proprietà]"
+msgstr "propget risorsa [propriet\E0]"
 
 #: src/commands.c:1353
 #, fuzzy
 msgid "Delete property from resource"
-msgstr "Imposta le proprietà su una risorsa"
+msgstr "Imposta le propriet\E0 su una risorsa"
 
 #: src/commands.c:1355
 #, fuzzy
 msgid "propset res propname value"
-msgstr "propset risorsa proprietà valore"
+msgstr "propset risorsa propriet\E0 valore"
 
 #: src/commands.c:1356
 msgid "Set property on resource"
-msgstr "Imposta le proprietà su una risorsa"
+msgstr "Imposta le propriet\E0 su una risorsa"
 
 #: src/commands.c:1359
 msgid "search query"
@@ -1792,7 +1792,7 @@ msgstr "Elenco della collezione"
 
 #: src/ls.c:148
 msgid "collection is empty.\n"
-msgstr "la collezione è vuota.\n"
+msgstr "la collezione \E8 vuota.\n"
 
 #: src/ls.c:208
 msgid "Authorization Required"
@@ -1873,7 +1873,7 @@ msgstr ""
 #~ "SSL support has not be compiled into this application.\n"
 #~ "URLs beginning with \"https:\" cannot be used!\n"
 #~ msgstr ""
-#~ "Il supporto SSL non è stato compilato.\n"
+#~ "Il supporto SSL non \E8 stato compilato.\n"
 #~ "Gli URL inizianti per \"https:\" non possono essere usati!\n"
 
 #~ msgid "Could not use client certificate `%s' (wrong password)?\n"
@@ -1896,7 +1896,7 @@ msgstr ""
 #~ msgstr "Purtroppo i namespace non sono ancora supportati da propget.\n"
 
 #~ msgid "Not a collection resource."
-#~ msgstr "Non è una collezione."
+#~ msgstr "Non \E8 una collezione."
 
 #~ msgid "Could not fdopen temporary file: %s\n"
 #~ msgstr "Impossibile fare fdopen sul file temporaneo: %s\n"
