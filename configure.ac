@@ -1,29 +1,27 @@
 dnl configure script
 
-AC_PREREQ(2.53)
-AC_INIT(cadaver, 0.23.3, cadaver@webdav.org)
+AC_PREREQ([2.71])
+AC_INIT([cadaver],[0.23.3],[cadaver@webdav.org])
 
 AC_CONFIG_SRCDIR(src/cadaver.c)
-AC_CONFIG_HEADER(config.h)
+AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_MACRO_DIRS([m4 m4/neon])
 
 AC_USE_SYSTEM_EXTENSIONS
 
 AC_DEFINE([_GNU_SOURCE], 1, [Define to enable GNU extensions])
 
-NEON_WITH_LIBS
-
-AC_ISC_POSIX
 AC_PROG_CC
 AC_PROG_INSTALL
-AC_LANG_C
-AC_SET_MAKE
+AC_LANG([C])
+AC_PROG_MAKE_SET
 AC_PROG_RANLIB
 
-AC_HEADER_STDC
+PKG_PROG_PKG_CONFIG
 
 AC_ARG_ENABLE(debugging,
-AC_HELP_STRING([--disable-debugging],[disable runtime debugging messages]),,
-enable_debug=yes)
+AS_HELP_STRING([--disable-debugging], [disable runtime debugging messages]),,
+    enable_debug=yes)
 
 if test "$enable_debug" = "yes"; then
    AC_DEFINE(NE_DEBUGGING, 1, [Define to enable debugging])
@@ -32,8 +30,10 @@ fi
 CHECK_READLINE()
 
 AC_ARG_ENABLE(netrc,
-AC_HELP_STRING([--disable-netrc], [enable .netrc support]),,
-enable_netrc=yes)
+AS_HELP_STRING([--disable-netrc],[enable .netrc support]),,
+    enable_netrc=yes)
+
+NEON_WITH_LIBS
 
 NE_REQUIRE_VERSIONS([0], [27 28 29 30 31 32])
 
@@ -62,10 +62,6 @@ AC_LIBOBJ(lib/getopt1)])
 dnl Check for strcasecmp
 AC_CHECK_FUNC(strcasecmp,,[AC_LIBOBJ(lib/strcasecmp)])
 
-AC_HEADER_TIME
-
-jm_PREREQ_TEMPNAME
-
 NEON_REPLACE_SNPRINTF()
 
 AC_FUNC_FNMATCH
@@ -75,15 +71,13 @@ fi
 
 AC_HEADER_DIRENT
 
-AC_TYPE_SIGNAL
-
 AC_TYPE_UNSIGNED_LONG_LONG_INT
 
-AC_CHECK_FUNCS(strdup strerror memcpy strcoll tcsetattr getpass stty fchmod strtoull)
-AC_CHECK_HEADERS(sys/time.h pwd.h stdarg.h vmsdir.h memory.h alloca.h ncurses.h sgtty.h termios.h termio.h locale.h)
+AC_CHECK_HEADERS(sys/time.h fcntl.h pwd.h stdarg.h vmsdir.h memory.h alloca.h ncurses.h sgtty.h termios.h termio.h locale.h)
 
-jm_FUNC_STRFTIME()
+AC_CHECK_FUNCS(strdup strerror memcpy strcoll tcsetattr getpass stty fchmod strtoull gettimeofday secure_getenv)
 
+AM_GNU_GETTEXT_VERSION([0.20])
 AM_GNU_GETTEXT([external])
 
 if test "$USE_NLS" = "yes"; then

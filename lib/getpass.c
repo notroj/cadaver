@@ -61,7 +61,7 @@ static int ttyfd;
 void static save_tty_state(void);
 void static disable_tty_echo(void);
 void static restore_tty_state(void);
-static RETSIGTYPE sigint_handler(int);
+static void sigint_handler(int);
 
 char *fm_getpassword(const char *prompt)
 {
@@ -78,8 +78,8 @@ char *fm_getpassword(const char *prompt)
     register int c;
     FILE *fi;
     static char pbuf[INPUT_BUF_SIZE];
-    RETSIGTYPE (*sig)(int) = 0;	/* initialization pacifies -Wall */
-    RETSIGTYPE sigint_handler(int);
+    void (*sig)(int) = 0;	/* initialization pacifies -Wall */
+    void sigint_handler(int);
     char *ret;
 
     int istty = isatty(0);
@@ -195,7 +195,7 @@ static void restore_tty_state(void)
 #endif
 }
 
-static RETSIGTYPE sigint_handler(int signum)
+static void sigint_handler(int signum)
 {
     restore_tty_state();
     fprintf(stderr, _("\nCaught SIGINT... bailing out.\n"));

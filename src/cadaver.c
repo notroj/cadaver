@@ -112,7 +112,7 @@ static enum out_state {
 
 /* Protoypes */
 
-static RETSIGTYPE quit_handler(int signo);
+static void quit_handler(int signo);
 
 static void notifier(void *ud, ne_session_status status, 
                      const ne_session_status_info *info);
@@ -559,7 +559,7 @@ static int execute_command(const char *line)
     return ret;
 }
 
-static RETSIGTYPE quit_handler(int sig)
+static void quit_handler(int sig)
 {
     /* Reinstall handler */
     if (child_running) {
