@@ -848,13 +848,13 @@ static void execute_less(const char *resource)
 
 static void execute_cat(const char *resource)
 {
-    char *unescaped_res;
     char *real_res = resolve_path(session.uri.path, resource, false);
-    unescaped_res = ne_path_unescape(real_res);
-    printf(_("Displaying `%s':\n"), unescaped_res);
-    ne_free(unescaped_res);
-    if (ne_get(session.sess, real_res, STDOUT_FILENO) != NE_OK) {
-	printf(_("Failed: %s\n"), ne_get_error(session.sess));
+    int ret;
+
+    ret = ne_get(session.sess, real_res, STDOUT_FILENO);
+    if (ret != NE_OK) {
+        out_start(_("Fetching"), resource);
+        out_result(ret);
     }
 }
 
