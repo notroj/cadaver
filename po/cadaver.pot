@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: @PACKAGE@ @VERSION@\n"
-"Report-Msgid-Bugs-To: cadaver@webdav.org\n"
+"Report-Msgid-Bugs-To: https://github.com/notroj/cadaver\n"
 "POT-Creation-Date: 2009-12-15 22:22+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
@@ -673,7 +673,7 @@ msgid ""
 "PORT.\n"
 "  -V, --version             Display version information.\n"
 "  -h, --help                Display this help message.\n"
-"Please send bug reports and feature requests to <cadaver@webdav.org>\n"
+"Please send bug reports and feature requests to <https://github.com/notroj/cadaver>\n"
 msgstr ""
 
 #: src/cadaver.c:155
