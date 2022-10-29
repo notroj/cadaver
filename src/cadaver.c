@@ -133,7 +133,7 @@ static void usage(void)
 "  -p, --proxy=PROXY[:PORT]  Use proxy host PROXY and optional proxy port PORT.\n"
 "  -V, --version             Display version information.\n"
 "  -h, --help                Display this help message.\n"
-"Please send bug reports and feature requests to <cadaver@webdav.org>\n"), progname);
+"Please send bug reports and feature requests via <https://github.com/notroj/cadaver>\n"), progname);
 }
 
 static void init_locking(void)
