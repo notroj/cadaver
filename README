@@ -1,8 +1,0 @@
-
-cadaver is a command-line WebDAV client, with support for file upload, 
-download, on-screen display, in-place editing, namespace operations
-(move/copy), collection creation and deletion, property manipulation, 
-and resource locking.
-
-Please send in bug reports, feature requests or any questions to the
-Github project, https://github.com/notroj/cadaver
