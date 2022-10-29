@@ -1,3 +1,11 @@
+Changes in release 0.24.0:
+* Modernize configure scripts (Hugh McMaster)
+ - fixing cross-compilation support
+* Various spelling fixes (Hugh McMaster)
+* Cosmetic fix for "cat" output
+* Bundled neon support is not supported
+* Support building against neon up to 0.32
+
 Changes in release 0.23.3:
 * Update to neon 0.29.1.
 
