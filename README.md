@@ -9,4 +9,4 @@ operations (move/copy), collection creation and deletion, property
 manipulation, and resource locking.
 
 Bugs, feature requests and patches can be sent in via the Github
-repository: https://notroj.github.io/cadaver
+repository: https://github.com/notroj/cadaver
