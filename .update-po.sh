@@ -6,7 +6,6 @@
 inmk=Makefile.in.in
 tmpmk=`mktemp /tmp/cadaver.XXXXXX`
 pot=`mktemp /tmp/cadaver.XXXXXX`
-trap 'rm -f $tmpmk $pot' TERM INT 0
 
 cd po
 
@@ -38,6 +37,7 @@ s/@GMSGFMT@/msgfmt/g;
 s/@MSGFMT@/msgfmt/g;
 s/@XGETTEXT@/xgettext/g;
 s/@MSGMERGE@/msgmerge/g;
+s/@MSGMERGE_FOR_MSGFMT_OPTION@/--for-msgfmt/g;
 s|@XGETTEXT_EXTRA_OPTIONS@|--msgid-bugs-address https://github.com/notroj/cadaver|g;
 s/: Makefile.*/:/g;
 s/\$(MAKE) update-gmo/echo Done/g;" $inmk > $tmpmk
