@@ -1,4 +1,4 @@
-Changes in release 0.24.0:
+Changes in release 0.24:
 * Modernize configure scripts (Hugh McMaster)
  - fixing cross-compilation support
 * Various spelling fixes (Hugh McMaster)
