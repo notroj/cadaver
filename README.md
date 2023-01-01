@@ -8,8 +8,10 @@ upload, download, on-screen display, in-place editing, namespace
 operations (move/copy), collection creation and deletion, property
 manipulation, and resource locking.
 
+GitHub: https://github.com/notroj/cadaver | Web: https://notroj.github.io/cadaver/
+
 Bugs, feature requests and patches can be sent in via the Github
-repository: https://github.com/notroj/cadaver
+repository: https://github.com/notroj/cadaver/issues
 
 ~~~
 cadaver is Copyright (C) 1999-2022 Joe Orton
