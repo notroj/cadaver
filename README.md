@@ -10,3 +10,11 @@ manipulation, and resource locking.
 
 Bugs, feature requests and patches can be sent in via the Github
 repository: https://github.com/notroj/cadaver
+
+~~~
+cadaver is Copyright (C) 1999-2022 Joe Orton
+Portions are:
+Copyright (C) 85, 88, 90, 91, 1995-1999 Free Software Foundation, Inc.
+Copyright (C) Free Software Foundation, Inc.
+Copyright (C) GRASE Lab, UCSC
+~~~

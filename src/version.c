@@ -1,7 +1,7 @@
 /* 
    'version' for cadaver
    Copyright (C) 2003-2006, Joe Orton <joe@manyfish.co.uk>
-   Copyright (C) 2002-2003, GRASE Lab, UCSC <grase@cse.ucsc.edu>, 
+   Copyright (C) 2002-2003, GRASE Lab, UCSC <grase@cse.ucsc.edu>
                                                                      
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
