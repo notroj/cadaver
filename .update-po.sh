@@ -37,7 +37,7 @@ s/@GMSGFMT@/msgfmt/g;
 s/@MSGFMT@/msgfmt/g;
 s/@XGETTEXT@/xgettext/g;
 s/@MSGMERGE@/msgmerge/g;
-s/@MSGMERGE_FOR_MSGFMT_OPTION@/--for-msgfmt/g;
+s/@MSGMERGE_FOR_MSGFMT_OPTION@//g;
 s|@XGETTEXT_EXTRA_OPTIONS@|--msgid-bugs-address https://github.com/notroj/cadaver|g;
 s/: Makefile.*/:/g;
 s/\$(MAKE) update-gmo/echo Done/g;" $inmk > $tmpmk

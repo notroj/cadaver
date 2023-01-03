@@ -9,9 +9,12 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-18.04, ubuntu-20.04]
+        install: [true, false]
     steps:
     - uses: actions/checkout@v2
     - run: sudo apt-get update && sudo apt-get -y install libneon27-dev gettext
+    - run: if ${{matrix.install}}; then bash -ex ./.release.sh; fi
     - run: ./autogen.sh
-    - run: ./configure
+    - run: ./configure --prefix=/tmp/cadaver-root
     - run: make
+    - run: if ${{matrix.install}}; then make install; fi
