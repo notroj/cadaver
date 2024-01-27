@@ -5,7 +5,7 @@ AC_INIT([cadaver],[0.24],,,[https://github.com/notroj/cadaver])
 
 AC_CONFIG_SRCDIR(src/cadaver.c)
 AC_CONFIG_HEADERS([config.h])
-AC_CONFIG_MACRO_DIRS([m4 m4/neon])
+AC_CONFIG_MACRO_DIRS([m4 neon/macros])
 
 AC_USE_SYSTEM_EXTENSIONS
 
@@ -43,7 +43,10 @@ NEON_WITHOUT_ACL
 
 AC_PROVIDE([NE_SNPRINTF])
 
-NEON_LIBRARY
+NEON_VPATH_BUNDLED(['$(top_srcdir)/neon/src'], [neon/src], [
+ NEON_NORMAL_BUILD
+ NEON_XML_PARSER
+])
 
 NE_FORMAT_TIMET
 
