@@ -24,6 +24,7 @@
 
 enum option_id {
     opt_tolerant,
+    opt_keepalive,
     opt_expect100,
     opt_editor,
     opt_clicert,

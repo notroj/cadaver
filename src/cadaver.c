@@ -353,6 +353,7 @@ void open_connection(const char *url)
     ne_lockstore_register(session.locks, sess);
     ne_redirect_register(sess);
     ne_set_notifier(sess, notifier, NULL);
+    ne_set_session_flag(sess, NE_SESSFLAG_PERSIST, get_bool_option(opt_keepalive));
 
     if (session.uri.path == NULL) {
 	session.uri.path = ne_strdup("/");

@@ -65,6 +65,7 @@ int lockdepth;
 
 /* search option global */
 int searchdepth;
+static int keepalive = 1;
 
 static struct option {
     const char *name;
@@ -94,6 +95,7 @@ static struct option {
     B(utf8, &presume_utf8, "Presume filenames etc are UTF-8 encoded"),
     B(quiet, &quiet, "Whether to display connection status messages"),
     B(searchall, &searchall, "Whether to search and display all props including dead props"),
+    B(keepalive, &keepalive, "Whether to enable persistent connections when opening a connection"),
 #undef B
 #define S2(x,y, h) { x, y, NULL, opt_string, NULL, NULL, NULL, h, NULL }
 #define S(x,h) S2(#x, opt_##x, h)
