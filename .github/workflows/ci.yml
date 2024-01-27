@@ -11,23 +11,20 @@ jobs:
         os: [ubuntu-latest, ubuntu-22.04, ubuntu-24.04-arm]
         install: [true, false]
         bundled: [true, false]
+        warnings: [true, false]
     steps:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    - run: |
-         if ${{matrix.bundled}}; then
-            sudo apt-get update && sudo apt-get -y install gettext
-         else
-            sudo apt-get update && sudo apt-get -y install libneon27-dev gettext
-         fi
-    - run: if ${{matrix.install}}; then bash -ex ./.release.sh; fi
+    - run: sudo apt-get update
+    - run: sudo apt-get -y install gettext libreadline-dev ${{ !matrix.bundled && 'libneon27-dev' || '' }}
+    - run: bash -ex ./.release.sh
+      if: ${{ matrix.install }}
     - run: ./autogen.sh
-    - run: |
-        if ${{matrix.bundled}}; then
-          ./configure --prefix=/tmp/cadaver-root --with-included-neon --with-ssl
-        else
-          ./configure --prefix=/tmp/cadaver-root
-        fi
-    - run: make
-    - run: if ${{matrix.install}}; then make install; fi
+    - run: ./configure --prefix=/tmp/cadaver-root 
+                       ${{ matrix.bundled && '--with-included-neon --with-ssl=openssl' || '--with-neon=/usr' }} 
+                       ${{ matrix.warnings && '--enable-warnings' || '' }}
+    - run: make ${{ !matrix.bundled && '-j`nproc`' || '' }}
+                ${{ matrix.warnings && 'EXTRA_CFLAGS=-Werror' || '' }}
+    - run: make install
+      if: ${{ matrix.install }}
