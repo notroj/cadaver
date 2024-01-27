@@ -95,8 +95,7 @@ NEON_WARNINGS
 # Pick up config.h etc; and before any other paths.
 CPPFLAGS="-I\$(top_builddir) -I\$(top_srcdir)/lib $CPPFLAGS"
 
-AC_CONFIG_FILES([Makefile lib/neon/Makefile \
-                 po/Makefile.in])
+AC_CONFIG_FILES([Makefile po/Makefile.in neon/src/Makefile])
 
 AC_OUTPUT
 
