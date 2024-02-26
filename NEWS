@@ -1,3 +1,6 @@
+Changes in release 0.25:
+* Support bundled neon build again.
+
 Changes in release 0.24:
 * Modernize configure scripts (Hugh McMaster)
  - fixing cross-compilation support
