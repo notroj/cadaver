@@ -35,7 +35,7 @@ AS_HELP_STRING([--disable-netrc],[enable .netrc support]),,
 
 NEON_WITH_LIBS
 
-NE_REQUIRE_VERSIONS([0], [27 28 29 30 31 32])
+NE_REQUIRE_VERSIONS([0], [27 28 29 30 31 32 33])
 
 dnl Don't enable zlib or ACL support in neon
 NEON_WITHOUT_ZLIB
