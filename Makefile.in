@@ -56,7 +56,7 @@ all: $(TARGET)
 .PHONY: subdirs install clean distclean
 
 $(TARGET): $(ALLOBJS) subdirs
-	$(CC) $(LDFLAGS) -o $(TARGET) $(ALLOBJS) $(LIBS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $(TARGET) $(ALLOBJS) $(LIBS)
 
 .c.o:
 	$(CC) $(ALL_CFLAGS) -o $@ -c $<
