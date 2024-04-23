@@ -354,6 +354,7 @@ void open_connection(const char *url)
     ne_redirect_register(sess);
     ne_set_notifier(sess, notifier, NULL);
     ne_set_session_flag(sess, NE_SESSFLAG_PERSIST, get_bool_option(opt_keepalive));
+    ne_set_session_flag(sess, NE_SESSFLAG_EXPECT100, get_bool_option(opt_expect100));
 
     if (session.uri.path == NULL) {
 	session.uri.path = ne_strdup("/");
@@ -387,9 +388,6 @@ void open_connection(const char *url)
 	}
     }
 #endif /* ENABLE_NETRC */
-#ifdef NE_SESSFLAG_EXPECT100
-	ne_set_session_flag(session.sess, NE_SESSFLAG_EXPECT100, get_bool_option(opt_expect100));
-#endif /* NE_SESSFLAG_EXPECT100 */
     session.connected = 0;
 
     ne_set_useragent(session.sess, "cadaver/" PACKAGE_VERSION);
