@@ -1156,44 +1156,45 @@ static void multi_mget(int argc, const char *argv[])
     }
 }
 
-static void execute_chexec(const char *val, const char *remote)
+static void execute_chexec(const char *val, const char *native_path)
 {
     static const ne_propname execprop = 
     { "http://apache.org/dav/props/", "executable" };
     /* Use a single operation; set the executable property to... */
     ne_proppatch_operation ops[] = { { &execprop, ne_propset, NULL }, { NULL } };
-    char *uri;
+    char *uri_path = uri_resolve_native(native_path);
     ne_server_capabilities caps = {0};
     int ret;
 
     /* True or false, depending... */
     if (strcmp(val, "+") == 0) {
-	ops[0].value = "T";
-    } else if (strcmp(val, "-") == 0) {
-	ops[0].value = "F";
-    } else {
-	printf(_("Use:\n"
-		 "   chexec + %s   to make the resource executable\n"
-		 "or chexec - %s   to make the resource unexecutable\n"),
-		 remote, remote);
-	return;
+        ops[0].value = "T";
+    }
+    else if (strcmp(val, "-") == 0) {
+        ops[0].value = "F";
+    }
+    else {
+        printf(_("Use:\n"
+                 "   chexec + %s   to make the resource executable\n"
+                 "or chexec - %s   to make the resource unexecutable\n"),
+                 native_path, native_path);
+        return;
     }
     
-    uri = resolve_path(session.uri.path, remote, false);
-
-    out_start(_("Setting isexecutable"), remote);
-    ret = ne_options(session.sess, uri, &caps);
+    out_start(_("Setting isexecutable"), native_path);
+    ret = ne_options(session.sess, uri_path, &caps);
     if (ret != NE_OK) {
-	out_result(ret);
-    } else if (!caps.dav_executable) {
-	ne_set_error(session.sess, 
-		       _("The server does not support the 'isexecutable' property."));
-	out_result(NE_ERROR);
-    } else {    
-	out_result(ne_proppatch(session.sess, uri, ops));
+        out_result(ret);
     }
-    free(uri);
-
+    else if (!caps.dav_executable) {
+        ne_set_error(session.sess,
+                     _("The server does not support the 'isexecutable' property."));
+        out_result(NE_ERROR);
+    }
+    else {
+        out_result(ne_proppatch(session.sess, uri_path, ops));
+    }
+    ne_free(uri_path);
 }
 
 static void execute_lpwd(void)
@@ -1256,30 +1257,30 @@ static void execute_pwd(void)
     ne_free(uri);
 }
 
-static void execute_cd(const char *newpath)
+static void execute_cd(const char *native_path)
 {
-    char *real_path;
-    int is_swap = false;
-    if (strcmp(newpath, "-") == 0) {
-	if (!session.lastwp) {
-	    printf(_("No previous collection.\n"));
-	    return;
-	}
-	is_swap = true;
-	real_path = session.lastwp;
-    } else {
-	real_path = resolve_path(session.uri.path, newpath, true);
+    char *dest_uri_path, *uri_path = NULL;
+
+    if (strcmp(native_path, "-") == 0) {
+        if (!session.lastwp) {
+            printf(_("No previous collection.\n"));
+            return;
+        }
+        dest_uri_path = session.lastwp;
     }
-    if (set_path(real_path)) {
-	/* Error */
-	if (!is_swap) free(real_path);
-    } else {
-	/* Success */
-	if (!is_swap && session.lastwp)  {
+    else {
+        dest_uri_path = uri_path = uri_resolve_native_coll(native_path);
+    }
+    if (set_path(dest_uri_path) == 0) {
+        /* Success */
+        if (dest_uri_path == uri_path) {
             ne_free(session.lastwp);
         }
-	session.lastwp = session.uri.path;
-	session.uri.path = real_path;
+        session.lastwp = session.uri.path;
+        session.uri.path = dest_uri_path;
+    }
+    else if (uri_path) {
+        ne_free(uri_path);
     }
 }
 
