@@ -138,7 +138,7 @@ void execute_edit(const char *remote)
      * so the editor can have a stab at the content-type. */
     pnt = strrchr(real_remote, '.');
     if (pnt != NULL && strchr(pnt, '/') == NULL) {
-	strncat(fname, pnt, PATH_MAX);
+	strncat(fname, pnt, PATH_MAX-1);
 	fname[PATH_MAX-1] = '\0';
     }
 
