@@ -811,39 +811,36 @@ static const char *choose_pager(void)
     }
 }
 
-static FILE *spawn_pager(const char *pager)
-{
-    /* Create a pipe */
-    return popen(pager, "w");
-}
-
-static void kill_pager(FILE *p)
-{
-    /* This blocks until the pager quits. */
-    pclose(p);
-}
-
 static void execute_less(const char *resource)
 {
     char *real_res, *unescaped_res;
     const char *pager;
     FILE *p;
+    int ret;
+
     real_res = resolve_path(session.uri.path, resource, false);
     unescaped_res = ne_path_unescape(real_res);
     pager = choose_pager();
     printf(_("Displaying `%s':\n"), unescaped_res);
     ne_free(unescaped_res);
-    p = spawn_pager(pager);
+
+    p = popen(pager, "w");
     if (p == NULL) {
 	printf(_("Error! Could not spawn pager `%s':\n%s\n"), pager,
 		 strerror(errno));
-    } else {
-	int fd = fileno(p);
-	child_running = true;
-	ne_get(session.sess, real_res, fd);
-	kill_pager(p); /* Blocks until the pager quits */
-	child_running = false;
+        return;
     }
+
+    child_running = true;
+    ret = ne_get(session.sess, real_res, fileno(p));
+    if (ret) {
+        pclose(p);
+        out_result(ret);
+    }
+    else if ((ret = pclose(p)) != 0) {
+        printf(_("Warning: Abnormal exit from pager (%d).\n"), ret);
+    }
+    child_running = false;
 }
 
 static void execute_cat(const char *resource)
