@@ -755,12 +755,68 @@ static void execute_rmcol(const char *filename)
     free(remote);
 }
 
-/* TODO: can do utf-8 handling here. */
+/*
+ * --- Path conversion ---
+ *
+ * Native paths (input from the command-line) are unescaped, relative
+ * references (potentially in a non-UTF-8 charset though this is not
+ * handled yet).
+ *
+ * These must be converted to an 'abs_path' in the RFC 3986 grammar,
+ * called a 'URI path' for convenience throughout here.
+ */
+
+/* Converts an input path (an unescaped, native charset, relative
+ * path) to a URI path. */
+static char *path_native_resolver(const char *path, int collection)
+{
+    ne_uri relative, result;
+    char *tmp;
+
+    if (!get_bool_option(opt_utf8)) {
+        /* TODO */
+        abort();
+    }
+
+    memset(&relative, 0, sizeof relative);
+    relative.path = ne_path_escape(path);
+
+    if (collection && !ne_path_has_trailing_slash(relative.path)) {
+        tmp = ne_concat(relative.path, "/", NULL);
+        ne_free(relative.path);
+        relative.path = tmp;
+    }
+
+    ne_uri_resolve(&session.uri, &relative, &result);
+
+    ne_uri_free(&relative);
+    tmp = result.path;
+    result.path = NULL;
+    ne_uri_free(&result);
+
+    return tmp;
+}
+
+/* Converts a native path to a URI path. */
+static char *uri_resolve_native(const char *native)
+{
+    return path_native_resolver(native, 0);
+}
+
+/* Converts a native path for a collection to a URI path, ensuring it
+ * has a trailing slash. */
+static char *uri_resolve_native_coll(const char *native)
+{
+    return path_native_resolver(native, 1);
+}
+
+/* TODO: remove this. */
 static char *escape_path(const char *p)
 {
     return ne_path_escape(p);
 }
 
+/* TODO: remove this. */
 /* Like resolve_path except more intelligent. 'p' must be
  * already URI-escaped; 'src' and 'dest' must not be. */
 static char *clever_path(const char *p, const char *src, 
@@ -811,18 +867,15 @@ static const char *choose_pager(void)
     }
 }
 
-static void execute_less(const char *resource)
+static void execute_less(const char *native)
 {
-    char *real_res, *unescaped_res;
     const char *pager;
+    char *uri_path = uri_resolve_native(native);
     FILE *p;
     int ret;
 
-    real_res = resolve_path(session.uri.path, resource, false);
-    unescaped_res = ne_path_unescape(real_res);
     pager = choose_pager();
-    printf(_("Displaying `%s':\n"), unescaped_res);
-    ne_free(unescaped_res);
+    printf(_("Displaying `%s':\n"), native);
 
     p = popen(pager, "w");
     if (p == NULL) {
@@ -832,7 +885,7 @@ static void execute_less(const char *resource)
     }
 
     child_running = true;
-    ret = ne_get(session.sess, real_res, fileno(p));
+    ret = ne_get(session.sess, uri_path, fileno(p));
     if (ret) {
         pclose(p);
         out_result(ret);
@@ -843,14 +896,14 @@ static void execute_less(const char *resource)
     child_running = false;
 }
 
-static void execute_cat(const char *resource)
+static void execute_cat(const char *native_path)
 {
-    char *real_res = resolve_path(session.uri.path, resource, false);
+    char *uri_path = uri_resolve_native(native_path);
     int ret;
 
-    ret = ne_get(session.sess, real_res, STDOUT_FILENO);
+    ret = ne_get(session.sess, uri_path, STDOUT_FILENO);
     if (ret != NE_OK) {
-        out_start(_("Fetching"), resource);
+        out_start(_("Fetching"), native_path);
         out_result(ret);
     }
 }
@@ -860,13 +913,13 @@ static void do_copymove(int argc, const char *argv[],
 			void (*cb)(const char *, const char *))
 {
     /* We are guaranteed that argc > 2... */
-    char *dest;
+    char *uri_dest;
 
-    dest = resolve_path(session.uri.path, argv[argc-1], true);
-    if (getrestype(dest) == resr_collection) {
+    uri_dest = uri_resolve_native_coll(argv[argc-1]);
+    if (getrestype(uri_dest) == resr_collection) {
 	int n;
 	char *real_src, *real_dest, *unescaped_dest;
-	unescaped_dest = ne_path_unescape(dest);
+	unescaped_dest = ne_path_unescape(uri_dest);
 	for(n = 0; n < argc-1; n++) {
 	    real_src = resolve_path(session.uri.path, argv[n], false);
 	    real_dest = clever_path(session.uri.path, argv[n], unescaped_dest);
@@ -897,7 +950,7 @@ static void do_copymove(int argc, const char *argv[],
 	free(rsrc);
 	free(rdest);
     }
-    free(dest);
+    ne_free(uri_dest);
 }
 
 static void simple_move(const char *src, const char *dest) 
@@ -970,50 +1023,55 @@ char *resolve_path(const char *p, const char *filename, int iscoll)
 
 static void execute_get(const char *remote, const char *local)
 {
-    char *filename, *real_remote, *unescaped_remote;
-    real_remote = resolve_path(session.uri.path, remote, false);
-    unescaped_remote = ne_path_unescape(real_remote);
-    if (local == NULL) {
-	struct stat st;
-	/* Choose an appropriate local filename */
-	if (stat(base_name(remote), &st) == 0) {
-	    char buf[BUFSIZ];
-	    /* File already exists... don't overwrite */
-	    snprintf(buf, BUFSIZ, _("Enter local filename for `%s': "),
-		     unescaped_remote);
-	    filename = readline(buf);
-	    if (filename == NULL) {
-		free(real_remote);
-		ne_free(unescaped_remote);
-		printf(_("cancelled.\n"));
-		return;
-	    }
-	} else {
-	    filename = ne_strdup(base_name(remote));
-	}
-    } else {
-	filename = ne_strdup(local);
+    char *filename, *uri_path;
+    int fd;
+
+    uri_path = uri_resolve_native(remote);
+
+    if (local) {
+        filename = ne_strdup(local);
     }
-    {
-	int fd = open(filename, O_CREAT|O_WRONLY|O_TRUNC|OPEN_BINARY_FLAGS|O_LARGEFILE, 
-                      0644);
-	output(o_download, _("Downloading `%s' to %s:"), unescaped_remote, filename);
-	if (fd < 0) {
-	    output(o_finish, _("failed:\n%s\n"), strerror(errno));
-	} else {
-            int ret = ne_get(session.sess, real_remote, fd);
-            if (close(fd) && ret == NE_OK) {
-                int errnum = errno;
-                ret = NE_ERROR;
-                ne_set_error(session.sess, _("Could not write to file: %s"),
-                             strerror(errnum));
+    else {
+        struct stat st;
+
+        filename = ne_strdup(base_name(uri_path));
+
+        /* Choose an appropriate local filename */
+        if (stat(filename, &st) == 0) {
+            char buf[BUFSIZ];
+            /* File already exists... don't overwrite */
+            snprintf(buf, BUFSIZ, _("Enter local filename for `%s': "),
+                     remote);
+            ne_free(filename);
+            filename = readline(buf);
+            if (filename == NULL || strlen(filename) == 0) {
+                ne_free(uri_path);
+                if (filename) ne_free(filename);
+                printf(_("cancelled.\n"));
+                return;
             }
-	    out_result(ret);
-	}
+        }
     }
-    ne_free(unescaped_remote);
-    free(real_remote);
-    free(filename);
+
+    fd = open(filename, O_CREAT|O_WRONLY|O_TRUNC|OPEN_BINARY_FLAGS|O_LARGEFILE, 
+                  0644);
+    output(o_download, _("Downloading `%s' to `%s':"), remote, filename);
+    if (fd < 0) {
+        output(o_finish, _("failed:\n%s\n"), strerror(errno));
+    }
+    else {
+        int ret = ne_get(session.sess, uri_path, fd);
+        if (close(fd) && ret == NE_OK) {
+            int errnum = errno;
+            ret = NE_ERROR;
+            ne_set_error(session.sess, _("Could not write to file: %s"),
+                         strerror(errnum));
+        }
+        out_result(ret);
+    }
+
+    ne_free(uri_path);
+    ne_free(filename);
 }
 
 static void simple_put(const char *local, const char *remote)
@@ -1030,14 +1088,9 @@ static void simple_put(const char *local, const char *remote)
 
 static void execute_put(const char *local, const char *remote)
 {
-    char *real_remote;
-    if (remote == NULL) {
-	real_remote = resolve_path(session.uri.path, base_name(local), false);
-    } else {
-	real_remote = resolve_path(session.uri.path, remote, false);
-    }
-    simple_put(local, real_remote);
-    free(real_remote);
+    char *uri_path = uri_resolve_native(remote ? remote : base_name(local));
+    simple_put(local, uri_path);
+    free(uri_path);
 }
 
 /* A bit like Haskell's map function... applies func to each
