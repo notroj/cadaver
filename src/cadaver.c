@@ -272,33 +272,31 @@ static void provide_clicert(void *userdata, ne_session *sess,
     
 }
 
-static int setup_ssl(void)
+static void setup_ssl(ne_session *sess)
 {
     char *ccfn = get_option(opt_clicert);
 
-    ne_ssl_trust_default_ca(session.sess);
+    ne_ssl_trust_default_ca(sess);
 	      
-    ne_ssl_set_verify(session.sess, cert_verify, NULL);
+    ne_ssl_set_verify(sess, cert_verify, NULL);
 
     if (ccfn) {
         client_cert = ne_ssl_clicert_read(ccfn);
         if (client_cert) {
-            ne_ssl_provide_clicert(session.sess, provide_clicert, ccfn);
-        } else {
-            printf("Could not load client certificate from `%s'.\n",
-                   ccfn);
+            ne_ssl_provide_clicert(sess, provide_clicert, ccfn);
+        }
+        else {
+            printf(_("Could not load client certificate from `%s'.\n"), ccfn);
         }
     }
-
-    return 0;
 }
 
-/* FIXME: Leaky as a bucket */
+/* FIXME: leaky as a bucket? */
 void open_connection(const char *url)
 {
-    char *proxy_host = get_option(opt_proxy), *pnt;
+    char *proxy_host = get_option(opt_proxy);
     ne_server_capabilities caps;
-    int ret, use_ssl = 0;
+    int ret;
     ne_session *sess;
 
     if (session.connected) {
@@ -311,63 +309,47 @@ void open_connection(const char *url)
         }
     }
 
-    /* Single argument: see whether we have a path or scheme */
-    if (strchr(url, '/') == NULL) {
-	/* No path, no scheme -> just a hostname */
-	pnt = strchr(url, ':');
-	if (pnt != NULL) {
-	    *pnt++ = '\0';
-	    session.uri.port = atoi(pnt);
-	} else {
-	    session.uri.port = 80;
-	}
-	session.uri.host = ne_strdup(url);
-	session.uri.scheme = ne_strdup("http");
-    } else {
-	/* Parse the URL */
-	if (ne_uri_parse(url, &session.uri) || session.uri.host == NULL) {
-	    printf(_("Could not parse URL `%s'\n"), url);
-	    return;
-	}
-
-	if (session.uri.scheme == NULL)
-	    session.uri.scheme = ne_strdup("http");
-
-	if (!session.uri.port)
-	    session.uri.port = ne_uri_defaultport(session.uri.scheme);
-
-	if (strcasecmp(session.uri.scheme, "https") == 0) {
-	    if (!ne_has_support(NE_FEATURE_SSL)) {
-		printf(_("SSL is not enabled.\n"));
-		return;
-	    }
-	    use_ssl = 1;
-	}
+    /* Parse the URL */
+    if (ne_uri_parse(url, &session.uri) || session.uri.path == NULL
+        || session.uri.scheme == NULL || session.uri.host  == NULL) {
+        printf(_("Could not parse URL `%s'\n"), url);
+        return;
     }
 
-    session.sess = ne_session_create(session.uri.scheme, session.uri.host,
-                                     session.uri.port);
-    sess = session.sess;
-    
-    if (use_ssl && setup_ssl()) {
-	return;
+    if (!session.uri.port)
+        session.uri.port = ne_uri_defaultport(session.uri.scheme);
+
+    /* Collections must be slash-terminated to avoid a redirect
+     * round-trip. */
+    if (!ne_path_has_trailing_slash(session.uri.path)) {
+        char *pnt = ne_concat(session.uri.path, "/", NULL);
+        ne_free(session.uri.path);
+        session.uri.path = pnt;
     }
+
+    sess = ne_session_create(session.uri.scheme, session.uri.host, session.uri.port);
+
+    if (ne_strcasecmp(session.uri.scheme, "https") == 0) {
+        if (!ne_has_support(NE_FEATURE_SSL)) {
+            printf(_("No SSL/TLS support, cannot use URL `%s'\n"), url);
+            ne_session_destroy(sess);
+            return;
+        }
+        setup_ssl(sess);
+    }
+    else if (ne_strcasecmp(session.uri.scheme, "http")) {
+        printf(_("URL scheme '%s' not supported.\n"), session.uri.scheme);
+        ne_session_destroy(sess);
+        return;
+    }
+
+    session.sess = sess;
 
     ne_lockstore_register(session.locks, sess);
     ne_redirect_register(sess);
     ne_set_notifier(sess, notifier, NULL);
     ne_set_session_flag(sess, NE_SESSFLAG_PERSIST, get_bool_option(opt_keepalive));
     ne_set_session_flag(sess, NE_SESSFLAG_EXPECT100, get_bool_option(opt_expect100));
-
-    if (session.uri.path == NULL) {
-	session.uri.path = ne_strdup("/");
-    } else {
-	if (!ne_path_has_trailing_slash(session.uri.path)) {
-	    pnt = ne_concat(session.uri.path, "/", NULL);
-	    free(session.uri.path);
-	    session.uri.path = pnt;
-	}
-    }
 
     /* Get the proxy details */
     if (proxy_host != NULL) {
