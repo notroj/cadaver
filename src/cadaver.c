@@ -43,6 +43,9 @@
 #include <locale.h>
 #endif
 
+#ifdef HAVE_LANGINFO_CODESET
+#include <langinfo.h>
+#endif
 
 #include <errno.h>
 
@@ -823,8 +826,9 @@ char *readline(const char *prompt)
 
 static void init_options(void)
 {
-    char *lockowner, *tmp;
+    char *lockowner;
     char *user = getenv("USER"), *hostname = getenv("HOSTNAME");
+    int utf8_default;
     
     if (user && hostname) {
 	/* set this here so they can override it */
@@ -843,16 +847,20 @@ static void init_options(void)
     lockscope = ne_lockscope_exclusive;
     searchdepth = NE_DEPTH_INFINITE;
 
-    /* This is what Markus Kahn says we should do. */
-    if ((tmp = getenv("LC_ALL")) ||
-	(tmp = getenv("LC_CTYPE")) ||
-	(tmp = getenv("LANG"))) {
-	if (strstr(tmp, "UTF-8")) {
-	    int val = 1;
-	    set_option(opt_utf8, &val);
-	}
-    }
+    /* Detect whether it's possible to directly output UTF-8. */
+#ifdef HAVE_LANGINFO_CODESET
+    utf8_default = strcmp(nl_langinfo(CODESET), "UTF-8") == 0;
+#else
+    {
+        char *tmp;
 
+        utf8_default = ((tmp = getenv("LC_ALL")) ||
+                        || (tmp = getenv("LC_CTYPE"))
+                        || (tmp = getenv("LANG")))
+            && strstr(tmp, "UTF-8");
+    }
+#endif
+    set_option(opt_utf8, &utf8_default);
 }
 
 int main(int argc, char *argv[])

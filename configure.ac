@@ -78,10 +78,11 @@ AC_TYPE_UNSIGNED_LONG_LONG_INT
 
 AC_CHECK_HEADERS(sys/time.h fcntl.h pwd.h stdarg.h vmsdir.h memory.h alloca.h ncurses.h sgtty.h termios.h termio.h locale.h)
 
-AC_CHECK_FUNCS(strdup strerror memcpy strcoll tcsetattr getpass stty fchmod strtoull gettimeofday secure_getenv)
+AC_CHECK_FUNCS(strdup strerror memcpy strcoll tcsetattr getpass stty fchmod strtoull gettimeofday secure_getenv setlocale)
 
 AM_GNU_GETTEXT_VERSION([0.21])
 AM_GNU_GETTEXT([external])
+AM_LANGINFO_CODESET
 
 if test "$USE_NLS" = "yes"; then
     nls_msg="Built using native support"
