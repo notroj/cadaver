@@ -1074,9 +1074,9 @@ static void multi_cat(int argc, const char *argv[])
 static void multi_mput(int argc, const char *argv[])
 {
     for(; argv[0] != NULL; argv++) {
-	char *remote = resolve_path(session.uri.path, argv[0], false);
-	simple_put(argv[0], remote);
-	free(remote);
+	char *uri_path = uri_resolve_native(argv[0]);
+	simple_put(argv[0], uri_path);
+	ne_free(uri_path);
     }    
 }
 
