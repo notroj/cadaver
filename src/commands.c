@@ -242,13 +242,19 @@ char *getowner(void)
 }
 
 /* Resolve path, appending trailing slash if resource is a
- * collection. */
-static char *uri_resolve_native_true(const char *path)
+ * collection. If 'collection' is non-NULL, *collection is set to
+ * non-zero iff the resource is a collection.
+ * ### FIXME: this fails if "/dav/foo" redirects to "/dav/foo/" which
+ * is a collection.
+ */
+static char *uri_resolve_native_true(const char *path, int *collection)
 {
     char *uri_path = uri_resolve_native(path);
+    int is_coll = getrestype(uri_path) == resr_collection;
 
-    if (getrestype(uri_path) == resr_collection
-        && !ne_path_has_trailing_slash(uri_path)) {
+    if (collection) *collection = is_coll;
+
+    if (is_coll && !ne_path_has_trailing_slash(uri_path)) {
         char *tmp = ne_concat(uri_path, "/", NULL);
         ne_free(uri_path);
         uri_path = tmp;
@@ -405,44 +411,33 @@ static void execute_showlocks(void)
     }
 }
 
-static void execute_lock(const char *res)
+static void execute_lock(const char *path)
 {
-    char *real_remote;
+    char *uri_path;
     struct ne_lock *lock;
-    enum resource_type rtype;
+    int iscoll;
 
-    real_remote = resolve_path(session.uri.path, res, false);
-    rtype = getrestype(real_remote);
-    if (rtype == resr_collection) {
-	if (!ne_path_has_trailing_slash(real_remote)) {
-	    char *tmp = ne_concat(real_remote, "/", NULL);
-	    free(real_remote);
-	    real_remote = tmp;
-	}
-	out_start(_("Locking collection"), res);
-    } else {
-	out_start(_("Locking"), res);
-    }
+    uri_path = uri_resolve_native_true(path, &iscoll);
+    if (iscoll)
+        out_start(_("Locking collection"), path);
+    else
+	out_start(_("Locking"), path);
+
     lock = ne_lock_create();
     lock->scope = lockscope;
     lock->owner = getowner();
-    if (rtype == resr_normal) {
-	/* for non-cols, only zero makes sense */
-	lock->depth = NE_DEPTH_ZERO;
-    } else {
-	/* use value of lockdepth option. */
-	lock->depth = lockdepth;
-    }
+    lock->depth = iscoll ? lockdepth : NE_DEPTH_ZERO;
     ne_fill_server_uri(session.sess, &lock->uri);
-    lock->uri.path = ne_strdup(real_remote);
+    lock->uri.path = uri_path;
+
     if (out_handle(ne_lock(session.sess, lock))) {
 	/* success: remember the lock. */
 	ne_lockstore_add(session.locks, lock);
-    } else {
-	/* otherwise, throw it away */
+    }
+    else {
+	/* Otherwise, throw it away */
 	ne_lock_destroy(lock);
     }
-    free(real_remote);
 }
 
 static void execute_unlock(const char *res)
@@ -450,7 +445,7 @@ static void execute_unlock(const char *res)
     struct ne_lock *lock;
     ne_uri uri = session.uri; /* shallow copy */
 
-    uri.path = uri_resolve_native_true(res);
+    uri.path = uri_resolve_native_true(res, NULL);
 
     out_start(_("Unlocking"), res);
     lock = ne_lockstore_findbyuri(session.locks, &uri);
