@@ -1210,8 +1210,9 @@ static void execute_cd(const char *native_path)
         session.lastwp = session.uri.path;
         session.uri.path = dest_uri_path;
     }
-    else if (uri_path) {
-        ne_free(uri_path);
+    else {
+        /* Failure case, nothing else to do. */
+        if (uri_path) ne_free(uri_path);
     }
 }
 
