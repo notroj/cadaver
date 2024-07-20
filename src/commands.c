@@ -1,6 +1,6 @@
 /* 
    cadaver, command-line DAV client
-   Copyright (C) 1999-2007, Joe Orton <joe@manyfish.co.uk>, 
+   Copyright (C) 1999-2024, Joe Orton <joe@manyfish.co.uk>,
    except where otherwise indicated.
 
    This program is free software; you can redistribute it and/or modify
@@ -159,6 +159,23 @@ int out_handle(int ret)
     return (ret == NE_OK);
 }
 
+/* Converts a native path to a URI path. */
+static char *uri_resolve_native(const char *native);
+
+/* Convert native string to UTF-8, returns malloc-allocated. */
+static char *utf8_from_native(const char *native)
+{
+    if (!get_bool_option(opt_utf8)) /* TODO */ abort();
+    return ne_strdup(native);
+}
+
+/* Convert UTF-8 to native string, malloc-allocated. */
+static char *native_from_utf8(const char *native)
+{
+    if (!get_bool_option(opt_utf8)) /* TODO */ abort();
+    return ne_strdup(native);
+}
+
 /* The actual commands */
 #ifdef HAVE_LIBREADLINE
 
@@ -224,108 +241,20 @@ char *getowner(void)
     }
 }
 
-/* FIXME: joe: these are really wrong and result from my lack of
- * understanding of character set issues.  I think this needs iconv(),
- * but iconv isn't really portable, so what's the fallback for
- * platforms without iconv? Reject any non-ASCII input?  And even if
- * iconv is present, how is the input charset encoding determined? */
-static char *cad_utf8_encode(const char *str)
-{
-    char *buffer = ne_malloc(strlen(str) * 2 + 1);
-    int in, len = strlen(str);
-    char *out;
-
-    for (in = 0, out = buffer; in < len; in++, out++) {
-	if ((unsigned char)str[in] <= 0x7D) {
-	    *out = str[in];
-	} else {
-	    *out++ = 0xC0 | ((str[in] & 0xFC) >> 6);
-	    *out = str[in] & 0xBF;
-	}
-    }
-
-    /* nul-terminate */
-    *out = '\0';
-    return buffer;
-}
-
-/* Single byte range 0x00 -> 0x7F */
-#define SINGLEBYTE_UTF8(ch) (((unsigned char) (ch)) < 0x80)
-
-static char *cad_utf8_decode(const char *str)
-{
-    int n, m, len = strlen(str);
-    char *dest = ne_malloc(len + 1);
-    
-    for (n = 0, m = 0; n < len; n++, m++) {
-	if (SINGLEBYTE_UTF8(str[n])) {
-	    dest[m] = str[n];
-	} else {
-	    /* This just deals with 8-bit data, which will be encoded
-	     * as two bytes of UTF-8 */
-	    if ((len - n < 2) || (str[n] & 0xFC) != 0xC0) {
-		free(dest);
-		return NULL;
-	    } else {
-		dest[m] = ((str[n] & 0x03) << 6) | (str[n+1] & 0x3F);
-		n++;
-	    }
-	}
-    }
-    
-    dest[m] = '\0';
-    return dest;
-}
-
-/* If in UTF-8 mode, simply duplicates 'str'.  When not in UTF-8 mode,
- * presume 'str' is ISO-8859-1, and UTF-8 encode it. */
-static char *utf8_encode(const char *str)
-{
-    if (str == NULL)
-        return NULL;
-
-    if (get_bool_option(opt_utf8)) {
-	return ne_strdup(str);
-    } else {
-	return cad_utf8_encode(str);
-    }
-}
-
-/* If in UTF-8 mode, simply duplicates 'str'.
- * When not in UTF-8 mode, does a UTF-8 decode on 'str',
- * or at least, the least significant 8-bits of the Unicode
- * characters in 'str'.  Returns NULL if 'str' contains
- * >8-bit characters.
- *
- * TODO: yes, is this sensible? embedded NUL's?
- */
-static char *utf8_decode(const char *str)
-{
-    if (str == NULL)
-        return NULL;
-
-    /* decoded version can be at most as long as encoded version. */
-    if (get_bool_option(opt_utf8)) {
-	return ne_strdup(str);
-    } else {
-	return cad_utf8_decode(str);
-    }
-}
-
 /* Resolve path, appending trailing slash if resource is a
  * collection. */
-static char *true_path(const char *res)
+static char *uri_resolve_native_true(const char *path)
 {
-    char *full;
-    full = resolve_path(session.uri.path, res, false);
-    if (getrestype(full) == resr_collection) {
-	if (!ne_path_has_trailing_slash(full)) {
-	    char *tmp = ne_concat(full, "/", NULL);
-	    free(full);
-	    full = tmp;
-	}
+    char *uri_path = uri_resolve_native(path);
+
+    if (getrestype(uri_path) == resr_collection
+        && !ne_path_has_trailing_slash(uri_path)) {
+        char *tmp = ne_concat(uri_path, "/", NULL);
+        ne_free(uri_path);
+        uri_path = tmp;
     }
-    return full;
+
+    return uri_path;
 }
 
 static const char *get_lockscope(enum ne_lock_scope s)
@@ -519,10 +448,9 @@ static void execute_lock(const char *res)
 static void execute_unlock(const char *res)
 {
     struct ne_lock *lock;
-    ne_uri uri;
+    ne_uri uri = session.uri; /* shallow copy */
 
-    uri = session.uri; /* shallow copy */
-    uri.path = true_path(res);
+    uri.path = uri_resolve_native_true(res);
 
     out_start(_("Unlocking"), res);
     lock = ne_lockstore_findbyuri(session.locks, &uri);
@@ -534,7 +462,8 @@ static void execute_unlock(const char *res)
 	}
 	ne_fill_server_uri(session.sess, &lock->uri);
 	lock->uri.path = ne_strdup(uri.path);
-    } else {
+    } 
+    else {
 	/* remove the lock from the lockstore */
 	ne_lockstore_remove(session.locks, lock);
     }
@@ -556,17 +485,17 @@ static void execute_mkcol(const char *name)
 static int all_iterator(void *userdata, const ne_propname *pname,
 			 const char *value, const ne_status *status)
 {
-    char *dnspace = utf8_decode(pname->nspace);
-    char *dname = utf8_decode(pname->name);
+    char *nnspace = native_from_utf8(pname->nspace);
+    char *nname = native_from_utf8(pname->name);
     if (value != NULL) {
-	char *dval = utf8_decode(value);
-	printf("%s %s = %s\n", dnspace, dname, dval);
-	free(dval);
+	char *nval = native_from_utf8(value);
+	printf(_("%s %s = %s\n"), nnspace, nname, nval);
+	ne_free(nval);
     } else if (status != NULL) {
-	printf(_("%s %s failed: %s\n"), dnspace, dname, status->reason_phrase);
+	printf(_("%s %s failed: %s\n"), nnspace, nname, status->reason_phrase);
     }
-    free(dnspace);
-    free(dname);
+    ne_free(nnspace);
+    ne_free(nname);
     return 0;
 }
 
@@ -575,7 +504,7 @@ static void pget_results(void *userdata, const ne_uri *uri,
 {
     ne_propname *pname = userdata;
     const char *value;
-    char *dname;
+    char *nname;
 
     printf("\n");
 
@@ -585,14 +514,15 @@ static void pget_results(void *userdata, const ne_uri *uri,
 	return;
     }
     
-    dname = utf8_decode(pname->name);
+    nname = native_from_utf8(pname->name);
 
     value = ne_propset_value(set, pname);
     if (value != NULL) {
-	char *dval = utf8_decode(value);
-	printf(_("Value of %s is: %s\n"), dname, dval);
-	free(dval);
-    } else {
+	char *nval = native_from_utf8(value);
+	printf(_("Value of %s is: %s\n"), nname, nval);
+	ne_free(nval);
+    }
+    else {
 	const ne_status *status = ne_propset_status(set, pname);
 	
 	if (status) {
@@ -600,41 +530,42 @@ static void pget_results(void *userdata, const ne_uri *uri,
 		   status->code, status->reason_phrase);
 	} else {
 	    printf(_("Server did not return result for %s\n"),
-		   dname);
+		   nname);
 	}
     } 
 
-    free(dname);
+    ne_free(nname);
 }
 
 /* Change property 'name' on 'uri': if value is non-NULL, set property
  * to have new value, else delete it. */
-static void propop(const char *descr, const char *res, 
+static void propop(const char *descr, const char *path,
 		   const char *name, const char *value)
 {
     ne_proppatch_operation ops[2];
     ne_propname pname;
-    char *uri = resolve_path(session.uri.path, res, false);
-    char *val = NULL /* quieten gcc */, *encname = utf8_encode(name);
+    char *uri_path = uri_resolve_native(path);
+    char *val_utf = NULL, *name_utf = utf8_from_native(name);
 
     ops[0].name = &pname;
     if (value) {
 	ops[0].type = ne_propset;
-	ops[0].value = val = utf8_encode(value);
-    } else {
+	ops[0].value = val_utf = utf8_from_native(value);
+    }
+    else {
 	ops[0].type = ne_propremove;
     }
     ops[1].name = NULL;
     
-    pname.nspace = (const char *)get_option(opt_namespace);
-    pname.name = encname;
-    out_start(descr, res);
-    out_handle(ne_proppatch(session.sess, uri, ops));
+    pname.name = name_utf;
+    pname.nspace = get_option(opt_namespace);
 
-    if (value) 
-	free(val);
-    free(encname);
-    free(uri);
+    out_start(descr, path);
+    out_handle(ne_proppatch(session.sess, uri_path, ops));
+
+    if (val_utf) ne_free(val_utf);
+    ne_free(name_utf);
+    ne_free(uri_path);
 }    
 
 
@@ -651,7 +582,7 @@ static void execute_propdel(const char *res, const char *name)
 static void execute_propget(const char *res, const char *name)
 {
     ne_propname pnames[2] = {{NULL}, {NULL}};
-    char *remote = resolve_path(session.uri.path, res, false), *encname = NULL;
+    char *uri_path = uri_resolve_native(res), *uname = NULL;
     ne_propname *props;
     int ret;
     
@@ -659,22 +590,20 @@ static void execute_propget(const char *res, const char *name)
 	props = NULL;
     } else {
 	pnames[0].nspace = (const char *)get_option(opt_namespace);
-	pnames[0].name = encname = utf8_encode(name);
+	pnames[0].name = uname = utf8_from_native(name);
 	props = pnames;
     }
 
     out_start(_("Fetching properties for"), res);
-    ret = ne_simple_propfind(session.sess, remote, NE_DEPTH_ZERO, props,
-			      pget_results, props);
+    ret = ne_simple_propfind(session.sess, uri_path, NE_DEPTH_ZERO, props,
+                             pget_results, props);
 
     if (ret != NE_OK) {
 	out_result(ret);
     }
 
-    if (encname) {
-	free(encname);
-    }
-    free(remote);
+    if (uname) ne_free(uname);
+    ne_free(uri_path);
 }
 
 static int propname_iterator(void *userdata, const ne_propname *pname,
