@@ -489,10 +489,12 @@ static int all_iterator(void *userdata, const ne_propname *pname,
     char *nname = native_from_utf8(pname->name);
     if (value != NULL) {
 	char *nval = native_from_utf8(value);
-	printf(_("%s %s = %s\n"), nnspace, nname, nval);
+        char *sval = ne_shave(nval, " \r\n\t");
+	printf(_("- %s%s = %s\n"), nnspace, nname, sval);
 	ne_free(nval);
-    } else if (status != NULL) {
-	printf(_("%s %s failed: %s\n"), nnspace, nname, status->reason_phrase);
+    }
+    else if (status) {
+	printf(_("-- failed for %s%s: %s\n"), nnspace, nname, status->reason_phrase);
     }
     ne_free(nnspace);
     ne_free(nname);
