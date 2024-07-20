@@ -159,8 +159,8 @@ int out_handle(int ret)
     return (ret == NE_OK);
 }
 
-/* Converts a native path to a URI path. */
 static char *uri_resolve_native(const char *native);
+static char *uri_resolve_native_coll(const char *native);
 
 /* Convert native string to UTF-8, returns malloc-allocated. */
 static char *utf8_from_native(const char *native)
@@ -365,14 +365,13 @@ static void steal_result(void *userdata, const struct ne_lock *lock,
     }
 }
 
-static void do_discover(const char *res, const char *mesg,
+static void do_discover(const char *path, const char *mesg,
 			ne_lock_result result_cb)
 {
-    char *real_remote;
+    char *uri_path = uri_resolve_native(path);
     int ret, count = 0;
-    real_remote = resolve_path(session.uri.path, res, false);
-    out_start(mesg, res);
-    ret = ne_lock_discover(session.sess, real_remote, result_cb, &count);
+    out_start(mesg, path);
+    ret = ne_lock_discover(session.sess, uri_path, result_cb, &count);
     switch (ret) {
     case NE_OK:
 	if (count == 0) {
@@ -383,17 +382,17 @@ static void do_discover(const char *res, const char *mesg,
 	out_result(ret);
 	break;
     }
-    free(real_remote);
+    ne_free(uri_path);
 }
 
-static void execute_discover(const char *res)
+static void execute_discover(const char *path)
 {
-    do_discover(res, _("Discovering locks on"), discover_result);
+    do_discover(path, _("Discovering locks on"), discover_result);
 }
 
-static void execute_steal(const char *res)
+static void execute_steal(const char *path)
 {
-    do_discover(res, _("Stealing locks on"), steal_result);
+    do_discover(path, _("Stealing locks on"), steal_result);
 }
 
 static void execute_showlocks(void)
@@ -470,11 +469,11 @@ unlock_fail:
     ne_lock_destroy(lock);
 }
 
-static void execute_mkcol(const char *name)
+static void execute_mkcol(const char *path)
 {
-    char *uri = resolve_path(session.uri.path, name, true);
-    dispatch(_("Creating"), name, ne_mkcol, uri);
-    free(uri);
+    char *uri_path = uri_resolve_native_coll(path);
+    dispatch(_("Creating"), path, ne_mkcol, uri_path);
+    ne_free(uri_path);
 }
 
 static int all_iterator(void *userdata, const ne_propname *pname,
@@ -606,7 +605,7 @@ static void execute_propget(const char *res, const char *name)
 static int propname_iterator(void *userdata, const ne_propname *pname,
 			     const char *value, const ne_status *st)
 {
-    printf(" %s %s\n", pname->nspace, pname->name);
+    printf("\n %s%s", pname->nspace, pname->name);
     return 0;
 }
 
@@ -616,15 +615,19 @@ static void propname_results(void *userdata, const ne_uri *uri,
     ne_propset_iterate(pset, propname_iterator, NULL);
 }
 
-static void execute_propnames(const char *res)
+static void execute_propnames(const char *path)
 {
-    char *remote;
-    remote = resolve_path(session.uri.path, res, false);
-    out_start(_("Fetching property names"), res);
-    if (out_handle(ne_propnames(session.sess, remote, NE_DEPTH_ZERO,
-                                propname_results, NULL))) { 
+    char *uri_path = uri_resolve_native(path);
+    int ret;
+    printf(_("Fetching property names for %s:"), path);
+    if ((ret = ne_propnames(session.sess, uri_path, NE_DEPTH_ZERO,
+                            propname_results, NULL)) != NE_OK) {
+        out_result(ret);
     }
-    free(remote);
+    else {
+        putchar('\n');
+    }
+    ne_free(uri_path);
 }
 
 static void remove_locks(const char *p, int depth)
@@ -646,39 +649,41 @@ static void remove_locks(const char *p, int depth)
     ne_uri_free(&sought);
 }
 
-static void execute_delete(const char *filename)
+static void execute_delete(const char *path)
 {
-    char *remote = resolve_path(session.uri.path, filename, false);
-    out_start(_("Deleting"), filename);
-    if (getrestype(remote) == resr_collection) {
+    char *uri_path = uri_resolve_native(path);
+    out_start(_("Deleting"), path);
+    if (getrestype(uri_path) == resr_collection) {
 	output(o_finish, 
 _("is a collection resource.\n"
 "The `rm' command cannot be used to delete a collection.\n"
 "Use `rmcol %s' to delete this collection and ALL its contents.\n"), 
-filename);
-    } else {
-	if (out_handle(ne_delete(session.sess, remote))) {
-	    remove_locks(remote, 0);
+               path);
+    }
+    else {
+	if (out_handle(ne_delete(session.sess, uri_path))) {
+	    remove_locks(uri_path, 0);
 	}
     }
-    free(remote);
+    ne_free(uri_path);
 }
 
-static void execute_rmcol(const char *filename)
+static void execute_rmcol(const char *path)
 {
-    char *remote;
-    remote = resolve_path(session.uri.path, filename, true);
-    out_start(_("Deleting collection"), filename);
-    if (getrestype(remote) != resr_collection) {
+    char *uri_path = uri_resolve_path(path);
+    out_start(_("Deleting collection"), path);
+    if (getrestype(uri_path) != resr_collection) {
 	output(o_finish, 
 	       _("is not a collection.\n"
 		 "The `rmcol' command can only be used to delete collections.\n"
 		 "Use `rm %s' to delete this resource.\n"), filename);
-    } else {
-	out_result(ne_delete(session.sess, remote));
     }
-    remove_locks(remote, NE_DEPTH_INFINITE);
-    free(remote);
+    else {
+	if (out_handle(ne_delete(session.sess, uri_path))) {
+            remove_locks(uri_path, NE_DEPTH_INFINITE);
+        }
+    }
+    ne_free(uri_path);
 }
 
 /*
