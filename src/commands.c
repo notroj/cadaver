@@ -670,13 +670,13 @@ _("is a collection resource.\n"
 
 static void execute_rmcol(const char *path)
 {
-    char *uri_path = uri_resolve_path(path);
+    char *uri_path = uri_resolve_native(path);
     out_start(_("Deleting collection"), path);
     if (getrestype(uri_path) != resr_collection) {
 	output(o_finish, 
 	       _("is not a collection.\n"
 		 "The `rmcol' command can only be used to delete collections.\n"
-		 "Use `rm %s' to delete this resource.\n"), filename);
+		 "Use `rm %s' to delete this resource.\n"), path);
     }
     else {
 	if (out_handle(ne_delete(session.sess, uri_path))) {
