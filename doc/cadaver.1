@@ -2,7 +2,7 @@
 .SH NAME
 cadaver \- A command\-line WebDAV client for Unix. 
 .SH SYNOPSIS
-cadaver [-trp[-r file][-p host[:port]]][-V][-h] http://hostname[:port]/path
+cadaver [-trp[-r file][-p host[:port]]][-V][-h] URL
 .SH DESCRIPTION
 .B cadaver 
 supports file upload, download, on-screen display, namespace operations
@@ -21,6 +21,11 @@ a .netrc file (similar to
 .BR ftp (1)
 - see section "THE .netrc FILE" below).
 .SH OPTIONS
+
+The
+.BR URL
+passed must be an absolute URI using the http: or https URL scheme.
+
 .IP "-t, --tolerant"
 Allow cd/open into non-WebDAV enabled collection; use if the server
 or proxy server has WebDAV compliance problems.
