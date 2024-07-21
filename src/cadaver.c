@@ -125,8 +125,8 @@ static int supply_creds_proxy(void *userdata, const char *realm, int attempt,
 static void usage(void)
 {
     printf(_(
-"Usage: %s [OPTIONS] http://hostname[:port]/path\n"
-"  Port defaults to 80, path defaults to '/'\n"
+"Usage: %s [OPTIONS] URL\n"
+"  URL must be an absolute URI using the http: or https: scheme.\n"
 "Options:\n"
 "  -t, --tolerant            Allow cd/open into non-WebDAV enabled collection.\n"
 "  -r, --rcfile=FILE         Read script from FILE instead of ~/.cadaverrc.\n"
