@@ -952,27 +952,27 @@ char *resolve_path(const char *p, const char *filename, int iscoll)
     return ret;    
 }
 
-static void execute_get(const char *remote, const char *local)
+static void execute_get(const char *native_remote, const char *native_local)
 {
     char *filename, *uri_path;
     int fd;
 
-    uri_path = uri_resolve_native(remote);
+    uri_path = uri_resolve_native(native_remote);
 
-    if (local) {
-        filename = ne_strdup(local);
+    if (native_local) {
+        filename = ne_strdup(native_local);
     }
     else {
         struct stat st;
 
-        filename = ne_strdup(base_name(uri_path));
+        filename = ne_strdup(base_name(native_remote));
 
         /* Choose an appropriate local filename */
         if (stat(filename, &st) == 0) {
             char buf[BUFSIZ];
             /* File already exists... don't overwrite */
             snprintf(buf, BUFSIZ, _("Enter local filename for `%s': "),
-                     remote);
+                     native_remote);
             ne_free(filename);
             filename = readline(buf);
             if (filename == NULL || strlen(filename) == 0) {
@@ -986,7 +986,7 @@ static void execute_get(const char *remote, const char *local)
 
     fd = open(filename, O_CREAT|O_WRONLY|O_TRUNC|OPEN_BINARY_FLAGS|O_LARGEFILE, 
                   0644);
-    output(o_download, _("Downloading `%s' to `%s':"), remote, filename);
+    output(o_download, _("Downloading `%s' to `%s':"), native_remote, filename);
     if (fd < 0) {
         output(o_finish, _("failed:\n%s\n"), strerror(errno));
     }
