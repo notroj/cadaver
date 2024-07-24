@@ -39,6 +39,11 @@ const struct command *get_command(const char *name);
  */
 char *resolve_path(const char *dir, const char *filename, int isdir);
 
+/* Convert a URI path to a native path. */
+char *native_path_from_uri(const char *uri_path);
+char *uri_resolve_native(const char *native);
+char *uri_resolve_native_coll(const char *native);
+
 /* Displays cadaver version details. */
 void execute_about(void);
 
@@ -47,6 +52,9 @@ char *getowner(void);
 
 void out_success(void);
 void out_start(const char *verb, const char *noun);
+
+/* Start a command, using a URI-path noun argument. */
+void out_start_uri(const char *verb, const char *uri_path);
 void out_result(int ret);
 int out_handle(int ret);
 
