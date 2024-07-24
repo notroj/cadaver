@@ -91,58 +91,59 @@ static int compare_resource(const struct resource *r1,
 
 static void display_ls_line(struct resource *res)
 {
-    const char *restype;
-    char exec_char, vcr_char, *name;
+    const char *restype, *path = res->uri;
+    char exec_char, vcr_char;
+    char *native_path;
 
     switch (res->type) {
     case resr_normal: restype = ""; break;
     case resr_reference: restype = _("Ref:"); break;
     case resr_collection: restype = _("Coll:"); break;
     default:
-	restype = "???"; break;
-    }
-    
-    if (ne_path_has_trailing_slash(res->uri)) {
-	res->uri[strlen(res->uri)-1] = '\0';
-    }
-    name = strrchr(res->uri, '/');
-    if (name != NULL && strlen(name+1) > 0) {
-	name++;
-    } else {
-	name = res->uri;
+        restype = "???"; break;
     }
 
-    name = ne_path_unescape(name);
+    if (ne_path_has_trailing_slash(path)) {
+        res->uri[strlen(path)-1] = '\0';
+    }
+    path = strrchr(path, '/');
+    if (path != NULL && strlen(path+1) > 0) {
+        path++;
+    }
+    else {
+        path = res->uri;
+    }
+
+    native_path = native_path_from_uri(path);
 
     if (res->type == resr_error) {
-	printf(_("Error: %-30s %d %s\n"), name, res->error_status,
+	printf(_("Error: %-30s %d %s\n"), native_path, res->error_status,
 	       res->error_reason?res->error_reason:_("unknown"));
     } else {
 	exec_char = res->is_executable ? '*' : ' ';
 	/* 0: no vcr, 1: checkin, 2: checkout */
 	vcr_char = res->is_vcr==0 ? ' ' : (res->is_vcr==1? '>' : '<');
 	printf("%5s %c%c%-29s %10" FMT_DAV_SIZE_T "u  %s\n", 
-	       restype, vcr_char, exec_char, name,
+	       restype, vcr_char, exec_char, native_path,
 	       res->size, format_time(res->modtime));
     }
 
-    free(name);
+    ne_free(native_path);
 }
 
-void execute_ls(const char *remote)
+void execute_ls(const char *native_path)
 {
     int ret;
-    char *real_remote, *escaped_path;
+    char *uri_path;
     struct resource *reslist = NULL, *current, *next;
 
-    if (remote != NULL) {
-	escaped_path = resolve_path(session.uri.path, remote, true);
-    } else {
-	escaped_path = ne_strdup(session.uri.path);
-    }
-    real_remote = ne_path_unescape(escaped_path);
-    out_start(_("Listing collection"), real_remote);
-    ret = fetch_resource_list(session.sess, escaped_path, 1, 0, &reslist);
+    if (native_path)
+        uri_path = uri_resolve_native_coll(native_path);
+    else
+        uri_path = ne_strdup(session.uri.path);
+
+    out_start_uri(_("Listing collection"), uri_path);
+    ret = fetch_resource_list(session.sess, uri_path, 1, 0, &reslist);
     if (ret == NE_OK) {
 	/* Easy this, eh? */
 	if (reslist == NULL) {
@@ -151,7 +152,7 @@ void execute_ls(const char *remote)
 	    out_success();
 	    for (current = reslist; current!=NULL; current = next) {
 		next = current->next;
-		if (strlen(current->uri) > strlen(escaped_path)) {
+		if (strlen(current->uri) > strlen(uri_path)) {
 		    display_ls_line(current);
 		}
 		free_resource(current);
@@ -160,8 +161,7 @@ void execute_ls(const char *remote)
     } else {
 	out_result(ret);
     }
-    ne_free(real_remote);
-    free(escaped_path);
+    ne_free(uri_path);
 }
 
 static void results(void *userdata, 
@@ -185,7 +185,7 @@ static void results(void *userdata,
 	return;
     }
 
-    newres->uri = ne_strdup(path);
+    newres->uri = ne_strdup(uri->path);
 
     clength = ne_propset_value(set, &ls_props[0]);    
     modtime = ne_propset_value(set, &ls_props[1]);
