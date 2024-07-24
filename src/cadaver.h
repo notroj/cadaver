@@ -137,7 +137,7 @@ typedef unsigned long dav_size_t;
 #endif
 
 struct resource {
-    char *uri;
+    char *uri; /* URI path, strictly. */
     char *displayname;
     enum resource_type type;
     dav_size_t size;
@@ -172,7 +172,7 @@ void execute_search(int count, const char **args);
 void free_resource(struct resource *res);
 void free_resource_list(struct resource *res);
 
-int fetch_resource_list(ne_session *sess, const char *uri,
+int fetch_resource_list(ne_session *sess, const char *uri_path,
 			int depth, int include_uri,
 			struct resource **reslist);
 
