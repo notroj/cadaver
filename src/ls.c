@@ -200,26 +200,10 @@ static void results(void *userdata,
 	status = ne_propset_status(set, &ls_props[1]);
 
     if (newres->type == resr_normal && status) {
-	/* It's an error! */
-	newres->error_status = status->code;
-
-	/* Special hack for Apache 1.3/mod_dav */
-	if (strcmp(status->reason_phrase, "status text goes here") == 0) {
-	    const char *desc;
-	    if (status->code == 401) {
-		desc = _("Authorization Required");
-	    } else if (status->klass == 3) {
-		desc = _("Redirect");
-	    } else if (status->klass == 5) {
-		desc = _("Server Error");
-	    } else {
-		desc = _("Unknown Error");
-	    }
-	    newres->error_reason = ne_strdup(desc);
-	} else {
-	    newres->error_reason = ne_strdup(status->reason_phrase);
-	}
-	newres->type = resr_error;
+        /* It's an error! */
+        newres->error_status = status->code;
+        newres->error_reason = ne_strdup(status->reason_phrase);
+        newres->type = resr_error;
     }
 
     if (isexec && strcasecmp(isexec, "T") == 0) {
@@ -302,9 +286,7 @@ void free_resource_list(struct resource *res)
     }
 }
 
-static void *create_private(void *userdata, 
-                    const ne_uri *uri
-    )
+static void *create_private(void *userdata, const ne_uri *uri)
 {
     return ne_calloc(sizeof(struct resource));
 }
