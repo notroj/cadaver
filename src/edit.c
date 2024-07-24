@@ -109,9 +109,9 @@ static int is_lockable(const char *uri)
    the file using O_BINARY, and then we *do* upload it using O_BINARY,
    so maybe this will screw things up. Maybe we should fcntl it and
    set O_BINARY, if that is allowed under cygwin? */
-void execute_edit(const char *remote)
+void execute_edit(const char *native_path)
 {
-    char *real_remote;
+    char *uri_path;
     unsigned int can_lock; /* can we LOCK it? */
     struct ne_lock *lock = NULL;
     char fname[PATH_MAX] = "/tmp/cadaver-edit-XXXXXX";
@@ -119,24 +119,24 @@ void execute_edit(const char *remote)
     int fd;
     int is_checkout, is_checkin;
     
-    real_remote = resolve_path(session.uri.path, remote, false);
+    uri_path = uri_resolve_native(native_path);
 
     /* Don't let them edit a collection, since PUT to a collection is
      * bogus. Really we want to be able to fetch a "DefaultDocument"
      * property, and edit on that instead: IIS does expose such a
      * property. Would be a nice hack to add the support to mod_dav
      * too. */
-    if (getrestype(real_remote) == resr_collection) {
+    if (getrestype(uri_path) == resr_collection) {
 	printf(_("You cannot edit a collection resource (%s).\n"),
-	       real_remote);
+	       uri_path);
 	goto edit_bail;
     }
 
-    can_lock = is_lockable(real_remote);
+    can_lock = is_lockable(uri_path);
 
     /* Give the local temp file the same extension as the remote path,
      * so the editor can have a stab at the content-type. */
-    pnt = strrchr(real_remote, '.');
+    pnt = strrchr(uri_path, '.');
     if (pnt != NULL && strchr(pnt, '/') == NULL) {
 	strncat(fname, pnt, PATH_MAX-1);
 	fname[PATH_MAX-1] = '\0';
@@ -163,9 +163,9 @@ void execute_edit(const char *remote)
     if (can_lock) {
 	lock = ne_lock_create();
 	ne_fill_server_uri(session.sess, &lock->uri);
-	lock->uri.path = ne_strdup(real_remote);
+	lock->uri.path = ne_strdup(uri_path);
 	lock->owner = getowner();
-	out_start("Locking", remote);
+	out_start_uri(_("Locking"), uri_path);
 	if (out_handle(ne_lock(session.sess, lock))) {
 	    ne_lockstore_add(session.locks, lock);
 	} else {
@@ -177,15 +177,15 @@ void execute_edit(const char *remote)
     }
 
     /* Return 1: Checkin, 2: Checkout, 0: otherwise */
-    is_checkin = is_vcr(real_remote);
+    is_checkin = is_vcr(uri_path);
     if (is_checkin==1) {
-    	execute_checkout(real_remote);
+        execute_checkout(uri_path);
     }
     
-    output(o_download, _("Downloading `%s' to %s"), real_remote, fname);
+    output(o_download, _("Downloading `%s' to %s"), uri_path, fname);
 
     /* Don't puke if get fails -- perhaps we are creating a new one? */
-    out_result(ne_get(session.sess, real_remote, fd));
+    out_result(ne_get(session.sess, uri_path, fd));
     
     if (close(fd)) {
 	output(o_finish, _("Error writing to temporary file: %s\n"), 
@@ -201,10 +201,10 @@ void execute_edit(const char *remote)
 		   strerror(errno));
 	} else {
 	    do {
-		output(o_upload, _("Uploading changes to `%s'"), real_remote);
+		output(o_upload, _("Uploading changes to `%s'"), uri_path);
 		/* FIXME: conditional PUT using fetched Etag/modtime if
 		 * !can_lock */
-		if (out_handle(ne_put(session.sess, real_remote, fd))) {
+		if (out_handle(ne_put(session.sess, uri_path, fd))) {
 		    upload_okay = 1;
 		} else {
 		    /* TODO: offer to save locally instead */
@@ -224,14 +224,14 @@ void execute_edit(const char *remote)
     }	       
 
     /* Return 1: Checkin, 2: Checkout, 0: otherwise */
-    is_checkout = is_vcr(real_remote);
+    is_checkout = is_vcr(uri_path);
     if (is_checkout==2) {
-    	execute_checkin(real_remote);
+        execute_checkin(uri_path);
     }
     
     /* UNLOCK it again whether we succeed or failed in our mission */
     if (can_lock) {
-	output(o_start, "Unlocking `%s':", remote);
+	out_start_uri(_("Unlocking"), uri_path);
 	out_result(ne_unlock(session.sess, lock));
 	ne_lockstore_remove(session.locks, lock);
 	ne_lock_destroy(lock);
@@ -241,6 +241,6 @@ void execute_edit(const char *remote)
 edit_close:
     close(fd);
 edit_bail:
-    free(real_remote);
+    free(uri_path);
     return;
 }
