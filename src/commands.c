@@ -117,6 +117,13 @@ void out_start(const char *verb, const char *noun)
     output(o_start, "%s `%s':", verb, noun);
 }
 
+void out_start_uri(const char *verb, const char *path)
+{
+    char *native_path = native_path_from_uri(path);
+    output(o_start, "%s `%s':", verb, native_path);
+    ne_free(native_path);
+}
+
 void out_success(void)
 {
     output(o_finish, _("succeeded.\n"));
@@ -158,9 +165,6 @@ int out_handle(int ret)
     out_result(ret);
     return (ret == NE_OK);
 }
-
-static char *uri_resolve_native(const char *native);
-static char *uri_resolve_native_coll(const char *native);
 
 /* Convert native string to UTF-8, returns malloc-allocated. */
 static char *utf8_from_native(const char *native)
@@ -729,16 +733,26 @@ static char *path_native_resolver(const char *path, int collection)
 }
 
 /* Converts a native path to a URI path. */
-static char *uri_resolve_native(const char *native)
+char *uri_resolve_native(const char *native)
 {
     return path_native_resolver(native, 0);
 }
 
 /* Converts a native path for a collection to a URI path, ensuring it
  * has a trailing slash. */
-static char *uri_resolve_native_coll(const char *native)
+char *uri_resolve_native_coll(const char *native)
 {
     return path_native_resolver(native, 1);
+}
+
+char *native_path_from_uri(const char *uri_path)
+{
+    if (!get_bool_option(opt_utf8)) {
+        /* TODO */
+        abort();
+    }
+
+    return ne_path_unescape(uri_path);
 }
 
 /* TODO: remove this. */
