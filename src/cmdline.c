@@ -182,12 +182,12 @@ static void *davglob_opendir(const char *dir)
 {
     struct dg_ctx *ctx = NULL;
     struct resource *files;
-    char *real_path = resolve_path(session.uri.path, dir, 1);
+    char *uri_path = uri_resolve_native_coll(dir);
     NE_DEBUG(DEBUG_FILES, "opendir: %s\n", dir);
-    switch (fetch_resource_list(session.sess, real_path, 1, 0, &files)) {
+    switch (fetch_resource_list(session.sess, uri_path, 1, 0, &files)) {
     case NE_OK:
 	ctx = ne_calloc(sizeof *ctx);
-	ctx->rootlen = strlen(real_path);
+	ctx->rootlen = strlen(uri_path);
 	ctx->files = files;
 	ctx->current = ctx->files;
 	break;
@@ -199,7 +199,7 @@ static void *davglob_opendir(const char *dir)
 	errno = ENOENT;
 	break;
     }	
-    free(real_path);
+    ne_free(uri_path);
     return (void *)ctx;
 }
 
@@ -235,15 +235,14 @@ static void davglob_closedir(void *dir)
 static int davglob_stat(const char *filename, struct stat *st) {
     /* presumption: all glob needs to know is whether it's a directory
      * or not. I think this is true for the glob in glibc2 */
-    char *dir;
+    char *uri_path = uri_resolve_native_coll(filename);
     NE_DEBUG(DEBUG_FILES, "stat %s\n", filename);
-    dir = resolve_path(session.uri.path, filename, 1);
-    if (getrestype(dir) == resr_collection) {
+    if (getrestype(uri_path) == resr_collection) {
 	st->st_mode = S_IFDIR;
     } else {
 	st->st_mode = S_IFREG;
     }
-    free(dir);
+    ne_free(uri_path);
     return 0;
 }
 
