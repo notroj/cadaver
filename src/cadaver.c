@@ -633,14 +633,16 @@ static int init_rcfile(void)
 #define rl_filename_completion_function filename_completion_function
 #endif
 
+/* TODO:
+ * 1. "ls /dav/foo/<comp>" should complete within that path not CWD
+ * 2. quoting should happen
+ */
 static char *remote_completion(const char *text, int state)
 {
     static struct resource *reslist, *current;
-    static int len;
+    static size_t len;
     static time_t last_fetch;
     static char *last_path;
-
-    char *name;
     
     if (state == 0) {
 	/* Check to see if we should refresh the dumb cache.
@@ -674,39 +676,39 @@ static char *remote_completion(const char *text, int state)
 	    ne_set_notifier(session.sess, notifier, NULL);
 
 	    last_path = ne_strdup(session.uri.path);
-	}
-
+        }
 	current = reslist;
-	len = strlen(text);
+        len = strlen(text);
 	time(&last_fetch);
     }
 
     while (current) {
-	/* Massage the absolute URI to a URI relative to our path */
-	/* Copy & paste & search & replace from ls.c */
-	if (ne_path_has_trailing_slash(current->uri)) {
-	    current->uri[strlen(current->uri)-1] = '\0';
-	}
+        const char *path = current->uri;
+        char *native_path;
 
-	name = strrchr(current->uri, '/');
-	if (name != NULL && strlen(name+1) > 0) {
-	    name++;
-	} else {
-	    name = current->uri;
-	}
-	name = ne_path_unescape(name);
+        /* Massage the absolute path to a path segment. */
+        /* Copy & paste & search & replace from ls.c */
+        if (ne_path_has_trailing_slash(path)) {
+            current->uri[strlen(path)-1] = '\0';
+        }
 
-	if (strncmp(text, name, len) == 0) {
-	    current = current->next;
-	    /* FIXME: readline docs say readline will free() this when
-	     * it's finished with, although 'memprof' shows that it
-	     * leaks. */
-	    return name;
-	}
+        path = strrchr(path, '/');
+        if (path != NULL && strlen(path+1) > 0) {
+            path++;
+        }
+        else {
+            path = current->uri;
+        }
 
-	current = current->next;
+        native_path = native_path_from_uri(path);
+        if (strncmp(text, native_path, len) == 0) {
+            current = current->next;
+            return native_path;
+        }
+        ne_free(native_path);
+        current = current->next;
     }
-    
+
     return NULL;
 }
 
