@@ -5,11 +5,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cadaver 0.22.0\n"
-"Report-Msgid-Bugs-To: https://github.com/notroj/cadaver\n"
-"POT-Creation-Date: 2009-12-15 22:22+0000\n"
+"Report-Msgid-Bugs-To: https://github.com/notroj/cadaver/issues\n"
+"POT-Creation-Date: 2024-07-25 21:07+0100\n"
 "PO-Revision-Date: 2003-09-17 23:40+0200\n"
 "Last-Translator: Ramón Rey Vicente <ramon.rey@hispalinux.es>\n"
 "Language-Team: Spanish Translation Team <es@li.org>\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bits\n"
@@ -88,623 +89,11 @@ msgstr ""
 msgid "^[nN]"
 msgstr ""
 
-#: lib/neon/ne_207.c:198
-#, c-format
-msgid ""
-"Invalid HTTP status line in status element at line %d of response:\n"
-"Status line was: %s"
-msgstr ""
-
-#: lib/neon/ne_auth.c:134
-#, fuzzy, c-format
-msgid "Could not authenticate to server: %s"
-msgstr ""
-"No se puede contactar con el servidor:\n"
-"%s\n"
-
-#: lib/neon/ne_auth.c:139
-#, fuzzy, c-format
-msgid "Could not authenticate to proxy server: %s"
-msgstr "no se pudo conectar al servidor.\n"
-
-#: lib/neon/ne_auth.c:374
-#, c-format
-msgid "rejected %s challenge"
-msgstr ""
-
-#: lib/neon/ne_auth.c:390
-msgid "missing realm in Basic challenge"
-msgstr ""
-
-#: lib/neon/ne_auth.c:485
-msgid "invalid Negotiate token"
-msgstr ""
-
-#: lib/neon/ne_auth.c:508
-#, fuzzy
-msgid "GSSAPI authentication error: "
-msgstr "¡Autenticación abortada!\n"
-
-#: lib/neon/ne_auth.c:521
-#, c-format
-msgid "GSSAPI failure (code %u)"
-msgstr ""
-
-#: lib/neon/ne_auth.c:556
-msgid "ignoring empty Negotiate continuation"
-msgstr ""
-
-#: lib/neon/ne_auth.c:571
-msgid "Negotiate response verification failed: invalid response header token"
-msgstr ""
-
-#: lib/neon/ne_auth.c:593
-#, c-format
-msgid "Negotiate response verification failure: %s"
-msgstr ""
-
-#: lib/neon/ne_auth.c:762
-msgid "unknown algorithm in Digest challenge"
-msgstr ""
-
-#: lib/neon/ne_auth.c:766
-msgid "incompatible algorithm in Digest challenge"
-msgstr ""
-
-#: lib/neon/ne_auth.c:770
-msgid "missing parameter in Digest challenge"
-msgstr ""
-
-#: lib/neon/ne_auth.c:774
-msgid "initial Digest challenge was stale"
-msgstr ""
-
-#: lib/neon/ne_auth.c:781
-msgid "stale Digest challenge with new algorithm or realm"
-msgstr ""
-
-#: lib/neon/ne_auth.c:793
-msgid "could not parse domain in Digest challenge"
-msgstr ""
-
-#: lib/neon/ne_auth.c:1102
-msgid "Digest mutual authentication failure: missing parameters"
-msgstr ""
-
-#: lib/neon/ne_auth.c:1107
-msgid "Digest mutual authentication failure: client nonce mismatch"
-msgstr ""
-
-#: lib/neon/ne_auth.c:1117
-msgid "Digest mutual authentication failure: could not parse nonce count"
-msgstr ""
-
-#: lib/neon/ne_auth.c:1122
-#, c-format
-msgid "Digest mutual authentication failure: nonce count mismatch (%u not %u)"
-msgstr ""
-
-#: lib/neon/ne_auth.c:1165
-msgid "Digest mutual authentication failure: request-digest mismatch"
-msgstr ""
-
-#: lib/neon/ne_auth.c:1296
-#, c-format
-msgid "ignored %s challenge"
-msgstr ""
-
-#: lib/neon/ne_auth.c:1375
-#, fuzzy
-msgid "could not parse challenge"
-msgstr "No se puede procesar la URL '%s'\n"
-
-#: lib/neon/ne_basic.c:98
-#, fuzzy, c-format
-msgid "Could not determine file size: %s"
-msgstr "No se puede leer el archivo rc %s: %s\n"
-
-#: lib/neon/ne_basic.c:149
-msgid "Response did not include requested range"
-msgstr ""
-
-#: lib/neon/ne_basic.c:183
-msgid "Range is not satisfiable"
-msgstr ""
-
-#: lib/neon/ne_basic.c:188
-msgid "Resource does not support ranged GET requests"
-msgstr ""
-
-#: lib/neon/ne_compress.c:184
-#, c-format
-msgid "%s: %s (code %d)"
-msgstr ""
-
-#: lib/neon/ne_compress.c:232
-#, fuzzy
-msgid "Could not inflate data"
-msgstr "No se pudo abrir el archivo: %s\n"
-
-#: lib/neon/ne_compress.c:293
-#, fuzzy
-msgid "Could not initialize zlib"
-msgstr "No se pudo obtener las propiedades del archivo: %s\n"
-
-#: lib/neon/ne_gnutls.c:172
-#, c-format
-msgid "[unprintable:#%lu]"
-msgstr ""
-
-#: lib/neon/ne_gnutls.c:201
-msgid "[unprintable]"
-msgstr ""
-
-#: lib/neon/ne_gnutls.c:817
-msgid "signed using insecure algorithm"
-msgstr ""
-
-#: lib/neon/ne_gnutls.c:820
-#, c-format
-msgid "unrecognized errors (%u)"
-msgstr ""
-
-#: lib/neon/ne_gnutls.c:865 lib/neon/ne_openssl.c:467
-msgid "Server certificate was missing commonName attribute in subject name"
-msgstr ""
-
-#: lib/neon/ne_gnutls.c:879
-#, fuzzy, c-format
-msgid "Could not verify server certificate: %s"
-msgstr "No se pudo obtener las propiedades del archivo: %s\n"
-
-#: lib/neon/ne_gnutls.c:891 lib/neon/ne_openssl.c:454
-#, c-format
-msgid "Certificate verification error: %s"
-msgstr ""
-
-#: lib/neon/ne_gnutls.c:924 lib/neon/ne_openssl.c:673
-#, c-format
-msgid "SSL handshake failed, client certificate was requested: %s"
-msgstr ""
-
-#: lib/neon/ne_gnutls.c:929 lib/neon/ne_openssl.c:678
-#, fuzzy, c-format
-msgid "SSL handshake failed: %s"
-msgstr "fallo de autenticación.\n"
-
-#: lib/neon/ne_gnutls.c:939
-#, fuzzy
-msgid "Server did not send certificate chain"
-msgstr "El servidor no devolvió resultado para %s\n"
-
-#: lib/neon/ne_locks.c:584
-msgid "LOCK response missing Lock-Token header"
-msgstr ""
-
-#: lib/neon/ne_locks.c:759
-#, c-format
-msgid "Response missing activelock for %s"
-msgstr ""
-
-#: lib/neon/ne_locks.c:801
-#, c-format
-msgid "No activelock for <%s> returned in LOCK refresh response"
-msgstr ""
-
-#: lib/neon/ne_openssl.c:698
-msgid "SSL server did not present certificate"
-msgstr ""
-
-#: lib/neon/ne_openssl.c:707
-msgid "Server certificate changed: connection intercepted?"
-msgstr ""
-
-#: lib/neon/ne_props.c:371 lib/neon/ne_props.c:435
-msgid "Response exceeds maximum property count"
-msgstr ""
-
-#: lib/neon/ne_redirect.c:92
-#, fuzzy
-msgid "Could not parse redirect destination URL"
-msgstr "No se puede procesar la URL '%s'\n"
-
-#: lib/neon/ne_request.c:194
-#, fuzzy, c-format
-msgid "%s: connection was closed by proxy server"
-msgstr "Conexión con '%s' cerrada.\n"
-
-#: lib/neon/ne_request.c:197
-#, fuzzy, c-format
-msgid "%s: connection was closed by server"
-msgstr "Conexión con '%s' cerrada.\n"
-
-#: lib/neon/ne_request.c:202
-#, fuzzy, c-format
-msgid "%s: connection timed out"
-msgstr "la conexión a expirado.\n"
-
-#: lib/neon/ne_request.c:311
-#, fuzzy
-msgid "offset invalid"
-msgstr "inválido"
-
-#: lib/neon/ne_request.c:316
-#, fuzzy, c-format
-msgid "Could not seek to offset %s of request body file: %s"
-msgstr "No se pudo obtener las propiedades del archivo: %s\n"
-
-#: lib/neon/ne_request.c:364
-#, fuzzy
-msgid "Could not send request body"
-msgstr "No se puede leer el archivo rc %s: %s\n"
-
-#: lib/neon/ne_request.c:707
-#, fuzzy
-msgid "Could not read chunk size"
-msgstr "No se puede leer el archivo rc %s: %s\n"
-
-#: lib/neon/ne_request.c:714
-#, fuzzy
-msgid "Could not parse chunk size"
-msgstr "No se puede procesar la URL '%s'\n"
-
-#: lib/neon/ne_request.c:751
-#, fuzzy
-msgid "Could not read response body"
-msgstr "No se puede leer el archivo rc %s: %s\n"
-
-#: lib/neon/ne_request.c:767
-#, fuzzy
-msgid "Could not read chunk delimiter"
-msgstr "No se puede leer el archivo rc %s: %s\n"
-
-#: lib/neon/ne_request.c:770
-msgid "Chunk delimiter was invalid"
-msgstr ""
-
-#: lib/neon/ne_request.c:875
-#, fuzzy
-msgid "Could not read status line"
-msgstr "No se pudo obtener las propiedades del archivo: %s\n"
-
-#: lib/neon/ne_request.c:897
-#, fuzzy
-msgid "Could not parse response status line"
-msgstr "No se puede procesar la URL '%s'\n"
-
-#: lib/neon/ne_request.c:909
-#, fuzzy
-msgid "Could not read interim response headers"
-msgstr "No se puede leer el archivo rc %s: %s\n"
-
-#: lib/neon/ne_request.c:943
-#, fuzzy
-msgid "Could not send request"
-msgstr "No se pudo abrir el archivo: %s\n"
-
-#: lib/neon/ne_request.c:991 lib/neon/ne_request.c:1009
-#: lib/neon/ne_request.c:1019
-msgid "Error reading response headers"
-msgstr ""
-
-#: lib/neon/ne_request.c:1037
-msgid "Response header too long"
-msgstr ""
-
-#: lib/neon/ne_request.c:1119
-msgid "Response exceeded maximum number of header fields"
-msgstr ""
-
-#: lib/neon/ne_request.c:1134
-#, fuzzy, c-format
-msgid "Could not resolve hostname `%s': %s"
-msgstr "No se puede resolver el nombre del servidor '%s'.\n"
-
-#: lib/neon/ne_request.c:1265
-msgid "Unknown transfer-coding in response"
-msgstr ""
-
-#: lib/neon/ne_request.c:1278
-msgid "Invalid Content-Length in response"
-msgstr ""
-
-#: lib/neon/ne_request.c:1351 src/commands.c:980
-#, fuzzy, c-format
-msgid "Could not write to file: %s"
-msgstr "No se pudo obtener las propiedades del archivo: %s\n"
-
-#: lib/neon/ne_request.c:1424
-#, fuzzy, c-format
-msgid "Could not create SSL connection through proxy server: %s"
-msgstr "no se pudo conectar al servidor.\n"
-
-#: lib/neon/ne_request.c:1463
-#, fuzzy
-msgid "Could not create socket"
-msgstr "No se pudo obtener las propiedades del archivo: %s\n"
-
-#: lib/neon/ne_request.c:1496
-#, fuzzy
-msgid "Could not connect to server"
-msgstr "no se pudo conectar al servidor.\n"
-
-#: lib/neon/ne_request.c:1498
-#, fuzzy
-msgid "Could not connect to proxy server"
-msgstr "no se pudo conectar al servidor.\n"
-
-#: lib/neon/ne_request.c:1541
-#, c-format
-msgid "Could not find IPv4 address of hostname %s for SOCKS v4 proxy"
-msgstr ""
-
-#: lib/neon/ne_request.c:1599
-#, fuzzy, c-format
-msgid "Could not establish connection from SOCKS proxy (%s:%u): %s"
-msgstr "no se pudo conectar al servidor.\n"
-
-#: lib/neon/ne_session.c:528 lib/neon/ne_session.c:539
-#, fuzzy
-msgid "[invalid date]"
-msgstr "inválido"
-
-#: lib/neon/ne_session.c:552
-msgid "certificate is not yet valid"
-msgstr ""
-
-#: lib/neon/ne_session.c:553
-msgid "certificate has expired"
-msgstr ""
-
-#: lib/neon/ne_session.c:554
-msgid "certificate issued for a different hostname"
-msgstr ""
-
-#: lib/neon/ne_session.c:555
-msgid "issuer is not trusted"
-msgstr ""
-
-#: lib/neon/ne_session.c:556
-#, fuzzy
-msgid "bad certificate chain"
-msgstr "El servidor no devolvió resultado para %s\n"
-
-#: lib/neon/ne_session.c:557
-msgid "certificate has been revoked"
-msgstr ""
-
-#: lib/neon/ne_session.c:562
-msgid "Server certificate verification failed: "
-msgstr ""
-
-#: lib/neon/ne_socket.c:516 lib/neon/ne_socket.c:612 lib/neon/ne_socket.c:716
-#, fuzzy
-msgid "Connection closed"
-msgstr "Conexión con '%s' cerrada.\n"
-
-#: lib/neon/ne_socket.c:622 lib/neon/ne_socket.c:728
-#, fuzzy
-msgid "Secure connection truncated"
-msgstr "Cerrar conexión actual"
-
-#: lib/neon/ne_socket.c:634 lib/neon/ne_socket.c:740
-#, c-format
-msgid "SSL error: %s"
-msgstr ""
-
-#: lib/neon/ne_socket.c:637
-#, c-format
-msgid "SSL error code %d/%d/%lu"
-msgstr ""
-
-#: lib/neon/ne_socket.c:721
-#, c-format
-msgid "SSL alert received: %s"
-msgstr ""
-
-#: lib/neon/ne_socket.c:736
-msgid "SSL socket read failed"
-msgstr ""
-
-#: lib/neon/ne_socket.c:867
-msgid "Line too long"
-msgstr ""
-
-#: lib/neon/ne_socket.c:1012 lib/neon/ne_socket.c:1018
-msgid "Host not found"
-msgstr ""
-
-#: lib/neon/ne_socket.c:1221
-#, fuzzy
-msgid "Connection timed out"
-msgstr "la conexión a expirado.\n"
-
-#: lib/neon/ne_socket.c:1412
-msgid "Socket descriptor number exceeds FD_SETSIZE"
-msgstr ""
-
-#: lib/neon/ne_socket.c:1474
-msgid "Socket family not supported"
-msgstr ""
-
-#: lib/neon/ne_socket.c:1701
-msgid "Client certificate verification failed"
-msgstr ""
-
-#: lib/neon/ne_socket.c:1717
-msgid "SSL disabled due to lack of entropy"
-msgstr ""
-
-#: lib/neon/ne_socket.c:1724
-msgid "SSL disabled due to library version mismatch"
-msgstr ""
-
-#: lib/neon/ne_socket.c:1730
-#, fuzzy
-msgid "Could not create SSL structure"
-msgstr ""
-"No se pudo crear el archivo temporal %s:\n"
-"%s\n"
-
-#: lib/neon/ne_socks.c:65
-msgid "failure"
-msgstr ""
-
-#: lib/neon/ne_socks.c:68
-#, fuzzy
-msgid "connection not permitted"
-msgstr "la conexión a expirado.\n"
-
-#: lib/neon/ne_socks.c:71
-msgid "network unreachable"
-msgstr ""
-
-#: lib/neon/ne_socks.c:74
-msgid "host unreachable"
-msgstr ""
-
-#: lib/neon/ne_socks.c:77
-msgid "TTL expired"
-msgstr ""
-
-#: lib/neon/ne_socks.c:80
-msgid "command not supported"
-msgstr ""
-
-#: lib/neon/ne_socks.c:83
-msgid "address type not supported"
-msgstr ""
-
-#: lib/neon/ne_socks.c:86
-#, c-format
-msgid "%s: unrecognized error (%u)"
-msgstr ""
-
-#: lib/neon/ne_socks.c:128 lib/neon/ne_socks.c:328
-#, fuzzy
-msgid "Could not send message to proxy"
-msgstr "No se puede leer el archivo rc %s: %s\n"
-
-#: lib/neon/ne_socks.c:133
-#, fuzzy
-msgid "Could not read initial response from proxy"
-msgstr "No se puede leer el archivo rc %s: %s\n"
-
-#: lib/neon/ne_socks.c:136
-msgid "Invalid version in proxy response"
-msgstr ""
-
-#: lib/neon/ne_socks.c:157
-#, fuzzy
-msgid "Could not send login message"
-msgstr "No se pudo abrir el archivo: %s\n"
-
-#: lib/neon/ne_socks.c:162
-#, fuzzy
-msgid "Could not read login reply"
-msgstr "No se pudo obtener las propiedades del archivo: %s\n"
-
-#: lib/neon/ne_socks.c:165
-msgid "Invalid version in login reply"
-msgstr ""
-
-#: lib/neon/ne_socks.c:168
-#, fuzzy
-msgid "Authentication failed"
-msgstr "fallo de autenticación.\n"
-
-#: lib/neon/ne_socks.c:172
-msgid "No acceptable authentication method"
-msgstr ""
-
-#: lib/neon/ne_socks.c:174
-msgid "Unexpected authentication method chosen"
-msgstr ""
-
-#: lib/neon/ne_socks.c:210
-#, fuzzy
-msgid "Could not send connect request"
-msgstr "No se pudo abrir el archivo: %s\n"
-
-#: lib/neon/ne_socks.c:215
-#, fuzzy
-msgid "Could not read connect reply"
-msgstr "no se pudo conectar al servidor.\n"
-
-#: lib/neon/ne_socks.c:218
-msgid "Invalid version in connect reply"
-msgstr ""
-
-#: lib/neon/ne_socks.c:221 lib/neon/ne_socks.c:337
-#, fuzzy
-msgid "Could not connect"
-msgstr "no se pudo conectar al servidor.\n"
-
-#: lib/neon/ne_socks.c:235
-msgid "Could not read FQDN length in connect reply"
-msgstr ""
-
-#: lib/neon/ne_socks.c:240
-msgid "Unknown address type in connect reply"
-msgstr ""
-
-#: lib/neon/ne_socks.c:245
-#, fuzzy
-msgid "Could not read address in connect reply"
-msgstr "No se puede leer el archivo rc %s: %s\n"
-
-#: lib/neon/ne_socks.c:266
-msgid "request rejected or failed"
-msgstr ""
-
-#: lib/neon/ne_socks.c:269
-#, fuzzy
-msgid "could not establish connection to identd"
-msgstr "no se pudo conectar al servidor.\n"
-
-#: lib/neon/ne_socks.c:272
-msgid "rejected due to identd user mismatch"
-msgstr ""
-
-#: lib/neon/ne_socks.c:275
-#, c-format
-msgid "%s: unrecognized failure (%u)"
-msgstr ""
-
-#: lib/neon/ne_socks.c:333
-#, fuzzy
-msgid "Could not read response from proxy"
-msgstr "No se puede leer el archivo rc %s: %s\n"
-
-#: lib/neon/ne_xml.c:280
-#, c-format
-msgid "XML parse error at line %d: invalid element name"
-msgstr ""
-
-#: lib/neon/ne_xml.c:474
-#, fuzzy
-msgid "Unknown error"
-msgstr "Error desconocido"
-
-#: lib/neon/ne_xml.c:579
-msgid "Invalid Byte Order Mark"
-msgstr ""
-
-#: lib/neon/ne_xml.c:667
-#, c-format
-msgid "XML parse error at line %d: %s"
-msgstr ""
-
-#: lib/neon/ne_xmlreq.c:36
-#, fuzzy, c-format
-msgid "Could not parse response: %s"
-msgstr "No se puede procesar la URL '%s'\n"
-
-#: src/cadaver.c:128
+#: src/cadaver.c:131
 #, fuzzy, c-format
 msgid ""
-"Usage: %s [OPTIONS] http://hostname[:port]/path\n"
-"  Port defaults to 80, path defaults to '/'\n"
+"Usage: %s [OPTIONS] URL\n"
+"  URL must be an absolute URI using the http: or https: scheme.\n"
 "Options:\n"
 "  -t, --tolerant            Allow cd/open into non-WebDAV enabled "
 "collection.\n"
@@ -713,7 +102,8 @@ msgid ""
 "PORT.\n"
 "  -V, --version             Display version information.\n"
 "  -h, --help                Display this help message.\n"
-"Please send bug reports and feature requests to <https://github.com/notroj/cadaver>\n"
+"Please send bug reports and feature requests via <https://github.com/notroj/"
+"cadaver>\n"
 msgstr ""
 "Uso: %s [OPCIONES] http://nombre_de_máquina[:puerto]/ruta\n"
 "   El puerto por defecto es 80, la ruta por defecto es '/'\n"
@@ -727,12 +117,12 @@ msgstr ""
 "Por favor, envie informes de errores y peticiones de características a "
 "<https://github.com/notroj/cadaver>\n"
 
-#: src/cadaver.c:155
+#: src/cadaver.c:158
 #, c-format
 msgid "Connection to `%s' closed.\n"
 msgstr "Conexión con '%s' cerrada.\n"
 
-#: src/cadaver.c:171
+#: src/cadaver.c:174
 #, c-format
 msgid ""
 "Ignored error: %s not WebDAV-enabled:\n"
@@ -741,7 +131,7 @@ msgstr ""
 "Error ignorado: %s no dispone de WebDAV activado:\n"
 "%s\n"
 
-#: src/cadaver.c:178
+#: src/cadaver.c:181
 #, c-format
 msgid ""
 "Could not access %s (not WebDAV-enabled?):\n"
@@ -750,94 +140,110 @@ msgstr ""
 "No se puede acceder a %s (¿dispone de WebDAV activado?):\n"
 "%s\n"
 
-#: src/cadaver.c:192
+#: src/cadaver.c:195
 #, c-format
 msgid "WARNING: Untrusted server certificate presented for `%s':\n"
 msgstr ""
 
-#: src/cadaver.c:195
+#: src/cadaver.c:198
 msgid "WARNING: Untrusted server certificate presented:\n"
 msgstr ""
 
-#: src/cadaver.c:198
+#: src/cadaver.c:203
+#, c-format
+msgid "Server certificate SHA-256 digest: %s\n"
+msgstr ""
+
+#: src/cadaver.c:209
 #, c-format
 msgid "Certificate was issued to hostname `%s' rather than `%s'\n"
 msgstr ""
 
-#: src/cadaver.c:200
+#: src/cadaver.c:211
 #, c-format
 msgid "This connection could have been intercepted.\n"
 msgstr ""
 
-#: src/cadaver.c:206
+#: src/cadaver.c:217
 #, c-format
 msgid "Issued to: %s\n"
 msgstr ""
 
-#: src/cadaver.c:207
+#: src/cadaver.c:218
 #, c-format
 msgid "Issued by: %s\n"
 msgstr ""
 
-#: src/cadaver.c:210
+#: src/cadaver.c:221
 #, c-format
 msgid "Certificate is valid from %s to %s\n"
 msgstr ""
 
-#: src/cadaver.c:213
+#: src/cadaver.c:224
 #, c-format
 msgid "Do you wish to accept the certificate? (y/n) "
 msgstr ""
 
-#: src/cadaver.c:216
+#: src/cadaver.c:227
 #, c-format
 msgid "Certificate rejected.\n"
 msgstr ""
 
-#: src/cadaver.c:247
+#: src/cadaver.c:258
 msgid "Decryption password: "
 msgstr ""
 
-#: src/cadaver.c:318
+#: src/cadaver.c:289
+#, fuzzy, c-format
+#| msgid "Using client certificate `%s'.\n"
+msgid "Could not load client certificate from `%s'.\n"
+msgstr "Usando certificado del cliente '%s'.\n"
+
+#: src/cadaver.c:315
 #, c-format
 msgid "Could not parse URL `%s'\n"
 msgstr "No se puede procesar la URL '%s'\n"
 
-#: src/cadaver.c:330
+#: src/cadaver.c:334
 #, c-format
-msgid "SSL is not enabled.\n"
+msgid "No SSL/TLS support, cannot use URL `%s'\n"
 msgstr ""
 
-#: src/cadaver.c:405 src/cadaver.c:408
+#: src/cadaver.c:341
+#, c-format
+msgid "URL scheme '%s' not supported.\n"
+msgstr ""
+
+#: src/cadaver.c:397 src/cadaver.c:400
 #, fuzzy, c-format
 msgid ""
 "Could not connect to `%s' on port %d:\n"
 "%s\n"
 msgstr "No se puede conectar a la máquina remota.\n"
 
-#: src/cadaver.c:416
+#: src/cadaver.c:408
 #, fuzzy, c-format
 msgid ""
 "Could not open collection:\n"
 "%s\n"
 msgstr "No se pudo abrir el archivo: %s\n"
 
-#: src/cadaver.c:456
+#: src/cadaver.c:448
 #, c-format
 msgid "Try `%s --help' for more information.\n"
 msgstr "Probar '%s --help' para más información.\n"
 
-#: src/cadaver.c:505
+#: src/cadaver.c:497
 #, c-format
 msgid "Unrecognised command. Type 'help' for a list of commands.\n"
 msgstr "Comando desconocido, Teclear 'help' para una lista de comandos.\n"
 
-#: src/cadaver.c:507
+#: src/cadaver.c:499
 #, c-format
 msgid "The `%s' command requires %d argument%s"
 msgstr "El comando '%s' requiere %d el argumento %s"
 
-#: src/cadaver.c:510 src/cadaver.c:522
+#: src/cadaver.c:502 src/cadaver.c:514
 #, c-format
 msgid ""
 ":\n"
@@ -846,17 +252,17 @@ msgstr ""
 ":\n"
 "  %s : %s\n"
 
-#: src/cadaver.c:516
+#: src/cadaver.c:508
 #, c-format
 msgid "The `%s' command takes at most %d argument%s"
 msgstr "El comando '%s' acepta como mucho %d argumentos%s"
 
-#: src/cadaver.c:519
+#: src/cadaver.c:511
 #, c-format
 msgid "The `%s' command takes no arguments"
 msgstr "El comando '%s' no toma ningún argumento"
 
-#: src/cadaver.c:527
+#: src/cadaver.c:519
 #, c-format
 msgid ""
 "The `%s' command can only be used when connected to the server.\n"
@@ -865,159 +271,159 @@ msgstr ""
 "El comando '%s' sólo puede ser usado cuando se está conectado al servidor.\n"
 "Pruebe a ejecutar 'open' primerp (ver 'help open para más detalles).\n"
 
-#: src/cadaver.c:572
+#: src/cadaver.c:564
 #, c-format
 msgid "Terminated by signal %d.\n"
 msgstr "Terminado por señal %d.\n"
 
-#: src/cadaver.c:615
+#: src/cadaver.c:607
 #, c-format
 msgid "Could not read rcfile %s: %s\n"
 msgstr "No se puede leer el archivo rc %s: %s\n"
 
-#: src/cadaver.c:870
+#: src/cadaver.c:869
 #, c-format
 msgid "Environment variable $HOME needs to be set!\n"
 msgstr "¡La variable de entorno $HOME necesita ser definida!\n"
 
-#: src/cadaver.c:932
+#: src/cadaver.c:931
 #, c-format
 msgid "Looking up hostname... "
 msgstr "Buscando nombre de máquina..."
 
-#: src/cadaver.c:935
+#: src/cadaver.c:934
 #, c-format
 msgid "Connecting to server... "
 msgstr "Conectando al servidor..."
 
-#: src/cadaver.c:938
+#: src/cadaver.c:937
 #, c-format
 msgid "connected.\n"
 msgstr "conectado.\n"
 
-#: src/cadaver.c:950
+#: src/cadaver.c:949
 #, c-format
 msgid " (reconnecting..."
 msgstr " (reconectando..."
 
-#: src/cadaver.c:954
+#: src/cadaver.c:953
 #, c-format
 msgid "done)"
 msgstr "hecho)"
 
-#: src/cadaver.c:980
+#: src/cadaver.c:979
 #, c-format
 msgid "] reconnecting: "
 msgstr "] reconectando: "
 
-#: src/cadaver.c:983
+#: src/cadaver.c:982
 #, c-format
 msgid "okay ["
 msgstr "bien ["
 
-#: src/cadaver.c:1000
+#: src/cadaver.c:999
 #, c-format
 msgid "\rTransfer timed out, reconnecting... "
 msgstr "Tiempo de transferencia expirado, reconectando... "
 
-#: src/cadaver.c:1003
+#: src/cadaver.c:1002
 #, c-format
 msgid "okay."
 msgstr "bien."
 
-#: src/cadaver.c:1062
+#: src/cadaver.c:1061
 #, c-format
 msgid "\rProgress: ["
 msgstr " Progreso: ["
 
-#: src/cadaver.c:1067
+#: src/cadaver.c:1066
 #, fuzzy
 msgid "] %5.1f%% of %"
 msgstr "] %5.1f%% de %ld bytes"
 
-#: src/cadaver.c:1094
+#: src/cadaver.c:1093
 msgid "Username: "
 msgstr "Nombre de usuario: "
 
-#: src/cadaver.c:1096
+#: src/cadaver.c:1095
 #, c-format
 msgid "\rAuthentication aborted!\n"
 msgstr "¡Autenticación abortada!\n"
 
-#: src/cadaver.c:1099
+#: src/cadaver.c:1098
 #, c-format
 msgid "\rUsername too long (>%d)\n"
 msgstr ""
 
-#: src/cadaver.c:1107
+#: src/cadaver.c:1106
 msgid "Password: "
 msgstr "Contraseña: "
 
-#: src/cadaver.c:1109
+#: src/cadaver.c:1108
 #, c-format
 msgid "Authentication aborted!\n"
 msgstr "¡Autenticación abortada!\n"
 
-#: src/cadaver.c:1112
+#: src/cadaver.c:1111
 #, c-format
 msgid "\rPassword too long (>%d)\n"
 msgstr ""
 
-#: src/cadaver.c:1123
+#: src/cadaver.c:1122
 #, c-format
 msgid "Retrying:"
 msgstr "Reintentando:"
 
-#: src/cadaver.c:1127
+#: src/cadaver.c:1126
 #, c-format
 msgid "Retrying ["
 msgstr "Reintentando ["
 
-#: src/cadaver.c:1150
+#: src/cadaver.c:1149
 #, c-format
 msgid "Authentication required for %s on server `%s':\n"
 msgstr "Autenticación requerida para %s en el servidor '%s':\n"
 
-#: src/cadaver.c:1161
+#: src/cadaver.c:1160
 #, c-format
 msgid "Authentication required for %s on proxy server `%s':\n"
 msgstr "Autenticación requerida para %s en el servidor proxy '%s':\n"
 
-#: src/cmdline.c:286
+#: src/cmdline.c:285
 msgid "[Matching..."
 msgstr "Buscando coincidencias... "
 
-#: src/cmdline.c:313
+#: src/cmdline.c:312
 #, fuzzy, c-format
 msgid "%ld matches.]\n"
 msgstr "%d coincidencias.]\n"
 
-#: src/cmdline.c:315
+#: src/cmdline.c:314
 msgid "1 match.]\n"
 msgstr "1 coincidencia.]\n"
 
-#: src/commands.c:122
+#: src/commands.c:129
 msgid "succeeded.\n"
 msgstr "exitoso.\n"
 
-#: src/commands.c:133
+#: src/commands.c:140
 msgid "authentication failed.\n"
 msgstr "fallo de autenticación.\n"
 
-#: src/commands.c:136
+#: src/commands.c:143
 msgid "could not connect to server.\n"
 msgstr "no se pudo conectar al servidor.\n"
 
-#: src/commands.c:139
+#: src/commands.c:146
 msgid "connection timed out.\n"
 msgstr "la conexión a expirado.\n"
 
-#: src/commands.c:146
+#: src/commands.c:153
 #, fuzzy, c-format
 msgid "redirect to %s\n"
 msgstr "Directorio local: %s\n"
 
-#: src/commands.c:151 src/commands.c:974
+#: src/commands.c:158 src/commands.c:1005
 #, c-format
 msgid ""
 "failed:\n"
@@ -1026,40 +432,40 @@ msgstr ""
 "fallado:\n"
 "%s\n"
 
-#: src/commands.c:328
+#: src/commands.c:273
 msgid "exclusive"
 msgstr "exclusivo"
 
-#: src/commands.c:329
+#: src/commands.c:274
 msgid "shared"
 msgstr "compartido"
 
-#: src/commands.c:330 src/commands.c:339 src/ls.c:119
+#: src/commands.c:275 src/commands.c:284 src/ls.c:121
 msgid "unknown"
 msgstr "desconicido"
 
-#: src/commands.c:337
+#: src/commands.c:282
 msgid "write"
 msgstr "escribir"
 
-#: src/commands.c:347
+#: src/commands.c:292
 msgid "infinite"
 msgstr "infinito"
 
-#: src/commands.c:348 src/commands.c:366
+#: src/commands.c:293 src/commands.c:311
 msgid "invalid"
 msgstr "inválido"
 
-#: src/commands.c:350
+#: src/commands.c:295
 #, c-format
 msgid "%ld seconds"
 msgstr ""
 
-#: src/commands.c:359
+#: src/commands.c:304
 msgid "infinity"
 msgstr "infinidad"
 
-#: src/commands.c:380
+#: src/commands.c:325
 #, fuzzy, c-format
 msgid ""
 "Lock token <%s>:\n"
@@ -1071,96 +477,102 @@ msgstr ""
 "  Alcance: %s  Tipo: %s  Timeout: %s\n"
 "  Propietario: %s  Depth: %s\n"
 
-#: src/commands.c:387
+#: src/commands.c:332
 msgid "(none)"
 msgstr "(ninguno)"
 
-#: src/commands.c:403 src/commands.c:422
+#: src/commands.c:348 src/commands.c:367
 #, c-format
 msgid "Failed on %s: %d %s\n"
 msgstr "Fallado en %s: %d %s\n"
 
-#: src/commands.c:450
+#: src/commands.c:394
 msgid "Discovering locks on"
 msgstr "Descubriendo bloqueos en"
 
-#: src/commands.c:455
+#: src/commands.c:399
 msgid "Stealing locks on"
 msgstr "Robando bloqueos en"
 
-#: src/commands.c:469
+#: src/commands.c:413
 #, c-format
 msgid "No owned locks.\n"
 msgstr "No se poseen bloqueos.\n"
 
-#: src/commands.c:487
+#: src/commands.c:425
 #, fuzzy
 msgid "Locking collection"
 msgstr "Listando colección"
 
-#: src/commands.c:489
+#: src/commands.c:427 src/edit.c:168
 msgid "Locking"
 msgstr "Bloqueando"
 
-#: src/commands.c:521
+#: src/commands.c:453 src/edit.c:234
 msgid "Unlocking"
 msgstr "Desbloqueando"
 
-#: src/commands.c:525
+#: src/commands.c:457
 msgid "Enter locktoken: "
 msgstr "Introducir bloqueo"
 
-#: src/commands.c:546
+#: src/commands.c:479
 #, fuzzy
 msgid "Creating"
 msgstr "Borrando"
 
-#: src/commands.c:560
+#: src/commands.c:491
 #, fuzzy, c-format
-msgid "%s %s failed: %s\n"
+msgid "- %s%s = %s\n"
 msgstr ""
-"fallado:\n"
-"%s\n"
+":\n"
+"  %s : %s\n"
 
-#: src/commands.c:587
+#: src/commands.c:495
+#, fuzzy, c-format
+#| msgid "Failed on %s: %d %s\n"
+msgid "-- failed for %s%s: %s\n"
+msgstr "Fallado en %s: %d %s\n"
+
+#: src/commands.c:522
 #, c-format
 msgid "Value of %s is: %s\n"
 msgstr "El valor de %s es: %s\n"
 
-#: src/commands.c:593
+#: src/commands.c:529
 #, c-format
 msgid "Could not fetch property: %d %s\n"
 msgstr "No se pudo obtener propiedad: %d %s\n"
 
-#: src/commands.c:596
+#: src/commands.c:532
 #, c-format
 msgid "Server did not return result for %s\n"
 msgstr "El servidor no devolvió resultado para %s\n"
 
-#: src/commands.c:637
+#: src/commands.c:574
 #, fuzzy
 msgid "Setting property on"
 msgstr "Activando propiedad en"
 
-#: src/commands.c:642
+#: src/commands.c:579
 #, fuzzy
 msgid "Deleting property on"
 msgstr "Activando propiedad en"
 
-#: src/commands.c:660
+#: src/commands.c:597
 msgid "Fetching properties for"
 msgstr "Obteniendo propiedades para"
 
-#: src/commands.c:691
-#, fuzzy
-msgid "Fetching property names"
+#: src/commands.c:626
+#, fuzzy, c-format
+msgid "Fetching property names for %s:"
 msgstr "Obteniendo propiedades para"
 
-#: src/commands.c:720
+#: src/commands.c:659
 msgid "Deleting"
 msgstr "Borrando"
 
-#: src/commands.c:723
+#: src/commands.c:662
 #, c-format
 msgid ""
 "is a collection resource.\n"
@@ -1171,11 +583,11 @@ msgstr ""
 "El comando 'rm' no puede ser usado para borrar una colección.\n"
 "Use 'rmcol %s' para borrar esta colección y TODOS sus contenidos.\n"
 
-#: src/commands.c:739
+#: src/commands.c:678
 msgid "Deleting collection"
 msgstr "Borrando colección"
 
-#: src/commands.c:742
+#: src/commands.c:681
 #, c-format
 msgid ""
 "is not a collection.\n"
@@ -1186,12 +598,12 @@ msgstr ""
 "El comando 'rmcol' sólo puede ser usado para borrar colecciones.\n"
 "Use 'rm %s' para borrar este recurso.\n"
 
-#: src/commands.c:826 src/commands.c:843
+#: src/commands.c:823
 #, c-format
 msgid "Displaying `%s':\n"
 msgstr "Mostrando '%s':\n"
 
-#: src/commands.c:829
+#: src/commands.c:827
 #, c-format
 msgid ""
 "Error! Could not spawn pager `%s':\n"
@@ -1200,75 +612,87 @@ msgstr ""
 "¡Error! No se pudo generar el paginador '%s':\n"
 "%s\n"
 
-#: src/commands.c:845
+#: src/commands.c:839
 #, c-format
-msgid "Failed: %s\n"
-msgstr "Fallado: %s\n"
+msgid "Warning: Abnormal exit from pager (%d).\n"
+msgstr ""
 
-#: src/commands.c:864
+#: src/commands.c:851
+#, fuzzy
+#| msgid "[Matching..."
+msgid "Fetching"
+msgstr "Buscando coincidencias... "
+
+#: src/commands.c:875
 #, c-format
 msgid "%s: %s and %s are the same resource.\n"
 msgstr ""
 
-#: src/commands.c:873
+#: src/commands.c:887
 #, c-format
 msgid "When %s multiple resources, the last argument must be a collection.\n"
 msgstr ""
 "Cuando hay %s múltiples recursos, el ultimo argumento debe ser una "
 "colección.\n"
 
-#: src/commands.c:889
+#: src/commands.c:906
 #, c-format
 msgid "Moving `%s' to `%s': "
 msgstr "Moviendo '%s' a '%s': "
 
-#: src/commands.c:895
+#: src/commands.c:917
 #, c-format
 msgid "Copying `%s' to `%s': "
 msgstr "Copiando '%s' a '%s': "
 
-#: src/commands.c:955
+#: src/commands.c:988
 #, c-format
 msgid "Enter local filename for `%s': "
 msgstr "Introduzca el nombre de archivo local para '%s': "
 
-#: src/commands.c:960
+#: src/commands.c:995
 #, c-format
 msgid "cancelled.\n"
 msgstr "cancelado.\n"
 
-#: src/commands.c:972
-#, c-format
-msgid "Downloading `%s' to %s:"
+#: src/commands.c:1003
+#, fuzzy, c-format
+#| msgid "Downloading `%s' to %s:"
+msgid "Downloading `%s' to `%s':"
 msgstr "Descargando '%s' a '%s':"
 
-#: src/commands.c:993
+#: src/commands.c:1012
+#, fuzzy, c-format
+msgid "Could not write to file: %s"
+msgstr "No se pudo obtener las propiedades del archivo: %s\n"
+
+#: src/commands.c:1025
 #, c-format
 msgid "Uploading %s to `%s':"
 msgstr "Transferiendo %s a '%s':"
 
-#: src/commands.c:995
+#: src/commands.c:1027
 #, c-format
 msgid "Could not open file: %s\n"
 msgstr "No se pudo abrir el archivo: %s\n"
 
-#: src/commands.c:1027
+#: src/commands.c:1054
 msgid "copying"
 msgstr "copiando"
 
-#: src/commands.c:1027
+#: src/commands.c:1054
 msgid "copy"
 msgstr "copiar"
 
-#: src/commands.c:1032
+#: src/commands.c:1059
 msgid "moving"
 msgstr "moviendo"
 
-#: src/commands.c:1032
+#: src/commands.c:1059
 msgid "move"
 msgstr "mover"
 
-#: src/commands.c:1093
+#: src/commands.c:1122
 #, c-format
 msgid ""
 "Use:\n"
@@ -1279,35 +703,35 @@ msgstr ""
 "   chexec + %s    para hacer ejecutable el recurso\n"
 "o  chexec - %s    para hacer no-ejecutable el recurso\n"
 
-#: src/commands.c:1102
+#: src/commands.c:1129
 msgid "Setting isexecutable"
 msgstr "Configurando ejecutable"
 
-#: src/commands.c:1108
+#: src/commands.c:1136
 msgid "The server does not support the 'isexecutable' property."
 msgstr "El servidor no soporta la propiedad de 'ejecutable'."
 
-#: src/commands.c:1123
+#: src/commands.c:1151
 #, c-format
 msgid "Local directory: %s\n"
 msgstr "Directorio local: %s\n"
 
-#: src/commands.c:1139
+#: src/commands.c:1167
 #, c-format
 msgid "Error executing ls: %s\n"
 msgstr "Error ejecutando ls: %s\n"
 
-#: src/commands.c:1143
+#: src/commands.c:1171
 #, c-format
 msgid "Error forking ls: %s\n"
 msgstr "Error dividiendo ls: %s\n"
 
-#: src/commands.c:1160
+#: src/commands.c:1188
 #, c-format
 msgid "Could not determine home directory from environment.\n"
 msgstr "No se pudo determinar el directorio de usuario del entorno.\n"
 
-#: src/commands.c:1165
+#: src/commands.c:1193
 #, c-format
 msgid ""
 "Could not change local directory:\n"
@@ -1316,297 +740,297 @@ msgstr ""
 "No se pudo cambiar al directorio local:\n"
 "chdir: %s\n"
 
-#: src/commands.c:1173
+#: src/commands.c:1201
 #, fuzzy, c-format
 msgid "Current collection is `%s'.\n"
 msgstr "La colección actual es '%s', en el servidor '%s'\n"
 
-#: src/commands.c:1183
+#: src/commands.c:1211
 #, fuzzy, c-format
 msgid "No previous collection.\n"
 msgstr "Listando colección"
 
-#: src/commands.c:1225
+#: src/commands.c:1254
 #, c-format
 msgid ""
 "Aliases: rm=delete, mkdir=mkcol, mv=move, cp=copy, more=less, quit=exit=bye\n"
 msgstr ""
 "Alias: rm=delete, mkdir=mkcol, mv=move, cp=copy, more=less, quit=exit=bye\n"
 
-#: src/commands.c:1237
+#: src/commands.c:1266
 #, fuzzy, c-format
 msgid " `%s'   %s\n"
 msgstr ""
 ":\n"
 "  %s : %s\n"
 
-#: src/commands.c:1239
+#: src/commands.c:1268
 #, c-format
 msgid "This command can only be used when connected to a server.\n"
 msgstr ""
 "Este comando sólo puede ser usado cuando se está conectado a un servidor.\n"
 
-#: src/commands.c:1242
+#: src/commands.c:1271
 #, c-format
 msgid "Command name not known: %s\n"
 msgstr "Nombre de comando desconocido: %s\n"
 
-#: src/commands.c:1299
+#: src/commands.c:1328
 msgid "ls [path]"
 msgstr "ls [ruta]"
 
-#: src/commands.c:1299
+#: src/commands.c:1328
 msgid "List contents of current [or other] collection"
 msgstr "Lista los contenidos de la colección actual [o de otra]"
 
-#: src/commands.c:1300
+#: src/commands.c:1329
 msgid "cd path"
 msgstr "cd ruta"
 
-#: src/commands.c:1300
+#: src/commands.c:1329
 msgid "Change to specified collection"
 msgstr "Cambiar a la colección especificada"
 
-#: src/commands.c:1302
+#: src/commands.c:1331
 msgid "Display name of current collection"
 msgstr "Mostrar nombre de la colección actual"
 
-#: src/commands.c:1304
+#: src/commands.c:1333
 msgid "put local [remote]"
 msgstr "put local [remoto]"
 
-#: src/commands.c:1304
+#: src/commands.c:1333
 msgid "Upload local file"
 msgstr "Transfiere un archivo local"
 
-#: src/commands.c:1306
+#: src/commands.c:1335
 msgid "get remote [local]"
 msgstr "get remoto [local]"
 
-#: src/commands.c:1306
+#: src/commands.c:1335
 msgid "Download remote resource"
 msgstr "Descargar recurso remoto"
 
-#: src/commands.c:1307
+#: src/commands.c:1336
 msgid "mget remote..."
 msgstr "mget remoto"
 
-#: src/commands.c:1307
+#: src/commands.c:1336
 msgid "Download many remote resources"
 msgstr "Descargar muchos recursos remotos"
 
-#: src/commands.c:1309
+#: src/commands.c:1338
 msgid "mput local..."
 msgstr "mput local..."
 
-#: src/commands.c:1309
+#: src/commands.c:1338
 msgid "Upload many local files"
 msgstr "Transferir muchos archivos locales"
 
-#: src/commands.c:1310
+#: src/commands.c:1339
 msgid "edit resource"
 msgstr "edit recurso"
 
-#: src/commands.c:1310
+#: src/commands.c:1339
 msgid "Edit given resource"
 msgstr "Editar el recurso dado"
 
-#: src/commands.c:1311
+#: src/commands.c:1340
 msgid "less remote..."
 msgstr "less remoto"
 
-#: src/commands.c:1311
+#: src/commands.c:1340
 msgid "Display remote resource through pager"
 msgstr "Mostrar el recurso remoto mediante paginador"
 
-#: src/commands.c:1312
+#: src/commands.c:1341
 msgid "mkcol remote..."
 msgstr "mkcol remoto..."
 
-#: src/commands.c:1312
+#: src/commands.c:1341
 msgid "Create remote collection(s)"
 msgstr "Crear collección(es) remota(s)"
 
-#: src/commands.c:1313
+#: src/commands.c:1342
 msgid "cat remote..."
 msgstr "cat remoto..."
 
-#: src/commands.c:1313
+#: src/commands.c:1342
 msgid "Display remote resource(s)"
 msgstr "Mostrar recurso(s) remoto(s)"
 
-#: src/commands.c:1314
+#: src/commands.c:1343
 msgid "delete remote..."
 msgstr "delete remoto..."
 
-#: src/commands.c:1314
+#: src/commands.c:1343
 msgid "Delete non-collection resource(s)"
 msgstr "Borrar recurso(s) que no estén en la colección"
 
-#: src/commands.c:1315
+#: src/commands.c:1344
 msgid "rmcol remote..."
 msgstr "rmcol remoto..."
 
-#: src/commands.c:1315
+#: src/commands.c:1344
 msgid "Delete remote collections and ALL contents"
 msgstr "Borrar colecciones remotas y TODOS sus contenidos"
 
-#: src/commands.c:1316
+#: src/commands.c:1345
 msgid "copy source... dest"
 msgstr "copy origen... destino"
 
-#: src/commands.c:1316
+#: src/commands.c:1345
 msgid "Copy resource(s) from source to dest"
 msgstr "Copiar recurso(s) del origen al destino"
 
-#: src/commands.c:1317
+#: src/commands.c:1346
 msgid "move source... dest"
 msgstr "move origen... destino"
 
-#: src/commands.c:1317
+#: src/commands.c:1346
 msgid "Move resource(s) from source to dest"
 msgstr "Mueve recurso(s) del origen al destino"
 
-#: src/commands.c:1323
+#: src/commands.c:1352
 msgid "lock resource"
 msgstr "lock recurso"
 
-#: src/commands.c:1323
+#: src/commands.c:1352
 msgid "Lock given resource"
 msgstr "Bloquear el recurso dado"
 
-#: src/commands.c:1324
+#: src/commands.c:1353
 msgid "unlock resource"
 msgstr "unlock recurso"
 
-#: src/commands.c:1324
+#: src/commands.c:1353
 msgid "Unlock given resource"
 msgstr "Desbloquear el recurso dado"
 
-#: src/commands.c:1325
+#: src/commands.c:1354
 msgid "discover resource"
 msgstr "discover recurso"
 
-#: src/commands.c:1325
+#: src/commands.c:1354
 msgid "Display lock information for resource"
 msgstr "Muestra información del bloqueo del recurso"
 
-#: src/commands.c:1326
+#: src/commands.c:1355
 msgid "steal resource"
 msgstr "steal recurso"
 
-#: src/commands.c:1326
+#: src/commands.c:1355
 msgid "Steal lock token for resource"
 msgstr "Roba el bloqueo del recurso"
 
-#: src/commands.c:1328
+#: src/commands.c:1357
 msgid "Display list of owned locks"
 msgstr "Mostrar la lista de los bloqueos propios"
 
-#: src/commands.c:1331
+#: src/commands.c:1360
 #, fuzzy
 msgid "version resource"
 msgstr "edit recurso"
 
-#: src/commands.c:1331
+#: src/commands.c:1360
 msgid "Place given resource under version control"
 msgstr ""
 
-#: src/commands.c:1332
+#: src/commands.c:1361
 #, fuzzy
 msgid "checkin resource"
 msgstr "lock recurso"
 
-#: src/commands.c:1332
+#: src/commands.c:1361
 #, fuzzy
 msgid "Checkin given resource"
 msgstr "Bloquear el recurso dado"
 
-#: src/commands.c:1333
+#: src/commands.c:1362
 #, fuzzy
 msgid "checkout resource"
 msgstr "lock recurso"
 
-#: src/commands.c:1333
+#: src/commands.c:1362
 #, fuzzy
 msgid "Checkout given resource"
 msgstr "Bloquear el recurso dado"
 
-#: src/commands.c:1334
+#: src/commands.c:1363
 #, fuzzy
 msgid "uncheckin resource"
 msgstr "unlock recurso"
 
-#: src/commands.c:1334
+#: src/commands.c:1363
 #, fuzzy
 msgid "Uncheckout given resource"
 msgstr "Desbloquear el recurso dado"
 
-#: src/commands.c:1335
+#: src/commands.c:1364
 #, fuzzy
 msgid "history resource"
 msgstr "discover recurso"
 
-#: src/commands.c:1335
+#: src/commands.c:1364
 #, fuzzy
 msgid "Show version history of resource"
 msgstr "Activar propiedad del recurso"
 
-#: src/commands.c:1338
+#: src/commands.c:1367
 msgid "label res [add|set|remove] labelname"
 msgstr ""
 
-#: src/commands.c:1339
+#: src/commands.c:1368
 #, fuzzy
 msgid "Set/Del/Edit label on resource"
 msgstr "Editar el recurso dado"
 
-#: src/commands.c:1343
+#: src/commands.c:1372
 #, fuzzy
 msgid "Names of properties defined on resource"
 msgstr "Activar propiedad del recurso"
 
-#: src/commands.c:1346
+#: src/commands.c:1375
 msgid "chexec [+|-] remote"
 msgstr "chexec [+|-] remoto"
 
-#: src/commands.c:1346
+#: src/commands.c:1375
 msgid "Change isexecutable property of resource"
 msgstr "Cambiar la propiedad de ejecución del recurso"
 
-#: src/commands.c:1349
+#: src/commands.c:1378
 #, fuzzy
 msgid "propget res [propname]"
 msgstr "propget recurso [nombre_de_propiedad]"
 
-#: src/commands.c:1350
+#: src/commands.c:1379
 msgid "Retrieve properties of resource"
 msgstr "Obtener propiedades del recurso"
 
-#: src/commands.c:1352
+#: src/commands.c:1381
 #, fuzzy
 msgid "propdel res propname"
 msgstr "propget recurso [nombre_de_propiedad]"
 
-#: src/commands.c:1353
+#: src/commands.c:1382
 #, fuzzy
 msgid "Delete property from resource"
 msgstr "Activar propiedad del recurso"
 
-#: src/commands.c:1355
+#: src/commands.c:1384
 #, fuzzy
 msgid "propset res propname value"
 msgstr "propset recurso nombre_de_propiedad valor"
 
-#: src/commands.c:1356
+#: src/commands.c:1385
 msgid "Set property on resource"
 msgstr "Activar propiedad del recurso"
 
-#: src/commands.c:1359
+#: src/commands.c:1388
 msgid "search query"
 msgstr ""
 
-#: src/commands.c:1360
+#: src/commands.c:1389
 msgid ""
 "DASL Search resource in current collection\n"
 "\n"
@@ -1620,71 +1044,71 @@ msgid ""
 " (See also variables searchdepth, searchorder, searchdorder)\n"
 msgstr ""
 
-#: src/commands.c:1371
+#: src/commands.c:1400
 msgid "set [option] [value]"
 msgstr "set [opción] [valor]"
 
-#: src/commands.c:1371
+#: src/commands.c:1400
 msgid "Set an option, or display options"
 msgstr "Activar una opción, o mostrar opciones"
 
-#: src/commands.c:1373
+#: src/commands.c:1402
 msgid "Open connection to given URL"
 msgstr "Abrir conexión con la URL dada"
 
-#: src/commands.c:1375
+#: src/commands.c:1404
 msgid "Close current connection"
 msgstr "Cerrar conexión actual"
 
-#: src/commands.c:1379
+#: src/commands.c:1408
 msgid "Exit program"
 msgstr "Salir del programa"
 
-#: src/commands.c:1382
+#: src/commands.c:1411
 msgid "unset [option] [value]"
 msgstr "unset [opción] [valor]"
 
-#: src/commands.c:1382
+#: src/commands.c:1411
 msgid "Unsets or clears value from option."
 msgstr "Inactiva o borra el valor de una opción."
 
-#: src/commands.c:1384
+#: src/commands.c:1413
 msgid "lcd [directory]"
 msgstr "lcd [directorio]"
 
-#: src/commands.c:1384
+#: src/commands.c:1413
 msgid "Change local working directory"
 msgstr "Cambiar al directorio de trabajo local"
 
-#: src/commands.c:1386
+#: src/commands.c:1415
 msgid "lls [options]"
 msgstr "lls [opciones]"
 
-#: src/commands.c:1386
+#: src/commands.c:1415
 msgid "Display local directory listing"
 msgstr "Mostrar el listado del directorio local"
 
-#: src/commands.c:1387
+#: src/commands.c:1416
 msgid "Print local working directory"
 msgstr "Mostrar en pantalla el directorio de trabajo local"
 
-#: src/commands.c:1389
+#: src/commands.c:1418
 msgid "Logout of authentication session"
 msgstr ""
 
-#: src/commands.c:1390
+#: src/commands.c:1419
 msgid "help [command]"
 msgstr "help [comando]"
 
-#: src/commands.c:1390
+#: src/commands.c:1419
 msgid "Display help message"
 msgstr "Mostrar el mensaje de ayuda"
 
-#: src/commands.c:1392
+#: src/commands.c:1421
 msgid "Describe an option variable"
 msgstr ""
 
-#: src/commands.c:1393
+#: src/commands.c:1422
 msgid "Information about this version of cadaver"
 msgstr ""
 
@@ -1770,51 +1194,52 @@ msgstr ""
 "No se pudo borrar el archivo temporal %s:\n"
 "%s\n"
 
-#: src/ls.c:99
+#: src/ls.c:100
 msgid "Ref:"
 msgstr "Ref:"
 
-#: src/ls.c:100
+#: src/ls.c:101
 msgid "Coll:"
 msgstr "Col:"
 
-#: src/ls.c:118
+#: src/ls.c:120
 #, c-format
 msgid "Error: %-30s %d %s\n"
 msgstr "Error: %-30s %d %s\n"
 
-#: src/ls.c:143
+#: src/ls.c:145
 msgid "Listing collection"
 msgstr "Listando colección"
 
-#: src/ls.c:148
+#: src/ls.c:150
 msgid "collection is empty.\n"
 msgstr "la colección está vacía.\n"
 
-#: src/ls.c:208
+#: src/ls.c:210
 msgid "Authorization Required"
 msgstr "Requiere autorización"
 
-#: src/ls.c:210
+#: src/ls.c:212
 msgid "Redirect"
 msgstr "Redirigir"
 
-#: src/ls.c:212
+#: src/ls.c:214
 msgid "Server Error"
 msgstr "Error del servidor"
 
-#: src/ls.c:214
+#: src/ls.c:216
 msgid "Unknown Error"
 msgstr "Error desconocido"
 
-#: src/search.c:666
+#: src/search.c:667
 #, c-format
 msgid "Using query: "
 msgstr ""
 
 #: src/utils.c:50
-msgid "Did not find a collection resource."
-msgstr "No se encontró un recurso de la colección."
+#, c-format
+msgid "Unknown resource found at '%s' without WebDAV support"
+msgstr ""
 
 #: src/version.c:339
 msgid "Versioning"
@@ -1850,6 +1275,227 @@ msgstr ""
 msgid "Labelling"
 msgstr ""
 
+#, fuzzy, c-format
+#~ msgid "Could not authenticate to server: %s"
+#~ msgstr ""
+#~ "No se puede contactar con el servidor:\n"
+#~ "%s\n"
+
+#, fuzzy, c-format
+#~ msgid "Could not authenticate to proxy server: %s"
+#~ msgstr "no se pudo conectar al servidor.\n"
+
+#, fuzzy
+#~ msgid "GSSAPI authentication error: "
+#~ msgstr "¡Autenticación abortada!\n"
+
+#, fuzzy
+#~ msgid "could not parse challenge"
+#~ msgstr "No se puede procesar la URL '%s'\n"
+
+#, fuzzy, c-format
+#~ msgid "Could not determine file size: %s"
+#~ msgstr "No se puede leer el archivo rc %s: %s\n"
+
+#, fuzzy
+#~ msgid "Could not inflate data"
+#~ msgstr "No se pudo abrir el archivo: %s\n"
+
+#, fuzzy
+#~ msgid "Could not initialize zlib"
+#~ msgstr "No se pudo obtener las propiedades del archivo: %s\n"
+
+#, fuzzy, c-format
+#~ msgid "Could not verify server certificate: %s"
+#~ msgstr "No se pudo obtener las propiedades del archivo: %s\n"
+
+#, fuzzy, c-format
+#~ msgid "SSL handshake failed: %s"
+#~ msgstr "fallo de autenticación.\n"
+
+#, fuzzy
+#~ msgid "Server did not send certificate chain"
+#~ msgstr "El servidor no devolvió resultado para %s\n"
+
+#, fuzzy
+#~ msgid "Could not parse redirect destination URL"
+#~ msgstr "No se puede procesar la URL '%s'\n"
+
+#, fuzzy, c-format
+#~ msgid "%s: connection was closed by proxy server"
+#~ msgstr "Conexión con '%s' cerrada.\n"
+
+#, fuzzy, c-format
+#~ msgid "%s: connection was closed by server"
+#~ msgstr "Conexión con '%s' cerrada.\n"
+
+#, fuzzy, c-format
+#~ msgid "%s: connection timed out"
+#~ msgstr "la conexión a expirado.\n"
+
+#, fuzzy
+#~ msgid "offset invalid"
+#~ msgstr "inválido"
+
+#, fuzzy, c-format
+#~ msgid "Could not seek to offset %s of request body file: %s"
+#~ msgstr "No se pudo obtener las propiedades del archivo: %s\n"
+
+#, fuzzy
+#~ msgid "Could not send request body"
+#~ msgstr "No se puede leer el archivo rc %s: %s\n"
+
+#, fuzzy
+#~ msgid "Could not read chunk size"
+#~ msgstr "No se puede leer el archivo rc %s: %s\n"
+
+#, fuzzy
+#~ msgid "Could not parse chunk size"
+#~ msgstr "No se puede procesar la URL '%s'\n"
+
+#, fuzzy
+#~ msgid "Could not read response body"
+#~ msgstr "No se puede leer el archivo rc %s: %s\n"
+
+#, fuzzy
+#~ msgid "Could not read chunk delimiter"
+#~ msgstr "No se puede leer el archivo rc %s: %s\n"
+
+#, fuzzy
+#~ msgid "Could not read status line"
+#~ msgstr "No se pudo obtener las propiedades del archivo: %s\n"
+
+#, fuzzy
+#~ msgid "Could not parse response status line"
+#~ msgstr "No se puede procesar la URL '%s'\n"
+
+#, fuzzy
+#~ msgid "Could not read interim response headers"
+#~ msgstr "No se puede leer el archivo rc %s: %s\n"
+
+#, fuzzy
+#~ msgid "Could not send request"
+#~ msgstr "No se pudo abrir el archivo: %s\n"
+
+#, fuzzy, c-format
+#~ msgid "Could not resolve hostname `%s': %s"
+#~ msgstr "No se puede resolver el nombre del servidor '%s'.\n"
+
+#, fuzzy, c-format
+#~ msgid "Could not create SSL connection through proxy server: %s"
+#~ msgstr "no se pudo conectar al servidor.\n"
+
+#, fuzzy
+#~ msgid "Could not create socket"
+#~ msgstr "No se pudo obtener las propiedades del archivo: %s\n"
+
+#, fuzzy
+#~ msgid "Could not connect to server"
+#~ msgstr "no se pudo conectar al servidor.\n"
+
+#, fuzzy
+#~ msgid "Could not connect to proxy server"
+#~ msgstr "no se pudo conectar al servidor.\n"
+
+#, fuzzy, c-format
+#~ msgid "Could not establish connection from SOCKS proxy (%s:%u): %s"
+#~ msgstr "no se pudo conectar al servidor.\n"
+
+#, fuzzy
+#~ msgid "[invalid date]"
+#~ msgstr "inválido"
+
+#, fuzzy
+#~ msgid "bad certificate chain"
+#~ msgstr "El servidor no devolvió resultado para %s\n"
+
+#, fuzzy
+#~ msgid "Connection closed"
+#~ msgstr "Conexión con '%s' cerrada.\n"
+
+#, fuzzy
+#~ msgid "Secure connection truncated"
+#~ msgstr "Cerrar conexión actual"
+
+#, fuzzy
+#~ msgid "Connection timed out"
+#~ msgstr "la conexión a expirado.\n"
+
+#, fuzzy
+#~ msgid "Could not create SSL structure"
+#~ msgstr ""
+#~ "No se pudo crear el archivo temporal %s:\n"
+#~ "%s\n"
+
+#, fuzzy
+#~ msgid "connection not permitted"
+#~ msgstr "la conexión a expirado.\n"
+
+#, fuzzy
+#~ msgid "Could not send message to proxy"
+#~ msgstr "No se puede leer el archivo rc %s: %s\n"
+
+#, fuzzy
+#~ msgid "Could not read initial response from proxy"
+#~ msgstr "No se puede leer el archivo rc %s: %s\n"
+
+#, fuzzy
+#~ msgid "Could not send login message"
+#~ msgstr "No se pudo abrir el archivo: %s\n"
+
+#, fuzzy
+#~ msgid "Could not read login reply"
+#~ msgstr "No se pudo obtener las propiedades del archivo: %s\n"
+
+#, fuzzy
+#~ msgid "Authentication failed"
+#~ msgstr "fallo de autenticación.\n"
+
+#, fuzzy
+#~ msgid "Could not send connect request"
+#~ msgstr "No se pudo abrir el archivo: %s\n"
+
+#, fuzzy
+#~ msgid "Could not read connect reply"
+#~ msgstr "no se pudo conectar al servidor.\n"
+
+#, fuzzy
+#~ msgid "Could not connect"
+#~ msgstr "no se pudo conectar al servidor.\n"
+
+#, fuzzy
+#~ msgid "Could not read address in connect reply"
+#~ msgstr "No se puede leer el archivo rc %s: %s\n"
+
+#, fuzzy
+#~ msgid "could not establish connection to identd"
+#~ msgstr "no se pudo conectar al servidor.\n"
+
+#, fuzzy
+#~ msgid "Could not read response from proxy"
+#~ msgstr "No se puede leer el archivo rc %s: %s\n"
+
+#, fuzzy
+#~ msgid "Unknown error"
+#~ msgstr "Error desconocido"
+
+#, fuzzy, c-format
+#~ msgid "Could not parse response: %s"
+#~ msgstr "No se puede procesar la URL '%s'\n"
+
+#, fuzzy, c-format
+#~ msgid "%s %s failed: %s\n"
+#~ msgstr ""
+#~ "fallado:\n"
+#~ "%s\n"
+
+#, c-format
+#~ msgid "Failed: %s\n"
+#~ msgstr "Fallado: %s\n"
+
+#~ msgid "Did not find a collection resource."
+#~ msgstr "No se encontró un recurso de la colección."
+
 #, fuzzy
 #~ msgid "%s: %s"
 #~ msgstr ""
@@ -1876,9 +1522,6 @@ msgstr ""
 #~ msgid "Could not use client certificate `%s' (wrong password)?\n"
 #~ msgstr ""
 #~ "No se puede usar el certificado del cliente '%s' (¿contraseña errónea?)\n"
-
-#~ msgid "Using client certificate `%s'.\n"
-#~ msgstr "Usando certificado del cliente '%s'.\n"
 
 #~ msgid "Unrecognized URL scheme `%s'.\n"
 #~ msgstr "Protocolo de la URL desconocido '%s'.\n"
