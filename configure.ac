@@ -80,13 +80,15 @@ AC_CHECK_HEADERS(sys/time.h fcntl.h pwd.h stdarg.h vmsdir.h memory.h alloca.h nc
 
 AC_CHECK_FUNCS(strdup strerror memcpy strcoll tcsetattr getpass stty fchmod strtoull gettimeofday secure_getenv setlocale)
 
-AM_GNU_GETTEXT_VERSION([0.21])
+AM_GNU_GETTEXT_VERSION([0.22.5])
 AM_GNU_GETTEXT([external])
 AM_LANGINFO_CODESET
 
 if test "$USE_NLS" = "yes"; then
     nls_msg="Built using native support"
     LIBS="$LIBS $LIBINTL"
+    mkdir_p='$(MKDIR_P)'
+    AC_SUBST(mkdir_p)
 else
     nls_msg="Not built"
 fi
