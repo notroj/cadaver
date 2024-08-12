@@ -970,7 +970,7 @@ Mon Mar 13 14:24:53 2000  Joe Orton  <joe@orton.demon.co.uk>
 
 Wed Mar  8 20:39:43 2000  Joe Orton  <joe@orton.demon.co.uk>
 
-	* configure.in: Bumped versio to 0.12.2.
+	* configure.in: Bumped version to 0.12.2.
 
 Wed Mar  8 20:37:35 2000  Joe Orton  <joe@orton.demon.co.uk>
 
@@ -1195,7 +1195,7 @@ Fri Feb 11 13:35:23 2000  Joe Orton  <joe@orton.demon.co.uk>
 
 	* src/commands.c (clever_path): Free temporary variable.
 	(execute_pwd): New function.  (command_generator): New function,
-	command name geneator for readline completion.  (format_time,
+	command name generator for readline completion.  (format_time,
 	display_ls_line): New functions.  (execute_ls): Use
 	display_ls_line.  (get_depth): "infinity" not "infinite".
 	(run_editor):  Use editor option.
@@ -1400,7 +1400,7 @@ Wed Jan 12 20:43:05 2000  Joe Orton  <joe@orton.demon.co.uk>
 
 	* libdav/hip_xml.c (hip_xml_currentline): New function.
 	[CURRENT_LINE]: Removed macro.  (start_element): Pass name and
-	atributes to start-element callback.  (everywhere): Changed many
+	attributes to start-element callback.  (everywhere): Changed many
 	debugging messages to use DEBUG_XMLPARSE for clearer output.
 
 	* libdav/dav_207.c (dav_207_getcurrentpropstat): New function.
@@ -2005,7 +2005,7 @@ Thu Dec 16 17:10:51 1999  Joe Orton  <joe@orton.demon.co.uk>
 
 	* configure.in (OBJECTS): Added new files.
 
-	* Makefile.in: Added dependancies for new files.
+	* Makefile.in: Added dependencies for new files.
 
 Thu Dec 16 16:58:01 1999  Joe Orton  <joe@orton.demon.co.uk>
 
@@ -2023,7 +2023,7 @@ Wed Dec 15 00:36:03 1999  Joe Orton  <joe@orton.demon.co.uk>
 Tue Dec 14 23:58:24 1999  Joe Orton  <joe@orton.demon.co.uk>
 
 	* src/cadaver.c: Placed command help in data structure.
-	(execute_help): Rewriten for this.  (execute_command): Display
+	(execute_help): Rewritten for this.  (execute_command): Display
 	help message if incorrect # of arguments given.
 
 Tue Dec 14 23:29:50 1999  Joe Orton  <joe@orton.demon.co.uk>
@@ -2237,7 +2237,7 @@ Thu Sep 30 15:48:01 1999  Joe Orton  <joe@orton.demon.co.uk>
 
 Thu Sep 30 15:42:52 1999  Joe Orton  <joe@orton.demon.co.uk>
 
-	* Makefile.in: Added dependancies.
+	* Makefile.in: Added dependencies.
 
 Thu Sep 30 15:35:05 1999  Joe Orton  <joe@orton.demon.co.uk>
 

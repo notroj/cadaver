@@ -130,7 +130,7 @@ Changes in release 0.19.1:
 * Fix build on Mac OS X 10.1.
 * lockdepth option is used for any non-collection resource.
 * Add 'quiet' option; when set, connection status messages are 
- supressed.
+ suppressed.
 
 Changes in release 0.19.0:
 * Remote filename completion from Sean Treadway <seant@superchannel.org>.
@@ -172,7 +172,7 @@ Changes in release 0.17.0:
 * Fix --enable-netrc.
 * Fix possible SEGV from propget if server did not return a response for
   the requested property.
-* Make property name argument to propget optional: if it is ommitted, 
+* Make property name argument to propget optional: if it is omitted, 
   all properties defined on the resource will be displayed.
 * Added 'propset' command, for setting custom properties. e.g. 
     propset myfile.txt creator "Jim Bloggs"
@@ -193,7 +193,7 @@ Changes in release 0.16.0:
 * neon updated to 0.10:
  - Improved --with-ssl to check in /usr as well.
  - Fix bugs and leaks in locking code.
- - Build not dependant on GNU make any more
+ - Build not dependent on GNU make any more
 
 Changes in release 0.15.4:
 * Disallow using 'showlocks' when not connected.

@@ -31,7 +31,7 @@
    1.0:
       *  supporting must ANSI syntaxic_sugars
    0.0:
-      *  suppot %s %c %d
+      *  support %s %c %d
 
  THANKS(for the patches and ideas):
      Miles Bader
@@ -161,7 +161,7 @@ double * ip;
 /* 
  * return an ascii representation of the integral part of the number
  * and set fract to be an ascii representation of the fraction part
- * the container for the fraction and the integral part or staticly
+ * the container for the fraction and the integral part or statically
  * declare with fix size 
  */
 PRIVATE char *
@@ -340,7 +340,7 @@ char *tmp;
     i = (i < p->precision ? i : p->precision);
   p->width -= i;
   PAD_RIGHT(p);
-  while (i-- > 0) { /* put the sting */
+  while (i-- > 0) { /* put the string */
     PUT_CHAR(*tmp, p);
     tmp++;
   }

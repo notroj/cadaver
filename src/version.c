@@ -151,7 +151,7 @@ static int start_element(void *userdata, int parent,
     int state = ne_xml_mapid(report_elements, 
 			     NE_XML_MAPLEN(report_elements), nspace, name);
 
-    /* Error occured, ignore remain part */
+    /* Error occurred, ignore remain part */
     if (rctx->err_code != NE_OK)
 	return rctx->err_code;
 
@@ -206,7 +206,7 @@ end_element(void *userdata, int state, const char *nspace, const char *name)
     report_ctx *rctx = (report_ctx *) userdata;
     const char *cdata = rctx->cdata->data;
  
-    /* Error occured, ignore remain part */
+    /* Error occurred, ignore remain part */
     if (rctx->err_code != NE_OK)
 	return rctx->err_code;
     
