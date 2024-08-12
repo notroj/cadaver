@@ -51,7 +51,7 @@
 #define NSPACE(x) ((x) ? (x) : "")
 
 /*
- * The Macro definations that 'wordtype' might be.
+ * The Macro definitions that 'wordtype' might be.
  */
 #define QUOT            101	/*''' */
 #define COMMA           102	/*',' */
@@ -65,7 +65,7 @@
 #define NEQ             110	/*'<>' */
 #define IDEN            111	/*Integer */
 #define INTEGER         112	/*identifier */
-#define UNKNOWN         113	/*unknown charactor */
+#define UNKNOWN         113	/*unknown character */
 #define ENDBUF          114	/*End of the buffer */
 
 #define WORDLEN 256		/*Max length of a identifier(token) in the search command */
@@ -236,7 +236,7 @@ static int start_element(void *userdata, int parent,
     int state = ne_xml_mapid(search_elements, 
 			     NE_XML_MAPLEN(search_elements), nspace, name);
 
-    /* Error occured, ignore remain part */
+    /* Error occurred, ignore remain part */
     if (sctx->err_code != NE_OK)
 	return sctx->err_code;
 
@@ -303,7 +303,7 @@ end_element(void *userdata, int state, const char *nspace, const char *name)
     search_ctx *sctx = (search_ctx *) userdata;
     const char *cdata = sctx->cdata->data;
 
-    /* Error occured, ignore remain part */
+    /* Error occurred, ignore remain part */
     if (sctx->err_code != NE_OK)
 	return sctx->err_code;
 
@@ -1012,7 +1012,7 @@ static int first_word_equal(const char *string_parsed,
 }				/*End of first_word_compare */
 
 /*Read the first word from the string buffer, string_parsed. If the
- * first is an interger, return 1, else return 0.
+ * first is an integer, return 1, else return 0.
  * The first word will be saved to 'the_first_word', but the pointer
  * to the buffer, string_parsed, will not be changed.
  * Returns:

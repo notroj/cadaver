@@ -30,7 +30,7 @@
    1.0:
       *  supporting must ANSI syntaxic_sugars(see below)
    0.0:
-      *  suppot %s %c %d
+      *  support %s %c %d
 
     it understands:
       Integer:
@@ -44,11 +44,11 @@
         %s %c  string
         %%   %
 
-    Formating conversion flags:
+    Formatting conversion flags:
       - justify left
       + Justify right or put a plus if number
       # prefix 0x, 0X for hexa and 0 for octal
-      * precision/witdth is specify as an (int) in the arguments
+      * precision/width is specify as an (int) in the arguments
     ' ' leave a blank for number with no sign
       l the later should be a long
       h the later should be a short

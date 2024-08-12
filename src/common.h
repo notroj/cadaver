@@ -31,7 +31,7 @@
 
 #define DEBUG_FILES (1<<10)
 
-/* A signal hander */
+/* A signal handler */
 typedef void (*sig_handler)( int );
 
 #ifndef min

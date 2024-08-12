@@ -113,7 +113,7 @@ static enum out_state {
     out_transfer_done /* a complete transfer */
 } out_state;   
 
-/* Protoypes */
+/* Prototypes */
 
 static void quit_handler(int signo);
 
