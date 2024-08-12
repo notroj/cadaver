@@ -931,7 +931,7 @@ glob (pattern, flags, errfunc, pglob)
       flags |= GLOB_MAGCHAR;
 
       /* We have ignored the GLOB_NOCHECK flag in the `glob_in_dir' calls.
-	 But if we have not found any matching entry and thie GLOB_NOCHECK
+	 But if we have not found any matching entry and this GLOB_NOCHECK
 	 flag was set we must return the list consisting of the disrectory
 	 names followed by the filename.  */
       if (pglob->gl_pathc == oldcount)
