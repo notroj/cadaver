@@ -470,12 +470,13 @@ static char *read_command(void)
     char prompt[BUFSIZ];
 
     if (session.uri.path) {
-        char *p = ne_path_unescape(session.uri.path);
-	ne_snprintf(prompt, BUFSIZ, "dav:%s%c ", p,
+        char *p = native_path_from_uri(session.uri.path);
+        ne_snprintf(prompt, BUFSIZ, "dav:%s%c ", p,
                     session.isdav ? '>' : '?');
         ne_free(p);
-    } else {
-	sprintf(prompt, "dav:!> ");
+    }
+    else {
+        ne_strnzcpy(prompt, "dav:!> ", sizeof prompt);
     }
 
     return readline(prompt); 
@@ -833,7 +834,8 @@ static void init_options(void)
 
     /* Detect whether it's possible to directly output UTF-8. */
 #ifdef HAVE_LANGINFO_CODESET
-    utf8_default = strcmp(nl_langinfo(CODESET), "UTF-8") == 0;
+    out_charset = nl_langinfo(CODESET);
+    utf8_default = strcmp(out_charset, "UTF-8") == 0;
 #else
     {
         char *tmp;
@@ -844,6 +846,16 @@ static void init_options(void)
             && strstr(tmp, "UTF-8");
     }
 #endif
+
+#ifndef HAVE_ICONV
+    if (!utf8_default) {
+        fprintf(stderr, _("cadaver: Error: cadaver can only run in a locale "
+                          "using the UTF-8 character encoding since iconv support "
+                          "was not detected at build time.\n"));
+        exit(EXIT_FAILURE);
+    }
+#endif
+
     set_option(opt_utf8, &utf8_default);
 }
 

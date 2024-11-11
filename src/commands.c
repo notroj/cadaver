@@ -54,6 +54,10 @@
 #include <readline/readline.h>
 #endif
 
+#ifdef HAVE_ICONV
+#include <iconv.h>
+#endif
+
 #ifdef NEED_SNPRINTF_H
 #include "snprintf.h"
 #endif
@@ -109,6 +113,9 @@ C(propnames), C(edit),
 };    
 
 extern const struct command commands[]; /* prototype */
+
+/* Output character encoding from the locale. */
+const char *out_charset;
 
 /* Tell them we are doing 'VERB' to 'NOUN'.
  * (really 'METHOD' to 'RESOURCE' but hey.) */
@@ -166,17 +173,61 @@ int out_handle(int ret)
     return (ret == NE_OK);
 }
 
+#ifdef HAVE_ICONV
+
+enum conv_mode { TO_UTF8, FROM_UTF8 };
+
+static char *run_iconv(const char *instr, enum conv_mode mode)
+{
+    static iconv_t from_cd, to_cd;
+    iconv_t cd;
+    char outbuf[BUFSIZ], *inptr = instr, *outptr = outbuf;
+    size_t inbytes = strlen(instr), outbytes = sizeof outbuf, ret;
+
+    cd = mode == TO_UTF8 ? to_cd : from_cd;
+    if (cd) {
+        (void) iconv(cd, NULL, NULL, NULL, NULL);
+    }
+    else {
+        if (mode == TO_UTF8)
+            cd = to_cd = iconv_open("UTF-8", out_charset);
+        else
+            cd = from_cd = iconv_open(out_charset, "UTF-8");
+
+        if (cd == (iconv_t)-1) {
+            fprintf(stderr, _("cadaver: Cannot convert from %s to UTF-8: %s\n"),
+                    out_charset, strerror(errno));
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    ret = iconv(cd, &inptr, &inbytes, &outptr, &outbytes);
+    if (ret == (size_t) -1) {
+        fprintf(stderr, _("cadaver: Character conversion failed, aborting.\n"));
+        exit(EXIT_FAILURE);
+    }
+
+    return ne_strndup(outbuf, outptr-outbuf);
+}
+#endif
+
 /* Convert native string to UTF-8, returns malloc-allocated. */
 static char *utf8_from_native(const char *native)
 {
-    if (!get_bool_option(opt_utf8)) /* TODO */ abort();
+    if (!get_bool_option(opt_utf8)) {
+        return run_iconv(native, TO_UTF8);
+    }
+
     return ne_strdup(native);
 }
 
 /* Convert UTF-8 to native string, malloc-allocated. */
 static char *native_from_utf8(const char *native)
 {
-    if (!get_bool_option(opt_utf8)) /* TODO */ abort();
+    if (!get_bool_option(opt_utf8)) {
+        return run_iconv(native, FROM_UTF8);
+    }
+
     return ne_strdup(native);
 }
 
@@ -703,18 +754,14 @@ static void execute_rmcol(const char *path)
 
 /* Converts an input path (an unescaped, native charset, relative
  * path) to a URI path. */
-static char *path_native_resolver(const char *path, int collection)
+static char *path_native_resolver(const char *native_path, int collection)
 {
     ne_uri relative, result;
-    char *tmp;
-
-    if (!get_bool_option(opt_utf8)) {
-        /* TODO */
-        abort();
-    }
+    char *utf_path = utf8_from_native(native_path), *tmp;
 
     memset(&relative, 0, sizeof relative);
-    relative.path = ne_path_escape(path);
+    relative.path = ne_path_escape(utf_path);
+    ne_free(utf_path);
 
     if (collection && !ne_path_has_trailing_slash(relative.path)) {
         tmp = ne_concat(relative.path, "/", NULL);
@@ -747,12 +794,16 @@ char *uri_resolve_native_coll(const char *native)
 
 char *native_path_from_uri(const char *uri_path)
 {
-    if (!get_bool_option(opt_utf8)) {
-        /* TODO */
-        abort();
-    }
+    char *utf8 = ne_path_unescape(uri_path);
 
-    return ne_path_unescape(uri_path);
+    if (!get_bool_option(opt_utf8)) {
+        char *native = native_from_utf8(utf8);
+        ne_free(utf8);
+        return native;
+    }
+    else {
+        return utf8;
+    }
 }
 
 /* TODO: remove this. */
