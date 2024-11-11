@@ -50,6 +50,9 @@ void execute_about(void);
 /* Returns owner href. */
 char *getowner(void);
 
+/* Output charset if using iconv(). */
+extern const char *out_charset;
+
 void out_success(void);
 void out_start(const char *verb, const char *noun);
 

@@ -28,6 +28,7 @@ if test "$enable_debug" = "yes"; then
 fi
 
 CHECK_READLINE()
+AM_ICONV
 
 AC_ARG_ENABLE(netrc,
 AS_HELP_STRING([--disable-netrc],[enable .netrc support]),,
