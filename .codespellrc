@@ -3,4 +3,4 @@
 skip = .git*,.codespellrc,po,config.guess
 check-hidden = true
 ignore-regex = \bgord@
-ignore-words-list = yesre,nore
+ignore-words-list = yesre,nore,checkin
