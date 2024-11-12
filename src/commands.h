@@ -29,19 +29,22 @@ extern int child_running; /* true when we have a child running */
 /* Returns the command structure for the command of given name. */
 const struct command *get_command(const char *name);
 
-/* Returns absolute path which is 'filename' relative to 'path' 
- * (which must already be an absolute path). e.g.
- *    resolve_path("/dav/", "asda") == "/dav/asda"
- *    resolve_path("/dav/", "/asda") == "/asda"
- * Also removes '..' segments, e.g.
- *    resolve_path("/dav/foobar/", "../fish") == "/dav/fish"
- * If isdir is true, ensures the return value has a trailing slash.
+/* Naming conventions:
+ *
+ * "native path" -> string in native character encoding
+ * "URI path" -> absolute URI path segment (escaped UTF-8 string)
  */
-char *resolve_path(const char *dir, const char *filename, int isdir);
 
 /* Convert a URI path to a native path. */
 char *native_path_from_uri(const char *uri_path);
+
+/* Convert a relative native path into a URI path, resolved against
+ * the session URI path, e.g. "../fish food.txt" ->
+ * "/dav/fish%20food.txt" */
 char *uri_resolve_native(const char *native);
+
+/* Convert a relative native path into a URI path with a trailing
+ * slash. */
 char *uri_resolve_native_coll(const char *native);
 
 /* Displays cadaver version details. */
