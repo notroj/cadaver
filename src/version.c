@@ -307,31 +307,28 @@ static void req_result(ne_request *req, int ret)
     }
 }
 
-static void simple_request(const char *remote, const char *verb, 
+static void simple_request(const char *native_path, const char *verb,
                            const char *method)
 {
-    char *real_remote;
+    char *uri_path;
     ne_request *req;
     int ret;
-    
-    if (remote != NULL) {
-	real_remote = resolve_path(session.uri.path, remote, true);
-    } else {
-	real_remote = ne_strdup(session.uri.path);
-    }
 
-    out_start(verb, remote);
+    if (native_path)
+        uri_path = uri_resolve_native_coll(native_path);
+    else
+        uri_path = ne_strdup(native_path);
 
-    req = ne_request_create(session.sess, method, real_remote);
+    out_start_uri(verb, uri_path);
 
-    ne_lock_using_resource(req, real_remote, 0);
-
+    req = ne_request_create(session.sess, method, uri_path);
+    ne_lock_using_resource(req, uri_path, 0);
     ret = ne_request_dispatch(req);
     
     req_result(req, ret);
 
     ne_request_destroy(req);
-    free(real_remote);
+    ne_free(uri_path);
 }
 
 void execute_version(const char *remote)
@@ -415,22 +412,22 @@ static int do_report(const char *real_remote,
 }
 
 
-void execute_history(const char *remote)
+void execute_history(const char *native_path)
 {
     int ret;
-    char *real_remote;
+    char *uri_path;
     report_ctx *rctx = ne_calloc(sizeof(report_ctx));
     rctx->cdata = ne_buffer_create();
-    
-    if (remote != NULL) {
-	real_remote = resolve_path(session.uri.path, remote, false);
-    } else {
-	real_remote = ne_strdup(session.uri.path);
-    }
-    out_start(_("Version history of"), real_remote);
+
+    if (native_path)
+        uri_path = uri_resolve_native_coll(native_path);
+    else
+        uri_path = ne_strdup(native_path);
+
+    out_start_uri(_("Version history of"), uri_path);
     
     /* Run search */
-    ret = do_report(real_remote, rctx);
+    ret = do_report(uri_path, rctx);
     if (ret != NE_OK) {
 	/* Print out error message */
 	out_result(ret);
@@ -439,15 +436,15 @@ void execute_history(const char *remote)
 	display_report_results(rctx);
     }
 
-    free(real_remote);
+    ne_free(uri_path);
     report_ctx_destroy(rctx);
 }
 
 
-void execute_label(const char *remote, const char *act, const char *value)
+void execute_label(const char *native_path, const char *act, const char *value)
 {
     int ret;
-    char *real_remote;
+    char *uri_path;
     ne_request *req;
     ne_buffer *label_body;
 
@@ -457,13 +454,12 @@ void execute_label(const char *remote, const char *act, const char *value)
         return;
     }
 
-    if (remote != NULL) {
-	real_remote = resolve_path(session.uri.path, remote, true);
-    } else {
-	real_remote = ne_strdup(session.uri.path);
-    }
+    if (native_path)
+        uri_path = uri_resolve_native_coll(native_path);
+    else
+        uri_path = ne_strdup(native_path);
 
-    out_start(_("Labelling"), real_remote);
+    out_start_uri(_("Labelling"), uri_path);
 
     /* Create Label Body */
     label_body = ne_buffer_create();
@@ -480,7 +476,7 @@ void execute_label(const char *remote, const char *act, const char *value)
 		      "</D:label>\n");
     
     /* create/prep the request */
-    req = ne_request_create(session.sess, "LABEL", real_remote);
+    req = ne_request_create(session.sess, "LABEL", uri_path);
     
     ne_add_request_header(req, "Content-Type", NE_XML_MEDIA_TYPE);
     
@@ -496,7 +492,7 @@ void execute_label(const char *remote, const char *act, const char *value)
     
     ne_buffer_destroy(label_body);
     ne_request_destroy(req);
-    free(real_remote);
+    ne_free(uri_path);
 }
 
 static const ne_propname vcr_props[] = {
