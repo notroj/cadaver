@@ -812,6 +812,8 @@ static char *escape_path(const char *p)
     return ne_path_escape(p);
 }
 
+static char *resolve_path(const char *dir, const char *filename, int isdir);
+
 /* TODO: remove this. */
 /* Like resolve_path except more intelligent. 'p' must be
  * already URI-escaped; 'src' and 'dest' must not be. */
