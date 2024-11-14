@@ -181,7 +181,7 @@ static char *run_iconv(const char *instr, enum conv_mode mode)
 {
     static iconv_t from_cd, to_cd;
     iconv_t cd;
-    char outbuf[BUFSIZ], *inptr = instr, *outptr = outbuf;
+    char outbuf[BUFSIZ], *inptr = (char *)instr, *outptr = outbuf;
     size_t inbytes = strlen(instr), outbytes = sizeof outbuf, ret;
 
     cd = mode == TO_UTF8 ? to_cd : from_cd;
@@ -203,8 +203,17 @@ static char *run_iconv(const char *instr, enum conv_mode mode)
 
     ret = iconv(cd, &inptr, &inbytes, &outptr, &outbytes);
     if (ret == (size_t) -1) {
-        fprintf(stderr, _("cadaver: Character conversion failed, aborting.\n"));
-        exit(EXIT_FAILURE);
+        fprintf(stderr, _("cadaver: Warning: Character(s) could not be translated to %s\n"),
+                mode == TO_UTF8 ? "UTF-8" : out_charset);
+        /* Make space for trailing "[?]". */
+        while (outbytes < 3) {
+            outptr -= 1;
+            outbytes += 1;
+        }
+
+        *outptr++ = '[';
+        *outptr++ = '?';
+        *outptr++ = ']';
     }
 
     return ne_strndup(outbuf, outptr-outbuf);
