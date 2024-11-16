@@ -1,6 +1,6 @@
 /* 
    cadaver, command-line DAV client
-   Copyright (C) 1999-2007, Joe Orton <joe@manyfish.co.uk>, 
+   Copyright (C) 1999-2024, Joe Orton <joe@manyfish.co.uk>,
    except where otherwise indicated.
                                                                      
    This program is free software; you can redistribute it and/or modify
@@ -85,20 +85,16 @@
 static netrc_entry *netrc_list; /* list of netrc entries */
 #endif
 
-/* Module-private state: */
+/* Global state: */
 const char *lock_store_fn = NULL;
 static char *progname; /* argv[0] */
 static char *rcfile;
-
-/* Global state: */
-char *proxy_hostname;
-int proxy_port;
-char *server_username = NULL, *server_password = NULL;
+static char *proxy_hostname;
+static char *server_username, *server_password;
 
 /* Current session state. */
 struct session session;
-
-ne_ssl_client_cert *client_cert;
+static ne_ssl_client_cert *client_cert;
 
 int tolerant; /* tolerate DAV-enabledness failure */
 
@@ -153,10 +149,11 @@ static void finish_locking(void)
 
 void close_connection(void)
 {
-    ne_session_destroy(session.sess);
-    session.connected = 0;
-    printf(_("Connection to `%s' closed.\n"),
-           session.uri.host);
+    if (session.sess) ne_session_destroy(session.sess);
+    session.sess = NULL;
+    if (session.connected && session.uri.host)
+        printf(_("Connection to `%s' closed.\n"), session.uri.host);
+    session.connected = false;
     ne_uri_free(&session.uri);
     if (session.lastwp)
         ne_free(session.lastwp);
@@ -291,29 +288,21 @@ static void setup_ssl(ne_session *sess)
     }
 }
 
-/* FIXME: leaky as a bucket? */
 void open_connection(const char *url)
 {
-    char *proxy_host = get_option(opt_proxy);
+    const char *proxy_host = get_option(opt_proxy);
     ne_server_capabilities caps;
     int ret;
-    ne_session *sess;
+    ne_session *sess = NULL;
+    unsigned int proxy_port = 8080;
 
-    if (session.connected) {
-	close_connection();
-    } else {
-        ne_uri_free(&session.uri);
-        if (session.lastwp) {
-            ne_free(session.lastwp);
-            session.lastwp = NULL;
-        }
-    }
+    close_connection();
 
     /* Parse the URL */
     if (ne_uri_parse(url, &session.uri) || session.uri.path == NULL
         || session.uri.scheme == NULL || session.uri.host  == NULL) {
         printf(_("Could not parse URL `%s'\n"), url);
-        return;
+        goto fail;
     }
 
     if (!session.uri.port)
@@ -328,22 +317,19 @@ void open_connection(const char *url)
     }
 
     sess = ne_session_create(session.uri.scheme, session.uri.host, session.uri.port);
+    session.sess = sess;
 
     if (ne_strcasecmp(session.uri.scheme, "https") == 0) {
         if (!ne_has_support(NE_FEATURE_SSL)) {
             printf(_("No SSL/TLS support, cannot use URL `%s'\n"), url);
-            ne_session_destroy(sess);
-            return;
+            goto fail;
         }
         setup_ssl(sess);
     }
     else if (ne_strcasecmp(session.uri.scheme, "http")) {
         printf(_("URL scheme '%s' not supported.\n"), session.uri.scheme);
-        ne_session_destroy(sess);
-        return;
+        goto fail;
     }
-
-    session.sess = sess;
 
     ne_lockstore_register(session.locks, sess);
     ne_redirect_register(sess);
@@ -352,13 +338,8 @@ void open_connection(const char *url)
     ne_set_session_flag(sess, NE_SESSFLAG_EXPECT100, get_bool_option(opt_expect100));
 
     /* Get the proxy details */
-    if (proxy_host != NULL) {
-	if (get_option(opt_proxy_port) != NULL) {
-	    proxy_port = atoi(get_option(opt_proxy_port));
-	} else {
-	    proxy_port = 8080;
-	}
-	proxy_hostname = proxy_host;
+    if (proxy_host && get_option(opt_proxy_port) != NULL) {
+        proxy_port = atoi(get_option(opt_proxy_port));
     }
 
 #ifdef ENABLE_NETRC
@@ -380,18 +361,20 @@ void open_connection(const char *url)
     ne_set_proxy_auth(session.sess, supply_creds_proxy, NULL);
     
     if (proxy_host) {
-	ne_session_proxy(session.sess, proxy_hostname, proxy_port);
+        if (proxy_hostname) ne_free(proxy_hostname);
+        proxy_hostname = ne_strdup(proxy_host);
+        ne_session_proxy(session.sess, proxy_host, proxy_port);
     }
 
     ret = ne_options(session.sess, session.uri.path, &caps);
     
     switch (ret) {
     case NE_OK:
-	session.connected = true;
-	if (set_path(session.uri.path)) {
-	    close_connection();
-	}
-	break;
+	if (set_path(session.uri.path) == 0) {
+            session.connected = true;
+            return;
+        }
+        break;
     case NE_CONNECT:
 	if (proxy_host) {
 	    printf(_("Could not connect to `%s' on port %d:\n%s\n"),
@@ -410,6 +393,8 @@ void open_connection(const char *url)
 	break;
     }
 
+fail:
+    close_connection();
 }
        
 /* Sets proxy server from hostport argument */    
@@ -420,9 +405,10 @@ static void set_proxy(const char *str)
     pnt = strchr(hostname, ':');
     if (pnt != NULL) {
 	*pnt++ = '\0';
+        if (*pnt)
+            set_option(opt_proxy_port, ne_strdup(pnt));
     }
     set_option(opt_proxy, (void *)hostname);
-    set_option(opt_proxy_port, pnt);
 }
 
 static void parse_args(int argc, char **argv)

@@ -85,9 +85,6 @@ struct command {
     const char *short_help; /* single-line help message */
 };
 
-extern char *proxy_hostname;
-extern int proxy_port;
-
 struct session {
     ne_uri uri;
     ne_session *sess;
