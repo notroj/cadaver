@@ -1,14 +1,16 @@
 Changes in release 0.26:
 * Argument passed to "cadaver" must now be an absolute URI.
- - fail for various parsing cases/guesses previously
-* Use nl_langinfo() to detect UTF-8 locale support.
-* Overhaul of input path handling:
- - uses full relative URI resolution
+ - fail for various parsing cases/guesses previously allowed
+* Rewrite of path and character set handling for non-UTF-8 locales:
+ - URI paths are translated to/from the native character encoding
+ - nl_langinfo() used to detect UTF-8 locale support
+ - full relative path resolution is now done for paths
+ - "get" now uses a locale-native default filename (issue #33)
+* Fix memory leak in remote filename completion.
 * Various command fixes
- - propget: output improved.
+ - propget: output improved for clarity.
  - rmcol: lock handling on error path fixed.
  - less: catch errors from pager command.
- - get: use native name as default local filename (issue #33)
 
 Changes in release 0.25:
 * Support bundled neon build again.
