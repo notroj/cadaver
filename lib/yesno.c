@@ -31,10 +31,10 @@
    and return nonzero if that line begins with y or Y,
    otherwise return 0. */
 
-int rpmatch ();
+int rpmatch (const char *);
 
 int
-yesno ()
+yesno (void)
 {
   /* We make some assumptions here:
      a) leading white space in the response are not vital
