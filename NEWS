@@ -1,6 +1,6 @@
 Changes in release 0.26:
-* Argument passed to "cadaver" must now be an absolute URI.
- - fail for various parsing cases/guesses previously allowed
+* Argument passed to "cadaver" must now be an absolute URI,
+  various pseudo-URLs are now treated as errors.
 * Rewrite of path and character set handling for non-UTF-8 locales:
  - URI paths are translated to/from the native character encoding
  - nl_langinfo() used to detect UTF-8 locale support
@@ -11,6 +11,7 @@ Changes in release 0.26:
  - propget: output improved for clarity.
  - rmcol: lock handling on error path fixed.
  - less: catch errors from pager command.
+* Added 'systemproxy' option to enable libproxy.
 
 Changes in release 0.25:
 * Support bundled neon build again.

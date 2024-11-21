@@ -359,8 +359,11 @@ void open_connection(const char *url)
     ne_set_useragent(session.sess, "cadaver/" PACKAGE_VERSION);
     ne_set_server_auth(session.sess, supply_creds_server, NULL);
     ne_set_proxy_auth(session.sess, supply_creds_proxy, NULL);
-    
-    if (proxy_host) {
+
+    if (get_bool_option(opt_systemproxy)) {
+        ne_session_system_proxy(session.sess, 0);
+    }
+    else if (proxy_host) {
         if (proxy_hostname) ne_free(proxy_hostname);
         proxy_hostname = ne_strdup(proxy_host);
         ne_session_proxy(session.sess, proxy_host, proxy_port);

@@ -58,7 +58,7 @@ static void disp_searchdepth(void);
 
 /* Option holders */
 
-static int enable_expect, presume_utf8, overwrite, quiet, searchall;
+static int enable_expect, presume_utf8, overwrite, quiet, searchall, system_proxy;
 
 enum ne_lock_scope lockscope;
 int lockdepth;
@@ -94,7 +94,6 @@ static struct option {
     B(quiet, &quiet, "Whether to display connection status messages"),
     B(searchall, &searchall, "Whether to search and display all props including dead props"),
     B(keepalive, &keepalive, "Whether to enable persistent connections when opening a connection"),
-#undef B
 #define S2(x,y, h) { x, y, NULL, opt_string, NULL, NULL, NULL, h, NULL }
 #define S(x,h) S2(#x, opt_##x, h)
     S(lockowner, "Lock owner URI"),
@@ -107,9 +106,11 @@ static struct option {
     S(proxy, "Hostname of proxy server"),
     { "proxy-port", opt_proxy_port, NULL, opt_string, NULL, NULL, NULL,
       "Port to use on proxy server", NULL },
+    B(systemproxy, &system_proxy, "Use system-wide proxy configuration"),
     S(searchorder,  "Search ascending props options"),
     S(searchdorder, "Search descending props options"),
 #undef S
+#undef B
     { "debug", opt_debug, NULL, opt_handled,
       set_debug, unset_debug, disp_debug, "Debugging options",
       "The debug value is a list of comma-separated keywords.\n"
