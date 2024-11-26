@@ -131,6 +131,16 @@ void out_start_uri(const char *verb, const char *path)
     ne_free(native_path);
 }
 
+static void out_start_2uri(const char *verb,
+                           const char *path1, const char *path2)
+{
+    char *native1 = native_path_from_uri(path1);
+    char *native2 = native_path_from_uri(path2);
+    output(o_start, _("%s `%s' to `%s':"), verb, native1, native2);
+    ne_free(native1);
+    ne_free(native2);
+}
+
 void out_success(void)
 {
     output(o_finish, _("succeeded.\n"));
@@ -307,10 +317,7 @@ char *getowner(void)
 
 /* Resolve path, appending trailing slash if resource is a
  * collection. If 'collection' is non-NULL, *collection is set to
- * non-zero iff the resource is a collection.
- * ### FIXME: this fails if "/dav/foo" redirects to "/dav/foo/" which
- * is a collection.
- */
+ * non-zero iff the resource is a collection. */
 static char *uri_resolve_native_true(const char *path, int *collection)
 {
     char *uri_path = uri_resolve_native(path);
@@ -845,45 +852,6 @@ char *native_path_from_uri(const char *uri_path)
     }
 }
 
-/* TODO: remove this. */
-static char *escape_path(const char *p)
-{
-    return ne_path_escape(p);
-}
-
-static char *resolve_path(const char *dir, const char *filename, int isdir);
-
-/* TODO: remove this. */
-/* Like resolve_path except more intelligent. 'p' must be
- * already URI-escaped; 'src' and 'dest' must not be. */
-static char *clever_path(const char *p, const char *src, 
-			 const char *dest)
-{
-    char *ret;
-    int src_is_coll, dest_is_coll;
-    dest_is_coll = (dest[strlen(dest)-1] == '/');
-    src_is_coll = (src[strlen(src)-1] == '/');
-    if (strcmp(dest, ".") == 0) {
-	ret = resolve_path(p, base_name(src), false);
-    } else if (strcmp(dest, "..") == 0) {
-	char *parent;
-	parent = ne_path_parent(p);
-	ret = resolve_path(parent, base_name(src), false);
-	free(parent);
-    } else if (!src_is_coll && dest_is_coll) {
-	/* Moving a file to a collection... the destination should
-	 * be the basename of file concated with the collection. */
-	char *tmp = resolve_path(p, dest, true);
-        char *enc = escape_path(base_name(src));
-	ret = ne_concat(tmp, enc, NULL);
-        free(enc);
-	free(tmp);
-    } else {
-	ret = resolve_path(p, dest, false);
-    }
-    return ret;
-}
-
 static const char *choose_pager(void)
 {
     struct stat st;
@@ -945,117 +913,89 @@ static void execute_cat(const char *native_path)
     }
 }
 
+/* Execute a copy or move via callback 'cb', given the 'argv' array of
+ * length 'argc'.  The present participle and root form of the verb
+ * are passed as 'v1' and v2 (this likely doesn't international
+ * well?). */
 static void do_copymove(int argc, const char *argv[],
 			const char *v1, const char *v2,
 			void (*cb)(const char *, const char *))
 {
     /* We are guaranteed that argc > 2... */
-    char *uri_dest;
+    const char *native_dest = argv[argc-1];
+    int n, dest_is_coll, error;
+    char *uri_dest = uri_resolve_native_true(native_dest, &dest_is_coll);
+    struct {
+        char *src, *dest;
+    } *ops;
 
-    uri_dest = uri_resolve_native_coll(argv[argc-1]);
-    if (getrestype(uri_dest) == resr_collection) {
-	int n;
-	char *real_src, *real_dest, *unescaped_dest;
-	unescaped_dest = ne_path_unescape(uri_dest);
-	for(n = 0; n < argc-1; n++) {
-	    real_src = resolve_path(session.uri.path, argv[n], false);
-	    real_dest = clever_path(session.uri.path, argv[n], unescaped_dest);
-	    if (strcmp(real_src, real_dest) == 0) {
-		char *unescaped_src, *unescaped_dst;
-		unescaped_src = ne_path_unescape(real_src);
-		unescaped_dst = ne_path_unescape(real_dest);
-		printf(_("%s: %s and %s are the same resource.\n"), v2,
-                       unescaped_src, unescaped_dest);
-		ne_free(unescaped_dst);
-		ne_free(unescaped_src);
-	    } else {
-		(*cb)(real_src, real_dest);
-	    }
-	    free(real_src);
-	    free(real_dest);
-	}
-	ne_free(unescaped_dest);
-    } else if (argc > 2) {
-	printf(_("When %s multiple resources, the last "
-                 "argument must be a collection.\n"), v1);
-    } else {
-	char *rsrc, *rdest;
-	rsrc = resolve_path(session.uri.path, argv[0], false);
-	rdest = resolve_path(session.uri.path, argv[1], false);
-	/* Simple */
-	(*cb) (rsrc, rdest);
-	free(rsrc);
-	free(rdest);
+    /* Iterate and build up pairs of (source, dest) paths which will
+     * be passed to the callback in turn, validating and failing early
+     * if there are any errors. */
+    ops = ne_calloc(argc * sizeof *ops);
+
+    for (n = 0, error = 0; !error && n < argc-1; n++) {
+        int src_is_coll;
+
+        ops[n].src = uri_resolve_native_true(argv[n], &src_is_coll);
+
+        /* The (src, dest) paths have now been resolved, there are
+         * three valid cases consider, plus errors:
+         *
+         * 1. Both source and destination are collections.
+         *    (/foo/, /bar/) must translate to (/foo/, /bar/foo/)
+         * 2. Only the destination is a collection.
+         *    (/foo.txt, /bar/) must translate to (/foo.txt, /bar/foo.txt)
+         * 3. Simplest 'mv a b' case, no translation required.
+         */
+        if (strcmp(ops[n].src, "/") == 0) {
+            printf(_("Error: Refusing to %s the server root '/'\n"), v2);
+            error = 1;
+        }
+        else if (dest_is_coll && src_is_coll) {
+            /* Case 1. */
+            char *tmp = ne_strndup(ops[n].src, strlen(ops[n].src)-1);
+            ops[n].dest = ne_concat(uri_dest, base_name(tmp), NULL);
+            ne_free(tmp);
+        }
+        else if (src_is_coll && !dest_is_coll) {
+            printf(_("Error: Refusing to %s collection '%s' to "
+                     "non-collection '%s'\n"), v2, ops[n].src, uri_dest);
+            error = 1;
+        }
+        else if (dest_is_coll) {
+            /* Case 2. */
+            ops[n].dest = ne_concat(uri_dest, base_name(ops[n].src), NULL);
+        }
+        else {
+            /* Case 3. */
+            ops[n].dest = ne_strdup(uri_dest);
+        }
+    }
+
+    if (!error) {
+        for (n = 0; n < argc-1; n++)
+            (*cb)(ops[n].src, ops[n].dest);
+    }
+
+    for (n = 0; n < argc-1; n++) {
+        if (ops[n].src) ne_free(ops[n].src);
+        if (ops[n].dest) ne_free(ops[n].dest);
     }
     ne_free(uri_dest);
 }
 
 static void simple_move(const char *src, const char *dest) 
 {
-    char *unescaped_src, *unescaped_dest;
-    unescaped_src = ne_path_unescape(src);
-    unescaped_dest = ne_path_unescape(dest);
-    output(o_start, _("Moving `%s' to `%s': "), unescaped_src, unescaped_dest);
-    ne_free(unescaped_dest);
-    ne_free(unescaped_src);
+    out_start_2uri(_("Moving"), src, dest);
     out_result(ne_move(session.sess, get_bool_option(opt_overwrite), src, dest));
 }
 
 static void simple_copy(const char *src, const char *dest) 
 {
-    char *unescaped_src, *unescaped_dest;
-    unescaped_src = ne_path_unescape(src);
-    unescaped_dest = ne_path_unescape(dest);
-    output(o_start, _("Copying `%s' to `%s': "), unescaped_src, unescaped_dest);
-    ne_free(unescaped_dest);
-    ne_free(unescaped_src);
+    out_start_2uri(_("Copying"), src, dest);
     out_result(ne_copy(session.sess, get_bool_option(opt_overwrite), 
 		       NE_DEPTH_INFINITE, src, dest));
-}
-
-/* Return full path of 'filename', relative to 'p'.  'p' must be
- * already URI-escaped; 'filename' must not be.  If 'iscoll' is
- * non-zero, the returned path will have a trailing slash. */
-char *resolve_path(const char *p, const char *filename, int iscoll)
-{
-    char *ret, *pnt;
-    if (*filename == '/') {
-	/* It's absolute */
-	ret = escape_path(filename);
-    } else if (strcmp(filename, ".") == 0) {
-	ret = ne_strdup(p);
-    } else {
-	pnt = escape_path(filename);
-	ret = ne_concat(p, pnt, NULL);
-	free(pnt);
-    }
-    if (iscoll && ret[strlen(ret)-1] != '/') {
-	char *newret = ne_concat(ret, "/", NULL);
-	free(ret);
-	ret = newret;
-    }
-    /* Sort out '..', etc... */
-    do {
-	pnt = strstr(ret, "/../");
-	if (pnt != NULL) {
-	    char *last;
-	    /* Find the *previous* path segment, to overwrite...
-	     *    /foo/../
-	     *    ^- last points here */
-	    if (pnt > ret) {
-		for(last = pnt-1; (last > ret) && (*last != '/'); last--);
-	    } else {
-		last = ret;
-	    }
-	    memmove(last, pnt + 3, strlen(pnt+2));
-	} else {
-	    pnt = strstr(ret, "/./");
-	    if (pnt != NULL) {
-		memmove(pnt, pnt+2, strlen(pnt+1));
-	    }
-	}
-    } while (pnt != NULL);
-    return ret;    
 }
 
 static void execute_get(const char *native_remote, const char *native_local)
