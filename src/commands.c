@@ -94,6 +94,7 @@ const static struct {
     C(ls), C(cd), C(quit), C(open), C(logout), C(close), C(set), C(unset), 
     C(pwd), C(help), C(put), C(get), C(mkcol), C(delete), C(move), C(copy),
     C(less), C(cat), C(lpwd), C(lcd), C(lls), C(echo), C(quit), C(about),
+    C(rename),
     C(mget), C(mput), C(rmcol), C(lock), C(unlock), C(discover), C(steal),
     C(chexec), C(showlocks), C(version), C(propget), C(propset), C(propdel),
     C(describe), C(search),
@@ -998,6 +999,24 @@ static void simple_copy(const char *src, const char *dest)
 		       NE_DEPTH_INFINITE, src, dest));
 }
 
+static void execute_rename(const char *native_src, const char *native_dest)
+{
+    int src_is_coll;
+    char *uri_src = uri_resolve_native_true(native_src, &src_is_coll);
+    char *uri_dest = uri_resolve_native(native_dest);
+
+    out_start_2uri(_("Renaming"), uri_src, uri_dest);
+    if (!src_is_coll && ne_path_has_trailing_slash(uri_dest)) {
+        output(o_finish, _("failed, source path is not a collection.\n"));
+    }
+    else {
+        out_result(ne_move(session.sess, 0, uri_src, uri_dest));
+    }
+
+    ne_free(uri_src);
+    ne_free(uri_dest);
+}
+
 static void execute_get(const char *native_remote, const char *native_local)
 {
     char *filename, *uri_path;
@@ -1344,8 +1363,10 @@ void execute_about(void)
 /* C1: connected, 1-arg function C2: connected, 2-arg function
  * U0: disconnected, 0-arg function. */
 #define C1(x,c,h) { cmd_##x, #x, true, 1, 1, parmscope_remote, T1(execute_##x),c,h }
+#define C2(x,c,h) { cmd_##x, #x, true, 2, 2, parmscope_remote, T2(execute_##x),c,h }
 #define U0(x,h) { cmd_##x, #x, false, 0, 0, parmscope_none, T0(execute_##x),#x,h }
 #define UO1(x,c,h) { cmd_##x, #x, false, 0, 1, parmscope_none, T1(execute_##x),c,h }
+#define C2M(x,c,h) { cmd_##x, #x, true, 2, CMD_VARY, parmscope_remote, TV(multi_##x),c,h }
 #define C2M(x,c,h) { cmd_##x, #x, true, 2, CMD_VARY, parmscope_remote, TV(multi_##x),c,h }
 #define C1M(x,c,h) { cmd_##x, #x, true, 1, CMD_VARY, parmscope_remote, TV(multi_##x),c,h }
 
@@ -1376,7 +1397,8 @@ const struct command commands[] = {
     C1M(rmcol, N_("rmcol remote..."), N_("Delete remote collections and ALL contents")),
     C2M(copy, N_("copy source... dest"), N_("Copy resource(s) from source to dest")), 
     C2M(move, N_("move source... dest"), N_("Move resource(s) from source to dest")),
-    
+    C2(rename, N_("rename source dest"), N_("Rename resource from source to dest")),
+
 /* DON'T FORGET TO ADD A NEW COMMAND ALIAS WHEN YOU ADD A NEW COMMAND */
 
     /*** Locking commands ***/
