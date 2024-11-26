@@ -315,6 +315,36 @@ static char *uri_resolve_native_true(const char *path, int *collection)
 {
     char *uri_path = uri_resolve_native(path);
     int is_coll = getrestype(uri_path) == resr_collection;
+    const ne_uri *redir = ne_redirect_location(session.sess);
+
+    /* Special case: if the destination redirects to a location with a
+     * trailing slash on the same origin server, we follow the
+     * redirection and use the destination location here since this is
+     * what will typically happen for collections. */
+    if (!is_coll && redir && redir->path
+        && ne_path_has_trailing_slash(redir->path)) {
+        ne_uri uri;
+
+        memset(&uri, 0, sizeof uri);
+        ne_fill_server_uri(session.sess, &uri);
+        uri.path = redir->path;
+
+        /* ### FIXME: this is a neon bug, ne_uri_cmp() fails to follow
+         * normalisation/comparison rules */
+        if (uri.port == ne_uri_defaultport(uri.scheme))
+            uri.port = 0;
+
+        if (ne_uri_cmp(redir, &uri) == 0) {
+            ne_free(uri_path);
+            uri_path = ne_strdup(redir->path);
+            is_coll = getrestype(uri_path) == resr_collection;
+            NE_DEBUG(NE_DBG_HTTP, "cadaver: Redirected to %s, a %scollection.\n",
+                     uri_path, is_coll ? "" : "non-");
+        }
+
+        uri.path = NULL;
+        ne_uri_free(&uri);
+    }
 
     if (collection) *collection = is_coll;
 
