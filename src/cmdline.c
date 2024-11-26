@@ -315,10 +315,10 @@ do {								\
 		}
 		for (n = 0; n < gl.gl_pathc; n++) {
 		    /* Remote glob expanded to the escaped URIs, so we
-		       need to unescape them. Local glob needs to be only
-		       copied. */
+                     * need to convert these to native paths. Local
+                     * glob needs to be only copied. */
 		    if (cmd->scope == parmscope_remote)
-			ADDTOK(ne_path_unescape(gl.gl_pathv[n]));
+			ADDTOK(native_path_from_uri(gl.gl_pathv[n]));
 		    else
 			ADDTOK(ne_strdup(gl.gl_pathv[n]));
 		}
