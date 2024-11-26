@@ -54,7 +54,7 @@ enum command_id {
     cmd_ls, cmd_cd, cmd_quit, cmd_open, cmd_close, cmd_about, cmd_pwd,
     cmd_help, cmd_put, cmd_get, cmd_mkcol, cmd_delete, cmd_move, cmd_copy, 
     cmd_less, cmd_cat, cmd_lpwd, cmd_lcd, cmd_lls, cmd_mput, cmd_mget,
-    cmd_echo, cmd_set, cmd_unset, cmd_rmcol, cmd_lock, cmd_unlock,
+    cmd_echo, cmd_set, cmd_unset, cmd_rmcol, cmd_rename, cmd_lock, cmd_unlock,
     cmd_steal, cmd_discover, cmd_showlocks, cmd_propedit, cmd_propnames,
     cmd_propget, cmd_propset, cmd_propdel, cmd_chexec, cmd_edit, cmd_logout,
     cmd_describe, cmd_search, cmd_version, cmd_checkin, cmd_checkout,

@@ -1,17 +1,29 @@
 Changes in release 0.26:
 * Argument passed to "cadaver" must now be an absolute URI,
   various pseudo-URLs are now treated as errors.
-* Rewrite of path and character set handling for non-UTF-8 locales:
+* Rewrite of path and character set handling, fixing support
+  for locales using non-UTF-8 character encoding:
  - URI paths are translated to/from the native character encoding
  - nl_langinfo() used to detect UTF-8 locale support
  - full relative path resolution is now done for paths
  - "get" now uses a locale-native default filename (issue #33)
+ - iconv (or libiconv) is required for non-UTF-8 native locales
 * Fix memory leak in remote filename completion.
-* Various command fixes
+* Various commands will now automatically act on the destination
+  of a redirect as required rather than failing.
+* Rewrite of 'copy' and 'move' commands:
+ - a source collection is moved/copied inside a destination coll
+   rather than overwriting it.
+ - more error cases are disallowed (e.g. 'mv / /foo')
+ - a source collection with a non-collection destination now fails
+* New 'rename' command added for MOVE with 'Overwrite: F'
+ - this ignores the 'overwrite' boolean option unlike cp/mv
+* Various minor command fixes:
  - propget: output improved for clarity.
  - rmcol: lock handling on error path fixed.
  - less: catch errors from pager command.
 * Added 'systemproxy' option to enable libproxy.
+* Update to neon 0.34.0.
 
 Changes in release 0.25:
 * Support bundled neon build again.
