@@ -14,7 +14,7 @@ Bugs, feature requests and patches can be sent in via the Github
 repository: https://github.com/notroj/cadaver/issues
 
 ~~~
-cadaver is Copyright (C) 1999-2022 Joe Orton
+cadaver is Copyright (C) 1999-2024 Joe Orton
 Portions are:
 Copyright (C) 85, 88, 90, 91, 1995-1999 Free Software Foundation, Inc.
 Copyright (C) Free Software Foundation, Inc.

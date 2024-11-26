@@ -1,7 +1,7 @@
 dnl configure script
 
 AC_PREREQ([2.69])
-AC_INIT([cadaver],[0.25-dev],,,[https://github.com/notroj/cadaver])
+AC_INIT([cadaver],[0.26],,,[https://github.com/notroj/cadaver])
 
 AC_CONFIG_SRCDIR(src/cadaver.c)
 AC_CONFIG_HEADERS([config.h])
