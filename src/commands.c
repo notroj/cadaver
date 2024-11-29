@@ -753,9 +753,11 @@ static void remove_locks(const char *p, int depth)
 
 static void execute_delete(const char *path)
 {
-    char *uri_path = uri_resolve_native(path);
-    out_start(_("Deleting"), path);
-    if (getrestype(uri_path) == resr_collection) {
+    int is_coll;
+    char *uri_path = uri_resolve_native_true(path, &is_coll);
+
+    out_start_uri(_("Deleting"), uri_path);
+    if (is_coll) {
 	output(o_finish, 
 _("is a collection resource.\n"
 "The `rm' command cannot be used to delete a collection.\n"
@@ -772,9 +774,11 @@ _("is a collection resource.\n"
 
 static void execute_rmcol(const char *path)
 {
-    char *uri_path = uri_resolve_native(path);
-    out_start(_("Deleting collection"), path);
-    if (getrestype(uri_path) != resr_collection) {
+    int is_coll;
+    char *uri_path = uri_resolve_native_true(path, &is_coll);
+
+    out_start_uri(_("Deleting collection"), uri_path);
+    if (!is_coll) {
 	output(o_finish, 
 	       _("is not a collection.\n"
 		 "The `rmcol' command can only be used to delete collections.\n"
