@@ -916,8 +916,8 @@ msgstr "ok ["
 
 #: src/cadaver.c:1000
 #, c-format
-msgid "\rTransfer timed out, reconnecting... "
-msgstr "\rTrasferimento scaduto, riconnessione... "
+msgid "Transfer timed out, reconnecting... "
+msgstr "Trasferimento scaduto, riconnessione... "
 
 #: src/cadaver.c:1003
 #, c-format
@@ -926,8 +926,8 @@ msgstr "ok."
 
 #: src/cadaver.c:1062
 #, c-format
-msgid "\rProgress: ["
-msgstr "\rProgresso: ["
+msgid "Progress: ["
+msgstr "Progresso: ["
 
 #: src/cadaver.c:1067
 #, fuzzy
@@ -940,12 +940,12 @@ msgstr "Nome utente: "
 
 #: src/cadaver.c:1096
 #, c-format
-msgid "\rAuthentication aborted!\n"
-msgstr "\rAutenticazione interrotta!\n"
+msgid "Authentication aborted!\n"
+msgstr "Autenticazione interrotta!\n"
 
 #: src/cadaver.c:1099
 #, c-format
-msgid "\rUsername too long (>%d)\n"
+msgid "Username too long (>%d)\n"
 msgstr ""
 
 #: src/cadaver.c:1107
@@ -959,7 +959,7 @@ msgstr "Autenticazione interrotta!\n"
 
 #: src/cadaver.c:1112
 #, c-format
-msgid "\rPassword too long (>%d)\n"
+msgid "Password too long (>%d)\n"
 msgstr ""
 
 #: src/cadaver.c:1123
