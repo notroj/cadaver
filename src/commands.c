@@ -325,6 +325,8 @@ static char *uri_resolve_native_true(const char *path, int *collection)
     int is_coll = getrestype(uri_path) == resr_collection;
     const ne_uri *redir = ne_redirect_location(session.sess);
 
+    NE_DEBUG(DEBUG_FILES, "cadaver: Resolve true [%s] -> [%s]\n", path, uri_path);
+
     /* Special case: if the destination redirects to a location with a
      * trailing slash on the same origin server, we follow the
      * redirection and use the destination location here since this is
@@ -346,7 +348,7 @@ static char *uri_resolve_native_true(const char *path, int *collection)
             ne_free(uri_path);
             uri_path = ne_strdup(redir->path);
             is_coll = getrestype(uri_path) == resr_collection;
-            NE_DEBUG(NE_DBG_HTTP, "cadaver: Redirected to %s, a %scollection.\n",
+            NE_DEBUG(DEBUG_FILES, "cadaver: Redirected to %s, a %scollection.\n",
                      uri_path, is_coll ? "" : "non-");
         }
 
@@ -814,6 +816,9 @@ static char *path_native_resolver(const char *native_path, int collection)
     relative.path = ne_path_escape(utf_path);
     ne_free(utf_path);
 
+    NE_DEBUG(DEBUG_FILES, "cadaver: Convert native [%s] -> URI [%s]\n",
+             native_path, relative.path);
+
     if (collection && !ne_path_has_trailing_slash(relative.path)) {
         tmp = ne_concat(relative.path, "/", NULL);
         ne_free(relative.path);
@@ -826,6 +831,9 @@ static char *path_native_resolver(const char *native_path, int collection)
     tmp = result.path;
     result.path = NULL;
     ne_uri_free(&result);
+
+    NE_DEBUG(DEBUG_FILES, "cadaver: Resolved native [%s] -> URI [%s]\n",
+             native_path, tmp);
 
     return tmp;
 }
