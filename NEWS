@@ -1,3 +1,8 @@
+Changes in release 0.27:
+* Opening a location which does not indicate DAV class 1 support
+  is now an error (or a warning in tolerant mode).
+* Removed obsolete BUGS, INTEROP, FAQ documents.
+
 Changes in release 0.26:
 * Argument passed to "cadaver" must now be an absolute URI,
   various pseudo-URLs are now treated as errors.
