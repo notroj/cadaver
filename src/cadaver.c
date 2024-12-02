@@ -159,23 +159,24 @@ void close_connection(void)
         ne_free(session.lastwp);
 }
 
-/* Sets the current collection to the given path.  Returns zero on
+/* Sets the current collection to the given URI path.  Returns zero on
  * success, non-zero if newpath is an untolerated non-WebDAV
  * collection. */
-int set_path(const char *newpath)
+int set_path(const char *uri_path)
 {
-    int is_coll = (getrestype(newpath) == resr_collection);
+    int is_coll = (getrestype(uri_path) == resr_collection);
     if (is_coll || tolerant) {
 	if (!is_coll) {
 	    session.isdav = 0;
-	    printf(_("Ignored error: %s not WebDAV-enabled:\n%s\n"), newpath,
+	    printf(_("Ignored error: %s not WebDAV-enabled:\n%s\n"), uri_path,
 		   ne_get_error(session.sess));
 	} else {
 	    session.isdav = 1;
 	}
 	return 0;
-    } else {
-	printf(_("Could not access %s (not WebDAV-enabled?):\n%s\n"), newpath,
+    }
+    else {
+	printf(_("Could not access %s (not WebDAV-enabled?):\n%s\n"), uri_path,
 	       ne_get_error(session.sess));
 	return 1;
     }
