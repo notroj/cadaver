@@ -292,7 +292,6 @@ static void setup_ssl(ne_session *sess)
 void open_connection(const char *url)
 {
     const char *proxy_host = get_option(opt_proxy);
-    ne_server_capabilities caps;
     int ret;
     ne_session *sess = NULL;
     unsigned int proxy_port = 8080;
@@ -370,10 +369,16 @@ void open_connection(const char *url)
         ne_session_proxy(session.sess, proxy_host, proxy_port);
     }
 
-    ret = ne_options(session.sess, session.uri.path, &caps);
-    
+    session.caps = 0;
+    ret = ne_options2(session.sess, session.uri.path, &session.caps);
+
     switch (ret) {
     case NE_OK:
+        if ((session.caps & NE_CAP_DAV_CLASS1) == 0) {
+            printf(_("%s: Location does not advertise WebDAV class 1 support.\n"),
+                   tolerant ? _("Warning") : _("Error"));
+            if (!tolerant) break;
+        }
 	if (set_path(session.uri.path) == 0) {
             session.connected = true;
             return;

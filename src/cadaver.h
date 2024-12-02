@@ -92,6 +92,7 @@ struct session {
     int isdav; /* non-zero if real DAV collection */
     ne_lock_store *locks; /* stored locks */
     char *lastwp; /* last working path. */
+    unsigned int caps; /* WebDAV capabilities */
 };
 
 /* Current session state. */
