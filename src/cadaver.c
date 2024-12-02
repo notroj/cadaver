@@ -1003,7 +1003,10 @@ static void notifier(void *ud, ne_session_status status, const ne_session_status
     case out_transfer_pretty:
 	switch (status) {
 	case ne_status_connecting:
-	    if (!quiet) printf(_("\rTransfer timed out, reconnecting... "));
+	    if (!quiet) {
+                putchar('\r');
+                printf(_("Transfer timed out, reconnecting... "));
+            }
 	    break;
 	case ne_status_connected:
 	    if (!quiet) printf(_("okay."));
@@ -1065,7 +1068,8 @@ static void pretty_progress_bar(ne_off_t progress, ne_off_t total)
 	pc = (double)progress / total;
     }
     len = pc * 30;
-    printf(_("\rProgress: ["));
+    putchar('\r');
+    printf(_("Progress: ["));
     for (n = 0; n<30; n++) {
 	putchar((n<len-1)?'=':
 		 (n==(len-1)?'>':' '));
@@ -1099,10 +1103,10 @@ static int supply_creds(const char *prompt, const char *realm, const char *hostn
     
     tmp = readline(_("Username: "));
     if (tmp == NULL) {
-	printf(_("\rAuthentication aborted!\n"));
+	putchar('\r'); printf(_("Authentication aborted!\n"));
 	return -1;
     } else if (strlen(tmp) >= NE_ABUFSIZ) {
-	printf(_("\rUsername too long (>%d)\n"), NE_ABUFSIZ);
+	putchar('\r'); printf(_("Username too long (>%d)\n"), NE_ABUFSIZ);
 	free(tmp);
 	return -1;
     }
@@ -1115,7 +1119,7 @@ static int supply_creds(const char *prompt, const char *realm, const char *hostn
 	printf(_("Authentication aborted!\n"));
 	return -1;
     } else if (strlen(tmp) >= NE_ABUFSIZ) {
-	printf(_("\rPassword too long (>%d)\n"), NE_ABUFSIZ);
+	putchar('\r'); printf(_("Password too long (>%d)\n"), NE_ABUFSIZ);
 	return -1;
     }
     
