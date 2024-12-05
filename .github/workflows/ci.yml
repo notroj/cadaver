@@ -11,23 +11,22 @@ jobs:
         os: [ubuntu-latest, ubuntu-20.04]
         install: [true, false]
         bundled: [true, false]
+        warnings: [true, false]
     steps:
     - uses: actions/checkout@v2
       with:
         submodules: true
+    - run: CONFIG="--prefix=/tmp/cadaver-root ${{ matrix.config }}"
     - run: |
          if ${{matrix.bundled}}; then
             sudo apt-get update && sudo apt-get -y install gettext
+            CONFIG="${CONFIG}  --with-included-neon --with-ssl"
          else
             sudo apt-get update && sudo apt-get -y install libneon27-dev gettext
          fi
+    - run: if ${{matrix.warnings}}; then CONFIG="${CONFIG} --enable-warnings"; EXTRA_CFLAGS="-Werror"; fi
     - run: if ${{matrix.install}}; then bash -ex ./.release.sh; fi
     - run: ./autogen.sh
-    - run: |
-        if ${{matrix.bundled}}; then
-          ./configure --prefix=/tmp/cadaver-root --with-included-neon --with-ssl
-        else
-          ./configure --prefix=/tmp/cadaver-root
-        fi
-    - run: make
+    - run: ./configure ${CONFIG}
+    - run: make EXTRA_CFLAGS="$EXTRA_CFLAGS"
     - run: if ${{matrix.install}}; then make install; fi
