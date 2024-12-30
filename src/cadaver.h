@@ -103,7 +103,7 @@ extern struct session session;
  * collection. */
 int set_path(const char *newpath);
 
-extern int tolerant;
+extern int tolerant, in_completion;
 
 #ifdef HAVE_LIBREADLINE
 char *command_generator(const char *text, int state);

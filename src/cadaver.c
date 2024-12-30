@@ -97,6 +97,7 @@ struct session session;
 static ne_ssl_client_cert *client_cert;
 
 int tolerant; /* tolerate DAV-enabledness failure */
+int in_completion; /* non-zero if in completion. */
 
 /* Current output state */
 static enum out_state {
@@ -713,6 +714,8 @@ static char **completion(const char *text, int start, int end)
     char **matches = NULL;
     char *sep = strchr(rl_line_buffer, ' ');
 
+    in_completion = 1;
+
     if (start == 0) {
 	matches = rl_completion_matches(text, command_generator);
     }
@@ -740,7 +743,10 @@ static char **completion(const char *text, int start, int end)
 	    }
 	}
 	free(cname);
-    }		    
+    }
+
+    in_completion = 0;
+
     return matches;
 }
 
