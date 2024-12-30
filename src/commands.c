@@ -214,8 +214,10 @@ static char *run_iconv(const char *instr, enum conv_mode mode)
 
     ret = iconv(cd, &inptr, &inbytes, &outptr, &outbytes);
     if (ret == (size_t) -1) {
-        fprintf(stderr, _("cadaver: Warning: Character(s) could not be translated to %s\n"),
-                mode == TO_UTF8 ? "UTF-8" : out_charset);
+        if (!in_completion)
+            fprintf(stderr, _("cadaver: Warning: Character(s) could not "
+                              "be translated to %s\n"),
+                    mode == TO_UTF8 ? "UTF-8" : out_charset);
         /* Make space for trailing "[?]". */
         while (outbytes < 3) {
             outptr -= 1;
