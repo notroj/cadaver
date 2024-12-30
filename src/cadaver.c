@@ -935,6 +935,8 @@ static void notifier(void *ud, ne_session_status status, const ne_session_status
 {
     int quiet = get_bool_option(opt_quiet);
 
+    if (in_completion) return; /* do nothing during tab-completion */
+
     switch (out_state) {
     case out_none:
         if (quiet) break;
