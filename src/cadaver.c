@@ -630,83 +630,92 @@ static int init_rcfile(void)
 #define rl_filename_completion_function filename_completion_function
 #endif
 
-/* TODO:
- * 1. "ls /dav/foo/<comp>" should complete within that path not CWD
- * 2. quoting should happen
- */
-static char *remote_completion(const char *text, int state)
+/* The remote completion generator is invoked multiple times to return
+ * all possible matches; the remote collection listing is cached to
+ * allow this, and for any future attempts at tab-completion within
+ * the same collection. */
+struct completion_cache {
+    struct resource *list;
+    time_t expiry;
+    char *path; /* URI path. */
+};
+
+static void refresh_completion_cache(const char *uri_path,
+                                     struct completion_cache *cache)
 {
-    static struct resource *reslist, *current;
-    static size_t len;
-    static time_t last_fetch;
-    static char *last_path;
-    
-    if (state == 0) {
-	/* Check to see if we should refresh the dumb cache.
-	 * or, initialize the local cache of remote filenames
-	 * The remote resource list persists until a completion
-	 * in a new context is requested or the cache expires.
-	 */
-
-	/* TODO get cache expire time from config, currently from cadaver.h
-	 * TODO cache and fetch on deep/absolute paths: (path: /a/b/, text: c/d)
-	 */
-	if (last_fetch < (time(NULL) - COMPLETION_CACHE_EXPIRE) 
-	    || !last_path 
-	    || strcmp(session.uri.path, last_path) != 0) {
-
-	    if (last_path != NULL) {
-		free(last_path);
-	    }
-
-	    if (reslist != NULL) { 
-		free_resource_list(reslist); 
-	    }
-
-	    /* Hide the connection status */
-	    ne_set_notifier(session.sess, NULL, NULL);
-	    if (fetch_resource_list(session.sess, session.uri.path, 1, 0, 
-                                    &reslist) != NE_OK) {
-		reslist = NULL;
-	    }
-	    /* Restore the session connection printing */
-	    ne_set_notifier(session.sess, notifier, NULL);
-
-	    last_path = ne_strdup(session.uri.path);
-        }
-	current = reslist;
-        len = strlen(text);
-	time(&last_fetch);
-    }
-
-    while (current) {
-        const char *path = current->uri;
-        char *native_path;
-
-        /* Massage the absolute path to a path segment. */
-        /* Copy & paste & search & replace from ls.c */
-        if (ne_path_has_trailing_slash(path)) {
-            current->uri[strlen(path)-1] = '\0';
+    if (cache->expiry < time(NULL) || strcmp(uri_path, cache->path)) {
+        if (cache->expiry) {
+            ne_free(cache->path);
+            free_resource_list(cache->list);
         }
 
-        path = strrchr(path, '/');
-        if (path != NULL && strlen(path+1) > 0) {
-            path++;
+        if (fetch_resource_list(session.sess, uri_path, 1, 0,
+                                &cache->list) == NE_OK) {
+            cache->expiry = time(NULL) + COMPLETION_CACHE_EXPIRE;
+            cache->path = ne_strdup(uri_path);
         }
         else {
-            path = current->uri;
+            memset(cache, 0, sizeof *cache);
+        }
+    }
+}
+
+/* Remote filename completion generator. */
+static char *remote_completion(const char *text, int state)
+{
+    static struct completion_cache cache;
+    static struct resource *current;
+    static char *text_uri_path;
+    static size_t text_uri_len;
+    size_t sup_len = strlen(session.uri.path);
+    char *ret;
+
+    if (state == 0) {
+        /* For the initial state, refresh the completion cache after
+         * determining the root path. */
+        const char *sep;
+        char *uri_root_path;
+
+        /* Convert the input text to URI form for comparison against
+         * the URI form of the paths within the collection. */
+        if (text_uri_path) ne_free(text_uri_path);
+        text_uri_path = uri_resolve_native(text);
+        text_uri_len = strlen(text_uri_path);
+
+        /* If there is a path segment in the input text, use that to
+         * resolve a collection name relative to the session URI,
+         * otherwise resolve against the current URI. */
+        if ((sep = strrchr(text, '/')) != NULL) {
+            char *native_root = ne_strndup(text, sep-text);
+            uri_root_path = uri_resolve_native_coll(native_root);
+            ne_free(native_root);
+        }
+        else {
+            uri_root_path = ne_strdup(session.uri.path);
         }
 
-        native_path = native_path_from_uri(path);
-        if (strncmp(text, native_path, len) == 0) {
-            current = current->next;
-            return native_path;
-        }
-        ne_free(native_path);
-        current = current->next;
+        refresh_completion_cache(uri_root_path, &cache);
+        current = cache.list;
+        ne_free(uri_root_path);
     }
 
-    return NULL;
+    /* For the first and subsequent invocation, iterate from the
+     * current position in the resource list until a match for the
+     * input text is found. */
+    for (ret = NULL; current && !ret; current = current->next) {
+        if (strncmp(text_uri_path, current->uri, text_uri_len) == 0) {
+            /* If matching, return the path without the current path
+             * prefix if the URI path is below the current path, else
+             * return the absolute form. */
+            if (strlen(current->uri) > sup_len
+                && strncmp(current->uri, session.uri.path, sup_len) == 0)
+                ret = native_path_from_uri(current->uri + sup_len);
+            else
+                ret = native_path_from_uri(current->uri);
+        }
+    }
+
+    return ret;
 }
 
 static char **completion(const char *text, int start, int end)
