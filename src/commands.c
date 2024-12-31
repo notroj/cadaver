@@ -890,7 +890,7 @@ static const char *choose_pager(void)
 static void execute_less(const char *native)
 {
     const char *pager;
-    char *uri_path = uri_resolve_native(native);
+    char *uri_path;
     FILE *p;
     int ret;
 
@@ -904,6 +904,7 @@ static void execute_less(const char *native)
         return;
     }
 
+    uri_path = uri_resolve_native(native);
     child_running = true;
     ret = ne_get(session.sess, uri_path, fileno(p));
     if (ret) {
@@ -914,6 +915,7 @@ static void execute_less(const char *native)
         printf(_("Warning: Abnormal exit from pager (%d).\n"), ret);
     }
     child_running = false;
+    ne_free(uri_path);
 }
 
 static void execute_cat(const char *native_path)
@@ -926,6 +928,7 @@ static void execute_cat(const char *native_path)
         out_start(_("Fetching"), native_path);
         out_result(ret);
     }
+    ne_free(uri_path);
 }
 
 /* Execute a copy or move via callback 'cb', given the 'argv' array of
