@@ -155,27 +155,13 @@ static char *gettoken(const char *line, const char **pointer)
      }
 }
 
-/* This is about as efficient as painting a wall with a toothbrush.
- * And it will go just as fast, if you have a slow link to your
- * server. 
- */
-
-/* 
-   Okay, and this was a real swine to get working.
-   The glob() in glibc-2.1.2 (I haven't checked other versions)
-   has a REAL_DIR_ENTRY() macro which checks whether the d_ino
-   field is set. If it isn't, the entry is IGNORED! 
-   
-   Actually, the glob() in glib-2.1.2 is broken, so we supply
-   a fixed version in lib/.
-*/
-
 volatile int interrupt_state; /* for glob */
 
 struct dg_ctx {
-    int rootlen;
+    size_t rootlen;
     struct resource *files;
     struct resource *current;
+    struct dirent ent;
 };
 
 static void *davglob_opendir(const char *dir) 
@@ -183,7 +169,7 @@ static void *davglob_opendir(const char *dir)
     struct dg_ctx *ctx = NULL;
     struct resource *files;
     char *uri_path = uri_resolve_native_coll(dir);
-    NE_DEBUG(DEBUG_FILES, "opendir: %s\n", dir);
+    NE_DEBUG(DEBUG_FILES, "opendir: %s\n", uri_path);
     switch (fetch_resource_list(session.sess, uri_path, 1, 0, &files)) {
     case NE_OK:
 	ctx = ne_calloc(sizeof *ctx);
@@ -206,22 +192,37 @@ static void *davglob_opendir(const char *dir)
 /* Mocks up a dummy dirent structure */
 static struct dirent *davglob_readdir(void *dir)
 {
-    static struct dirent ent;
     struct dg_ctx *ctx = dir;
-    NE_DEBUG(DEBUG_FILES, "readdir:");
-    if (!ctx->current) { 
-	NE_DEBUG(DEBUG_FILES, "none.\n");
-	return NULL;
-    } else {
-	memset(&ent, 0, sizeof(struct dirent));
-	ne_strnzcpy(ent.d_name, ctx->current->uri + ctx->rootlen, 255);
-	/* FIXME: non-portable, there's an autoconf 
-	 * test for this, "d-ino.m4" */
-	ent.d_ino = 1;
-	NE_DEBUG(DEBUG_FILES, "%s\n", ent.d_name);
-	ctx->current = ctx->current->next;
-	return &ent;
+    const char *uri_segment;
+    char *native_segment;
+
+    while (ctx->current && strlen(ctx->current->uri) <= ctx->rootlen) {
+        NE_DEBUG(DEBUG_FILES, "readdir: path %s shorter than root, ignoring\n",
+                 ctx->current->uri);
+        ctx->current = ctx->current->next;
     }
+
+    if (!ctx->current) { 
+	NE_DEBUG(DEBUG_FILES, "readdir: end of list.\n");
+	return NULL;
+    }
+
+    uri_segment = ctx->current->uri + ctx->rootlen;
+    native_segment = native_path_from_uri(uri_segment);
+    memset(&ctx->ent, 0, sizeof ctx->ent);
+    ne_strnzcpy(ctx->ent.d_name, native_segment, 255);
+#ifdef HAVE_STRUCT_DIRENT_D_INO
+    ctx->ent.d_ino = 1;
+#endif
+
+    if (ctx->current->type == resr_collection)
+        ctx->ent.d_type = DT_DIR;
+    else
+        ctx->ent.d_type = DT_REG;
+
+    NE_DEBUG(DEBUG_FILES, "readdir: native entry %s\n", ctx->ent.d_name);
+    ctx->current = ctx->current->next;
+    return &ctx->ent;
 }
 
 static void davglob_closedir(void *dir) 
@@ -314,13 +315,7 @@ do {								\
 		    output(o_finish, _("1 match.]\n"));
 		}
 		for (n = 0; n < gl.gl_pathc; n++) {
-		    /* Remote glob expanded to the escaped URIs, so we
-                     * need to convert these to native paths. Local
-                     * glob needs to be only copied. */
-		    if (cmd->scope == parmscope_remote)
-			ADDTOK(native_path_from_uri(gl.gl_pathv[n]));
-		    else
-			ADDTOK(ne_strdup(gl.gl_pathv[n]));
+                    ADDTOK(ne_strdup(gl.gl_pathv[n]));
 		}
 		matches++;
 	    } break;

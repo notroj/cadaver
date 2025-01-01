@@ -77,6 +77,7 @@ if test $ac_cv_func_fnmatch_works = no; then
 fi
 
 AC_HEADER_DIRENT
+AC_STRUCT_DIRENT_D_INO
 
 AC_TYPE_UNSIGNED_LONG_LONG_INT
 
