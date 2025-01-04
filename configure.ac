@@ -50,12 +50,15 @@ AC_PROVIDE([NE_SNPRINTF])
 NEON_VPATH_BUNDLED(['$(top_srcdir)/neon/src'], [neon/src], [
  NEON_NORMAL_BUILD
  NEON_XML_PARSER
+ TARGET_DEPS=neon/src/libneon.a
 ])
+
+AC_SUBST(TARGET_DEPS)
 
 NE_FORMAT_TIMET
 
 if test "$enable_netrc" = "yes"; then
-   AC_LIBOBJ(lib/netrc)
+   LIBOBJS="$LIBOBJS lib/netrc.o"
    AC_DEFINE(ENABLE_NETRC, 1, [Define to enable netrc support])
    AC_MSG_NOTICE(.netrc support is enabled)
 else
