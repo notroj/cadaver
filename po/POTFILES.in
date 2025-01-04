@@ -4,7 +4,7 @@ lib/fnmatch.c
 lib/getopt1.c
 lib/getopt.c
 lib/getpass.c
-lib/glob.c
+lib/glob/glob.c
 lib/mkstemp.c
 lib/netrc.c
 lib/rpmatch.c
