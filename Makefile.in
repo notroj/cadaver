@@ -37,6 +37,7 @@ LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@ @NEON_LIBS@ @LIBICONV@
 
 TARGET = $(PACKAGE)
+TARGET_DEPS = @TARGET_DEPS@
 SUBDIRS = neon/src
 OBJECTS = src/cadaver.o src/common.o src/commands.o src/ls.o	\
 	 src/cmdline.o src/options.o src/utils.o src/edit.o \
@@ -51,15 +52,18 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL = @INSTALL@
 
-all: $(TARGET)
+all: $(TARGET) subdirs
 
 .PHONY: subdirs install clean distclean
 
-$(TARGET): $(ALLOBJS) subdirs
+$(TARGET): $(ALLOBJS) $(TARGET_DEPS)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $(TARGET) $(ALLOBJS) $(LIBS)
 
 .c.o:
 	$(CC) $(ALL_CFLAGS) -o $@ -c $<
+
+neon/src/libneon.a:
+	cd neon/src && $(MAKE) libneon.a
 
 subdirs:
 	for d in $(SUBDIRS); do (cd $$d; $(MAKE)); done
