@@ -63,17 +63,17 @@ else
 fi
 
 dnl Check for getopt_long
-AC_CHECK_FUNC(getopt_long,,[AC_LIBOBJ(lib/getopt)
-AC_LIBOBJ(lib/getopt1)])
+AC_CHECK_FUNC(getopt_long,,
+  [LIBOBJS="$LIBOBJS lib/getopt.o lib/getopt1.o"])
 
 dnl Check for strcasecmp
-AC_CHECK_FUNC(strcasecmp,,[AC_LIBOBJ(lib/strcasecmp)])
+AC_CHECK_FUNC(strcasecmp,,[LIBOBJS="$LIBOBJS lib/strcasecmp.o"])
 
 NEON_REPLACE_SNPRINTF()
 
 AC_FUNC_FNMATCH
 if test $ac_cv_func_fnmatch_works = no; then
-  AC_LIBOBJ(lib/fnmatch)
+  LIBOBJS="$LIBOBJS lib/fnmatch.o"
 fi
 
 AC_HEADER_DIRENT
@@ -84,6 +84,19 @@ AC_TYPE_UNSIGNED_LONG_LONG_INT
 AC_CHECK_HEADERS(sys/time.h fcntl.h pwd.h stdarg.h vmsdir.h memory.h alloca.h ncurses.h sgtty.h termios.h termio.h locale.h)
 
 AC_CHECK_FUNCS(strdup strerror memcpy strcoll tcsetattr getpass stty fchmod strtoull gettimeofday secure_getenv setlocale)
+
+AC_CACHE_CHECK([whether GLOB_ALTDIRFUNC is available], [cad_cv_glob_altdirfunc],
+               [AC_COMPILE_IFELSE(
+               [AC_LANG_PROGRAM(
+                  [[#include <stddef.h>
+#include <glob.h>]],
+                  [[glob_t gl = {0}; (void) glob("test", GLOB_ALTDIRFUNC, NULL, &gl);]])],
+                  [cad_cv_glob_altdirfunc=yes], [cad_cv_glob_altdirfunc=no])])
+
+if test x$cad_cv_glob_altdirfunc = xno; then
+   LIBOBJS="$LIBOBJS lib/glob/glob.o"
+   CPPFLAGS="$CPPFLAGS -I\$(top_srcdir)/lib/glob"
+fi
 
 dnl Required for AM_GNU_GETTEXT:
 PACKAGE=cadaver
