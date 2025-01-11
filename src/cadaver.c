@@ -726,32 +726,31 @@ static char **completion(const char *text, int start, int end)
     in_completion = 1;
 
     if (start == 0) {
-	matches = rl_completion_matches(text, command_generator);
+        matches = rl_completion_matches(text, command_generator);
     }
     else if (sep != NULL) {
-	char *cname = ne_strndup(rl_line_buffer, sep - rl_line_buffer);
-	const struct command *cmd;
-	cname[sep - rl_line_buffer] = '\0';
-	cmd = get_command(cname);
-	if (cmd != NULL) { 
-	    switch (cmd->scope) {
-	    case parmscope_none:
-		break;
-	    case parmscope_local:
-		matches = rl_completion_matches(text, 
-						rl_filename_completion_function);
-		break;
-	    case parmscope_option:
-		/* TODO */
-		break;
-	    case parmscope_remote:
-		if (session.connected) {
-		    matches = rl_completion_matches(text, remote_completion);
-		}
-		break;
-	    }
-	}
-	free(cname);
+        char *cname = ne_strndup(rl_line_buffer, sep - rl_line_buffer);
+        const struct command *cmd = get_command(cname);
+        enum command_scope scope = cmd ? cmd->scope : parmscope_none;
+
+        ne_free(cname);
+
+        switch (scope) {
+        case parmscope_none:
+            break;
+        case parmscope_local:
+            matches = rl_completion_matches(text,
+                                            rl_filename_completion_function);
+            break;
+        case parmscope_option:
+            /* TODO */
+            break;
+        case parmscope_remote:
+            if (session.connected) {
+                matches = rl_completion_matches(text, remote_completion);
+            }
+            break;
+        }
     }
 
     in_completion = 0;

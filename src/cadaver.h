@@ -68,7 +68,7 @@ struct command {
     const char *name; /* real command name. */
     unsigned int needs_connection; /* true if only works when connected */
     int min_args, max_args; /* min and max # of arguments */
-    enum { /* parameter scope */
+    enum command_scope { /* parameter scope */
 	parmscope_none, /* not at all */
 	parmscope_option, /* option parameter */
 	parmscope_local, /* local filenames */
