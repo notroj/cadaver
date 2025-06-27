@@ -101,6 +101,8 @@ static struct option {
     S(editor, "Editor to use with `edit' command"),
     S2("client-cert", opt_clicert,
        "Client certificate to use for SSL connections."),
+    S2("client-cert-uri", opt_clicert_uri,
+       "Client certificate URI to use for SSL connections."),
     S(namespace, "Namespace to use for propset/propget commands."),
     S(pager, "Command to run for less/more commands."),
     S(proxy, "Hostname of proxy server"),

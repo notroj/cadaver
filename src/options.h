@@ -28,6 +28,7 @@ enum option_id {
     opt_expect100,
     opt_editor,
     opt_clicert,
+    opt_clicert_uri,
     opt_namespace,
     opt_quiet,
     opt_proxy,

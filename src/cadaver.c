@@ -94,7 +94,6 @@ static char *server_username, *server_password;
 
 /* Current session state. */
 struct session session;
-static ne_ssl_client_cert *client_cert;
 
 int tolerant; /* tolerate DAV-enabledness failure */
 int in_completion; /* non-zero if in completion. */
@@ -228,66 +227,65 @@ tmp = ne_ssl_readable_dname(dn); printf(str, tmp); free(tmp)
     }
 }
 
-static void provide_clicert(void *userdata, ne_session *sess,
-                            const ne_ssl_dname *const *dname, int dncount)
+static void setup_ssl(ne_session *sess)
 {
-    const char *ccfn = userdata;
-    int n;
+    char *ccfn = get_option(opt_clicert);
+    char *ccuri = get_option(opt_clicert_uri);
+    const char *name = NULL;
+    ne_ssl_client_cert *cc;
 
-    printf("The server has requested a client certificate.\n");
+    ne_ssl_trust_default_ca(sess);
+    ne_ssl_set_verify(sess, cert_verify, NULL);
 
-#if 0
-    /* display CA names? */
-    for (n = 0; n < dncount; n++) {
-        char *dn = ne_ssl_readable_dname(dname[n]);
-        printf("Name: %s\n", dn);
-        free(dn);
-    }
+    cc = NULL;
+    if (ccuri) {
+        name = ccuri;
+#if NE_MINIMUM_VERSION(0, 35)
+        cc = ne_ssl_clicert_fromuri(ccuri, 0);
+#else
+        printf(_("Client certificate URIs are supported "
+                 "with this version of neon.\n"));
 #endif
-    
-    if (ne_ssl_clicert_encrypted(client_cert)) {
-        const char *name = ne_ssl_clicert_name(client_cert);
-        char *pass;
+    }
+
+    if (name == NULL && ccfn) {
+        name = ccfn;
+        cc = ne_ssl_clicert_read(ccfn);
+    }
+
+    if (!name) return;
+
+    if (!cc) {
+        printf(_("Could not load client certificate from `%s'.\n"), name);
+        return;
+    }
+
+    if (ne_ssl_clicert_encrypted(cc)) {
+        const char *friendly = ne_ssl_clicert_name(cc);
+        int n;
         
-        if (!name) name = ccfn;
+        if (!friendly) friendly = name;
         
-        printf("Client certificate `%s' is encrypted.\n", name);
-        
+        printf("Client certificate `%s' is encrypted.\n", friendly);
+
         for (n = 0; n < 3; n++) {
-            pass = fm_getpassword(_("Decryption password: "));
+            char *pass = fm_getpassword(_("Decryption password: "));
             if (pass == NULL) break;
-            if (ne_ssl_clicert_decrypt(client_cert, pass)) {
+            if (ne_ssl_clicert_decrypt(cc, pass)) {
                 printf("Password incorrect, try again.\n");
-            } else {
+            }
+            else {
                 break;
             }
         }
     }
     
-    if (!ne_ssl_clicert_encrypted(client_cert)) {
+    if (!ne_ssl_clicert_encrypted(cc)) {
         printf("Using client certificate.\n");
-        ne_ssl_set_clicert(session.sess, client_cert);
+        ne_ssl_set_clicert(session.sess, cc);
     }
-    
-}
 
-static void setup_ssl(ne_session *sess)
-{
-    char *ccfn = get_option(opt_clicert);
-
-    ne_ssl_trust_default_ca(sess);
-	      
-    ne_ssl_set_verify(sess, cert_verify, NULL);
-
-    if (ccfn) {
-        client_cert = ne_ssl_clicert_read(ccfn);
-        if (client_cert) {
-            ne_ssl_provide_clicert(sess, provide_clicert, ccfn);
-        }
-        else {
-            printf(_("Could not load client certificate from `%s'.\n"), ccfn);
-        }
-    }
+    ne_ssl_clicert_free(cc);
 }
 
 void open_connection(const char *url)
