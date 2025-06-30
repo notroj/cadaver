@@ -56,6 +56,8 @@ static int run_editor(const char *filename)
     char editcmd[BUFSIZ];
     const char *editor;
     struct stat before_st, after_st;
+    int ret;
+
     editor = get_option(opt_editor);
     if (editor == NULL) {
 	editor = getenv("EDITOR");
@@ -65,22 +67,25 @@ static int run_editor(const char *filename)
     }
     snprintf(editcmd, BUFSIZ, "%s %s", editor, filename);
     if (stat(filename, &before_st)) {
-	printf(_("Could not stat file: %s\n"), strerror(errno));
+	printf(_("edit: Could not stat file: %s\n"), strerror(errno));
 	return -1;
     }
-    printf("Running editor: `%s'...\n", editcmd);
-    system(editcmd);
+    printf("edit: Running editor: `%s'...\n", editcmd);
+    ret = system(editcmd);
+    if (ret == -1) {
+	printf(_("edit: Error executing editor: %s\n"), strerror(errno));
+    }
     if (stat(filename, &after_st)) {
-	printf(_("Error! Could not examine temporary file: %s\n"), 
-		 strerror(errno));
-	return -1;
+        printf(_("edit: Error: Could not examine temporary file: %s\n"),
+               strerror(errno));
+        return -1;
     }
     if (before_st.st_mtime == after_st.st_mtime) {
 	/* File not changed. */
-	printf(_("No changes were made.\n"));
+	printf(_("edit: No changes were made.\n"));
 	return -1;
     } else {
-	printf(_("Changes were made.\n"));
+	printf(_("edit: Changes were made.\n"));
 	return 0;
     }	
 }
@@ -219,7 +224,7 @@ void execute_edit(const char *native_path)
     }
     
     if (unlink(fname)) {
-	printf(_("Could not delete temporary file %s:\n%s\n"), fname,
+	printf(_("edit: Could not delete temporary file %s:\n%s\n"), fname,
 	       strerror(errno));
     }	       
 
