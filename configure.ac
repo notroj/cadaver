@@ -39,7 +39,7 @@ NEON_WITH_LIBS
 m4_ifndef([NE_MINIMUM_VERSION],
         [AC_FATAL([NE_MINIMUM_VERSION macro from neon>=0.34.x required to build.])])
 
-NE_MINIMUM_VERSION(0, 28)
+NE_MINIMUM_VERSION(0, 29)
 
 dnl Don't enable zlib or ACL support in neon
 NEON_WITHOUT_ZLIB
