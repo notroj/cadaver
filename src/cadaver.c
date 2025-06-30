@@ -195,7 +195,7 @@ static int cert_verify(void *ud, int failures, const ne_ssl_certificate *c)
     else
         puts(_("WARNING: Untrusted server certificate presented:\n"));
 
-#if NE_VERSION_MAJOR > 0 || NE_VERSION_MINOR > 31
+#if NE_MINIMUM_VERSION(0, 31)
     tmp = ne_ssl_cert_hdigest(c, NE_HASH_SHA256|NE_HASH_COLON);
     if (tmp) {
         printf(_("Server certificate SHA-256 digest: %s\n"), tmp);
