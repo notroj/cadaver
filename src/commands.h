@@ -29,10 +29,17 @@ extern int child_running; /* true when we have a child running */
 /* Returns the command structure for the command of given name. */
 const struct command *get_command(const char *name);
 
-/* Naming conventions:
+/* Naming conventions used here:
  *
- * "native path" -> string in native character encoding
- * "URI path" -> absolute URI path segment (escaped UTF-8 string)
+ * "native character encoding" is the character encoding used for
+ * input/output in the terminal.
+ *
+ * A "native path" is relative path reference in the native character
+ * encoding. Example: "../€.txt".
+ *
+ * A "URI path" is an absolute URI path segment (escaped UTF-8 string)
+ * specifically a "path-absolute" in the RFC 3986 grammar.
+ * Example: "/dav/%e2%82%ac.txt"
  */
 
 /* Convert a URI path to a native path. */

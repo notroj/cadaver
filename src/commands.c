@@ -796,17 +796,6 @@ static void execute_rmcol(const char *path)
     ne_free(uri_path);
 }
 
-/*
- * --- Path conversion ---
- *
- * Native paths (input from the command-line) are unescaped, relative
- * references (potentially in a non-UTF-8 charset though this is not
- * handled yet).
- *
- * These must be converted to an 'abs_path' in the RFC 3986 grammar,
- * called a 'URI path' for convenience throughout here.
- */
-
 /* Converts an input path (an unescaped, native charset, relative
  * path) to a URI path. */
 static char *path_native_resolver(const char *native_path, int collection)
