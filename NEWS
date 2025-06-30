@@ -2,6 +2,13 @@ Changes in release 0.27:
 * Opening a location which does not indicate DAV class 1 support
   is now an error (or a warning in tolerant mode).
 * Removed obsolete BUGS, INTEROP, FAQ documents.
+* Fixed memory leaks in 'cat', 'less' commands.
+* Rewrite of remote tab-completion to work for arbitrary paths.
+* Fixes and improvements for glob (filename expansion) support:
+ - glibc glob() will be used if available in preference to bundled code.
+ - remote wildcards are now expanded across paths (e.g. 'rm */*.html').
+* Add client-cert-uri option for neon 0.35+.
+* Update to neon 0.34.2; neon 0.29.x or later required.
 
 Changes in release 0.26:
 * Argument passed to "cadaver" must now be an absolute URI,
