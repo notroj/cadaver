@@ -957,6 +957,13 @@ static void notifier(void *ud, ne_session_status status, const ne_session_status
 	case ne_status_connected:
 	    printf(_("connected.\n"));
 	    break;
+#if NE_MINIMUM_VERSION(0, 35)
+        case ne_status_handshake:
+            printf(_("TLS handshake completed: protocol version %s, cipher %s\n"),
+                   ne_ssl_proto_name(info->hs.protocol),
+                   info->hs.ciphersuite ? info->hs.ciphersuite : _("unknown"));
+            break;
+#endif
         default:
             break;
 	}
