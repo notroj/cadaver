@@ -457,12 +457,11 @@ static int display_results(search_ctx * sctx)
 		   dprop->nspace, dprop->name, dprop->value);
 	
 	if (i%RESULT_PER_PAGE == 0) {
-	    char buf[256];
-	    printf("-- Enter to More, 'q' to QUIT --");
-	    fgets(buf, 255, stdin);
-	    if (*buf=='q') break;
+            int ch;
+	    puts("-- Enter to More, 'q' to QUIT --");
+	    ch = fgetc(stdin);
+            if (ch == 'q' || ch == EOF) break;
 	}
-	
     }
 
     return sctx->err_code;
