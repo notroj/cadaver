@@ -55,7 +55,7 @@ __BEGIN_DECLS
 /* Parse FILE as a .netrc file (as described in ftp(1)), and return a
    list of entries.  NULL is returned if the file could not be
    parsed. */
-netrc_entry *parse_netrc __P((char *file));
+netrc_entry *parse_netrc __P((const char *file));
 
 /* Return the netrc entry from LIST corresponding to HOST.  NULL is
    returned if no such entry exists. */
