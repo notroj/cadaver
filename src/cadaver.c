@@ -304,6 +304,11 @@ void open_connection(const char *url)
         goto fail;
     }
 
+    if (session.uri.userinfo) {
+        printf(_("User info must not be used in URL `%s'\n"), url);
+        goto fail;
+    }
+
     if (!session.uri.port)
         session.uri.port = ne_uri_defaultport(session.uri.scheme);
 
