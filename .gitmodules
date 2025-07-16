@@ -1,4 +1,4 @@
 [submodule "neon"]
 	path = neon
 	url = https://github.com/notroj/neon.git
-	branch = 0.34.x
+	branch = master
