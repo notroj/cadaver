@@ -8,7 +8,7 @@ Changes in release 0.27:
  - glibc glob() will be used if available in preference to bundled code.
  - remote wildcards are now expanded across paths (e.g. 'rm */*.html').
 * Add client-cert-uri option for neon 0.35+.
-* Update to neon 0.34.2; neon 0.29.x or later required.
+* Update bundled neon to 0.35.0; neon 0.29.x or later required.
 
 Changes in release 0.26:
 * Argument passed to "cadaver" must now be an absolute URI,
