@@ -846,6 +846,8 @@ char *native_path_from_uri(const char *uri_path)
 {
     char *utf8 = ne_path_unescape(uri_path);
 
+    if (!utf8) return NULL;
+
     if (!get_bool_option(opt_utf8)) {
         char *native = native_from_utf8(utf8);
         ne_free(utf8);
