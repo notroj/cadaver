@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cadaver 0.22.0\n"
 "Report-Msgid-Bugs-To: https://github.com/notroj/cadaver/issues\n"
-"POT-Creation-Date: 2024-12-02 21:29+0000\n"
+"POT-Creation-Date: 2025-07-16 20:52+0100\n"
 "PO-Revision-Date: 2003-09-17 23:40+0200\n"
 "Last-Translator: Ramón Rey Vicente <ramon.rey@hispalinux.es>\n"
 "Language-Team: Spanish Translation Team <es@li.org>\n"
@@ -189,74 +189,84 @@ msgstr ""
 msgid "Certificate rejected.\n"
 msgstr ""
 
-#: src/cadaver.c:256
-msgid "Decryption password: "
+#: src/cadaver.c:246
+#, c-format
+msgid "Client certificate URIs are supported with this version of neon.\n"
 msgstr ""
 
-#: src/cadaver.c:287
+#: src/cadaver.c:259
 #, fuzzy, c-format
 #| msgid "Using client certificate `%s'.\n"
 msgid "Could not load client certificate from `%s'.\n"
 msgstr "Usando certificado del cliente '%s'.\n"
 
-#: src/cadaver.c:304
+#: src/cadaver.c:272
+msgid "Decryption password: "
+msgstr ""
+
+#: src/cadaver.c:303
 #, c-format
 msgid "Could not parse URL `%s'\n"
 msgstr "No se puede procesar la URL '%s'\n"
 
-#: src/cadaver.c:324
+#: src/cadaver.c:308
+#, c-format
+msgid "User info must not be used in URL `%s'\n"
+msgstr ""
+
+#: src/cadaver.c:328
 #, c-format
 msgid "No SSL/TLS support, cannot use URL `%s'\n"
 msgstr ""
 
-#: src/cadaver.c:330
+#: src/cadaver.c:334
 #, c-format
 msgid "URL scheme '%s' not supported.\n"
 msgstr ""
 
-#: src/cadaver.c:378
+#: src/cadaver.c:382
 #, c-format
 msgid "%s: Location does not advertise WebDAV class 1 support.\n"
 msgstr ""
 
-#: src/cadaver.c:379
+#: src/cadaver.c:383
 msgid "Warning"
 msgstr ""
 
-#: src/cadaver.c:379
+#: src/cadaver.c:383
 msgid "Error"
 msgstr ""
 
-#: src/cadaver.c:389 src/cadaver.c:392
+#: src/cadaver.c:393 src/cadaver.c:396
 #, fuzzy, c-format
 msgid ""
 "Could not connect to `%s' on port %d:\n"
 "%s\n"
 msgstr "No se puede conectar a la máquina remota.\n"
 
-#: src/cadaver.c:400
+#: src/cadaver.c:404
 #, fuzzy, c-format
 msgid ""
 "Could not open collection:\n"
 "%s\n"
 msgstr "No se pudo abrir el archivo: %s\n"
 
-#: src/cadaver.c:443
+#: src/cadaver.c:447
 #, c-format
 msgid "Try `%s --help' for more information.\n"
 msgstr "Probar '%s --help' para más información.\n"
 
-#: src/cadaver.c:493
+#: src/cadaver.c:497
 #, c-format
 msgid "Unrecognised command. Type 'help' for a list of commands.\n"
 msgstr "Comando desconocido, Teclear 'help' para una lista de comandos.\n"
 
-#: src/cadaver.c:495
+#: src/cadaver.c:499
 #, c-format
 msgid "The `%s' command requires %d argument%s"
 msgstr "El comando '%s' requiere %d el argumento %s"
 
-#: src/cadaver.c:498 src/cadaver.c:510
+#: src/cadaver.c:502 src/cadaver.c:514
 #, c-format
 msgid ""
 ":\n"
@@ -265,17 +275,17 @@ msgstr ""
 ":\n"
 "  %s : %s\n"
 
-#: src/cadaver.c:504
+#: src/cadaver.c:508
 #, c-format
 msgid "The `%s' command takes at most %d argument%s"
 msgstr "El comando '%s' acepta como mucho %d argumentos%s"
 
-#: src/cadaver.c:507
+#: src/cadaver.c:511
 #, c-format
 msgid "The `%s' command takes no arguments"
 msgstr "El comando '%s' no toma ningún argumento"
 
-#: src/cadaver.c:515
+#: src/cadaver.c:519
 #, c-format
 msgid ""
 "The `%s' command can only be used when connected to the server.\n"
@@ -284,136 +294,145 @@ msgstr ""
 "El comando '%s' sólo puede ser usado cuando se está conectado al servidor.\n"
 "Pruebe a ejecutar 'open' primerp (ver 'help open para más detalles).\n"
 
-#: src/cadaver.c:560
+#: src/cadaver.c:564
 #, c-format
 msgid "Terminated by signal %d.\n"
 msgstr "Terminado por señal %d.\n"
 
-#: src/cadaver.c:603
+#: src/cadaver.c:607
 #, c-format
 msgid "Could not read rcfile %s: %s\n"
 msgstr "No se puede leer el archivo rc %s: %s\n"
 
-#: src/cadaver.c:847
+#: src/cadaver.c:864
 #, c-format
 msgid ""
 "cadaver: Error: cadaver can only run in a locale using the UTF-8 character "
 "encoding since iconv support was not detected at build time.\n"
 msgstr ""
 
-#: src/cadaver.c:876
+#: src/cadaver.c:893
 #, c-format
 msgid "Environment variable $HOME needs to be set!\n"
 msgstr "¡La variable de entorno $HOME necesita ser definida!\n"
 
-#: src/cadaver.c:938
+#: src/cadaver.c:957
 #, c-format
 msgid "Looking up hostname... "
 msgstr "Buscando nombre de máquina..."
 
-#: src/cadaver.c:941
+#: src/cadaver.c:960
 #, c-format
 msgid "Connecting to server... "
 msgstr "Conectando al servidor..."
 
-#: src/cadaver.c:944
+#: src/cadaver.c:963
 #, c-format
 msgid "connected.\n"
 msgstr "conectado.\n"
 
-#: src/cadaver.c:956
+#: src/cadaver.c:967
+#, c-format
+msgid "TLS handshake completed: protocol version %s, cipher %s\n"
+msgstr ""
+
+#: src/cadaver.c:969 src/commands.c:377 src/commands.c:386 src/ls.c:121
+msgid "unknown"
+msgstr "desconicido"
+
+#: src/cadaver.c:982
 #, c-format
 msgid " (reconnecting..."
 msgstr " (reconectando..."
 
-#: src/cadaver.c:960
+#: src/cadaver.c:986
 #, c-format
 msgid "done)"
 msgstr "hecho)"
 
-#: src/cadaver.c:986
+#: src/cadaver.c:1012
 #, c-format
 msgid "] reconnecting: "
 msgstr "] reconectando: "
 
-#: src/cadaver.c:989
+#: src/cadaver.c:1015
 #, c-format
 msgid "okay ["
 msgstr "bien ["
 
-#: src/cadaver.c:1008
+#: src/cadaver.c:1034
 #, c-format
 msgid "Transfer timed out, reconnecting... "
 msgstr "Tiempo de transferencia expirado, reconectando... "
 
-#: src/cadaver.c:1012
+#: src/cadaver.c:1038
 #, c-format
 msgid "okay."
 msgstr "bien."
 
-#: src/cadaver.c:1072
+#: src/cadaver.c:1098
 #, c-format
 msgid "Progress: ["
 msgstr " Progreso: ["
 
-#: src/cadaver.c:1077
+#: src/cadaver.c:1103
 #, fuzzy
 msgid "] %5.1f%% of %"
 msgstr "] %5.1f%% de %ld bytes"
 
-#: src/cadaver.c:1104
+#: src/cadaver.c:1130
 msgid "Username: "
 msgstr "Nombre de usuario: "
 
-#: src/cadaver.c:1106 src/cadaver.c:1119
+#: src/cadaver.c:1132 src/cadaver.c:1145
 #, c-format
 msgid "Authentication aborted!\n"
 msgstr "¡Autenticación abortada!\n"
 
-#: src/cadaver.c:1109
+#: src/cadaver.c:1135
 #, c-format
 msgid "Username too long (>%d)\n"
 msgstr ""
 
-#: src/cadaver.c:1117
+#: src/cadaver.c:1143
 msgid "Password: "
 msgstr "Contraseña: "
 
-#: src/cadaver.c:1122
+#: src/cadaver.c:1148
 #, c-format
 msgid "Password too long (>%d)\n"
 msgstr ""
 
-#: src/cadaver.c:1133
+#: src/cadaver.c:1159
 #, c-format
 msgid "Retrying:"
 msgstr "Reintentando:"
 
-#: src/cadaver.c:1137
+#: src/cadaver.c:1163
 #, c-format
 msgid "Retrying ["
 msgstr "Reintentando ["
 
-#: src/cadaver.c:1160
+#: src/cadaver.c:1186
 #, c-format
 msgid "Authentication required for %s on server `%s':\n"
 msgstr "Autenticación requerida para %s en el servidor '%s':\n"
 
-#: src/cadaver.c:1171
+#: src/cadaver.c:1197
 #, c-format
 msgid "Authentication required for %s on proxy server `%s':\n"
 msgstr "Autenticación requerida para %s en el servidor proxy '%s':\n"
 
-#: src/cmdline.c:285
+#: src/cmdline.c:286
 msgid "[Matching..."
 msgstr "Buscando coincidencias... "
 
-#: src/cmdline.c:312
+#: src/cmdline.c:313
 #, fuzzy, c-format
 msgid "%ld matches.]\n"
 msgstr "%d coincidencias.]\n"
 
-#: src/cmdline.c:314
+#: src/cmdline.c:315
 msgid "1 match.]\n"
 msgstr "1 coincidencia.]\n"
 
@@ -444,7 +463,7 @@ msgstr "la conexión a expirado.\n"
 msgid "redirect to %s\n"
 msgstr "Directorio local: %s\n"
 
-#: src/commands.c:176 src/commands.c:1068
+#: src/commands.c:176 src/commands.c:1064
 #, c-format
 msgid ""
 "failed:\n"
@@ -458,45 +477,41 @@ msgstr ""
 msgid "cadaver: Cannot convert from %s to UTF-8: %s\n"
 msgstr ""
 
-#: src/commands.c:217
+#: src/commands.c:218
 #, c-format
 msgid "cadaver: Warning: Character(s) could not be translated to %s\n"
 msgstr ""
 
-#: src/commands.c:373
+#: src/commands.c:375
 msgid "exclusive"
 msgstr "exclusivo"
 
-#: src/commands.c:374
+#: src/commands.c:376
 msgid "shared"
 msgstr "compartido"
 
-#: src/commands.c:375 src/commands.c:384 src/ls.c:121
-msgid "unknown"
-msgstr "desconicido"
-
-#: src/commands.c:382
+#: src/commands.c:384
 msgid "write"
 msgstr "escribir"
 
-#: src/commands.c:392
+#: src/commands.c:394
 msgid "infinite"
 msgstr "infinito"
 
-#: src/commands.c:393 src/commands.c:411
+#: src/commands.c:395 src/commands.c:413
 msgid "invalid"
 msgstr "inválido"
 
-#: src/commands.c:395
+#: src/commands.c:397
 #, c-format
 msgid "%ld seconds"
 msgstr ""
 
-#: src/commands.c:404
+#: src/commands.c:406
 msgid "infinity"
 msgstr "infinidad"
 
-#: src/commands.c:425
+#: src/commands.c:427
 #, fuzzy, c-format
 msgid ""
 "Lock token <%s>:\n"
@@ -508,102 +523,102 @@ msgstr ""
 "  Alcance: %s  Tipo: %s  Timeout: %s\n"
 "  Propietario: %s  Depth: %s\n"
 
-#: src/commands.c:432
+#: src/commands.c:434
 msgid "(none)"
 msgstr "(ninguno)"
 
-#: src/commands.c:448 src/commands.c:467
+#: src/commands.c:450 src/commands.c:469
 #, c-format
 msgid "Failed on %s: %d %s\n"
 msgstr "Fallado en %s: %d %s\n"
 
-#: src/commands.c:494
+#: src/commands.c:496
 msgid "Discovering locks on"
 msgstr "Descubriendo bloqueos en"
 
-#: src/commands.c:499
+#: src/commands.c:501
 msgid "Stealing locks on"
 msgstr "Robando bloqueos en"
 
-#: src/commands.c:513
+#: src/commands.c:515
 #, c-format
 msgid "No owned locks.\n"
 msgstr "No se poseen bloqueos.\n"
 
-#: src/commands.c:525
+#: src/commands.c:527
 #, fuzzy
 msgid "Locking collection"
 msgstr "Listando colección"
 
-#: src/commands.c:527 src/edit.c:168
+#: src/commands.c:529 src/edit.c:173
 msgid "Locking"
 msgstr "Bloqueando"
 
-#: src/commands.c:553 src/edit.c:234
+#: src/commands.c:555 src/edit.c:239
 msgid "Unlocking"
 msgstr "Desbloqueando"
 
-#: src/commands.c:557
+#: src/commands.c:559
 msgid "Enter locktoken: "
 msgstr "Introducir bloqueo"
 
-#: src/commands.c:579
+#: src/commands.c:581
 #, fuzzy
 msgid "Creating"
 msgstr "Borrando"
 
-#: src/commands.c:591
+#: src/commands.c:593
 #, fuzzy, c-format
 msgid "- %s%s = %s\n"
 msgstr ""
 ":\n"
 "  %s : %s\n"
 
-#: src/commands.c:595
+#: src/commands.c:597
 #, fuzzy, c-format
 #| msgid "Failed on %s: %d %s\n"
 msgid "-- failed for %s%s: %s\n"
 msgstr "Fallado en %s: %d %s\n"
 
-#: src/commands.c:622
+#: src/commands.c:624
 #, c-format
 msgid "Value of %s is: %s\n"
 msgstr "El valor de %s es: %s\n"
 
-#: src/commands.c:629
+#: src/commands.c:631
 #, c-format
 msgid "Could not fetch property: %d %s\n"
 msgstr "No se pudo obtener propiedad: %d %s\n"
 
-#: src/commands.c:632
+#: src/commands.c:634
 #, c-format
 msgid "Server did not return result for %s\n"
 msgstr "El servidor no devolvió resultado para %s\n"
 
-#: src/commands.c:674
+#: src/commands.c:676
 #, fuzzy
 msgid "Setting property on"
 msgstr "Activando propiedad en"
 
-#: src/commands.c:679
+#: src/commands.c:681
 #, fuzzy
 msgid "Deleting property on"
 msgstr "Activando propiedad en"
 
-#: src/commands.c:697
+#: src/commands.c:699
 msgid "Fetching properties for"
 msgstr "Obteniendo propiedades para"
 
-#: src/commands.c:726
+#: src/commands.c:728
 #, fuzzy, c-format
 msgid "Fetching property names for %s:"
 msgstr "Obteniendo propiedades para"
 
-#: src/commands.c:761
+#: src/commands.c:763
 msgid "Deleting"
 msgstr "Borrando"
 
-#: src/commands.c:764
+#: src/commands.c:766
 #, c-format
 msgid ""
 "is a collection resource.\n"
@@ -614,11 +629,11 @@ msgstr ""
 "El comando 'rm' no puede ser usado para borrar una colección.\n"
 "Use 'rmcol %s' para borrar esta colección y TODOS sus contenidos.\n"
 
-#: src/commands.c:782
+#: src/commands.c:784
 msgid "Deleting collection"
 msgstr "Borrando colección"
 
-#: src/commands.c:785
+#: src/commands.c:787
 #, c-format
 msgid ""
 "is not a collection.\n"
@@ -629,12 +644,12 @@ msgstr ""
 "El comando 'rmcol' sólo puede ser usado para borrar colecciones.\n"
 "Use 'rm %s' para borrar este recurso.\n"
 
-#: src/commands.c:896
+#: src/commands.c:889
 #, c-format
 msgid "Displaying `%s':\n"
 msgstr "Mostrando '%s':\n"
 
-#: src/commands.c:900
+#: src/commands.c:893
 #, c-format
 msgid ""
 "Error! Could not spawn pager `%s':\n"
@@ -643,44 +658,44 @@ msgstr ""
 "¡Error! No se pudo generar el paginador '%s':\n"
 "%s\n"
 
-#: src/commands.c:912
+#: src/commands.c:906
 #, c-format
 msgid "Warning: Abnormal exit from pager (%d).\n"
 msgstr ""
 
-#: src/commands.c:924
+#: src/commands.c:919
 #, fuzzy
 #| msgid "[Matching..."
 msgid "Fetching"
 msgstr "Buscando coincidencias... "
 
-#: src/commands.c:965
+#: src/commands.c:961
 #, c-format
 msgid "Error: Refusing to %s the server root '/'\n"
 msgstr ""
 
-#: src/commands.c:975
+#: src/commands.c:971
 #, c-format
 msgid "Error: Refusing to %s collection '%s' to non-collection '%s'\n"
 msgstr ""
 
-#: src/commands.c:1003
+#: src/commands.c:999
 #, fuzzy
 #| msgid "moving"
 msgid "Moving"
 msgstr "moviendo"
 
-#: src/commands.c:1009
+#: src/commands.c:1005
 #, fuzzy
 #| msgid "copying"
 msgid "Copying"
 msgstr "copiando"
 
-#: src/commands.c:1020
+#: src/commands.c:1016
 msgid "Renaming"
 msgstr ""
 
-#: src/commands.c:1022
+#: src/commands.c:1018
 #, fuzzy
 #| msgid ""
 #| "When %s multiple resources, the last argument must be a collection.\n"
@@ -689,54 +704,54 @@ msgstr ""
 "Cuando hay %s múltiples recursos, el ultimo argumento debe ser una "
 "colección.\n"
 
-#: src/commands.c:1051
+#: src/commands.c:1047
 #, c-format
 msgid "Enter local filename for `%s': "
 msgstr "Introduzca el nombre de archivo local para '%s': "
 
-#: src/commands.c:1058
+#: src/commands.c:1054
 #, c-format
 msgid "cancelled.\n"
 msgstr "cancelado.\n"
 
-#: src/commands.c:1066
+#: src/commands.c:1062
 #, fuzzy, c-format
 #| msgid "Downloading `%s' to %s:"
 msgid "Downloading `%s' to `%s':"
 msgstr "Descargando '%s' a '%s':"
 
-#: src/commands.c:1075
+#: src/commands.c:1071
 #, fuzzy, c-format
 msgid "Could not write to file: %s"
 msgstr "No se pudo obtener las propiedades del archivo: %s\n"
 
-#: src/commands.c:1088
+#: src/commands.c:1084
 #, c-format
 msgid "Uploading %s to `%s':"
 msgstr "Transferiendo %s a '%s':"
 
-#: src/commands.c:1090
+#: src/commands.c:1086
 #, c-format
 msgid "Could not open file: %s\n"
 msgstr "No se pudo abrir el archivo: %s\n"
 
-#: src/commands.c:1117
+#: src/commands.c:1113
 msgid "copying"
 msgstr "copiando"
 
-#: src/commands.c:1117
+#: src/commands.c:1113
 msgid "copy"
 msgstr "copiar"
 
-#: src/commands.c:1122
+#: src/commands.c:1118
 msgid "moving"
 msgstr "moviendo"
 
-#: src/commands.c:1122
+#: src/commands.c:1118
 msgid "move"
 msgstr "mover"
 
-#: src/commands.c:1185
+#: src/commands.c:1181
 #, c-format
 msgid ""
 "Use:\n"
@@ -747,35 +762,35 @@ msgstr ""
 "   chexec + %s    para hacer ejecutable el recurso\n"
 "o  chexec - %s    para hacer no-ejecutable el recurso\n"
 
-#: src/commands.c:1192
+#: src/commands.c:1188
 msgid "Setting isexecutable"
 msgstr "Configurando ejecutable"
 
-#: src/commands.c:1199
+#: src/commands.c:1195
 msgid "The server does not support the 'isexecutable' property."
 msgstr "El servidor no soporta la propiedad de 'ejecutable'."
 
-#: src/commands.c:1214
+#: src/commands.c:1210
 #, c-format
 msgid "Local directory: %s\n"
 msgstr "Directorio local: %s\n"
 
-#: src/commands.c:1230
+#: src/commands.c:1226
 #, c-format
 msgid "Error executing ls: %s\n"
 msgstr "Error ejecutando ls: %s\n"
 
-#: src/commands.c:1234
+#: src/commands.c:1230
 #, c-format
 msgid "Error forking ls: %s\n"
 msgstr "Error dividiendo ls: %s\n"
 
-#: src/commands.c:1251
+#: src/commands.c:1247
 #, c-format
 msgid "Could not determine home directory from environment.\n"
 msgstr "No se pudo determinar el directorio de usuario del entorno.\n"
 
-#: src/commands.c:1256
+#: src/commands.c:1252
 #, c-format
 msgid ""
 "Could not change local directory:\n"
@@ -784,309 +799,309 @@ msgstr ""
 "No se pudo cambiar al directorio local:\n"
 "chdir: %s\n"
 
-#: src/commands.c:1264
+#: src/commands.c:1260
 #, fuzzy, c-format
 msgid "Current collection is `%s'.\n"
 msgstr "La colección actual es '%s', en el servidor '%s'\n"
 
-#: src/commands.c:1274
+#: src/commands.c:1270
 #, fuzzy, c-format
 msgid "No previous collection.\n"
 msgstr "Listando colección"
 
-#: src/commands.c:1317
+#: src/commands.c:1313
 #, c-format
 msgid ""
 "Aliases: rm=delete, mkdir=mkcol, mv=move, cp=copy, more=less, quit=exit=bye\n"
 msgstr ""
 "Alias: rm=delete, mkdir=mkcol, mv=move, cp=copy, more=less, quit=exit=bye\n"
 
-#: src/commands.c:1329
+#: src/commands.c:1325
 #, fuzzy, c-format
 msgid " `%s'   %s\n"
 msgstr ""
 ":\n"
 "  %s : %s\n"
 
-#: src/commands.c:1331
+#: src/commands.c:1327
 #, c-format
 msgid "This command can only be used when connected to a server.\n"
 msgstr ""
 "Este comando sólo puede ser usado cuando se está conectado a un servidor.\n"
 
-#: src/commands.c:1334
+#: src/commands.c:1330
 #, c-format
 msgid "Command name not known: %s\n"
 msgstr "Nombre de comando desconocido: %s\n"
 
-#: src/commands.c:1393
+#: src/commands.c:1389
 msgid "ls [path]"
 msgstr "ls [ruta]"
 
-#: src/commands.c:1393
+#: src/commands.c:1389
 msgid "List contents of current [or other] collection"
 msgstr "Lista los contenidos de la colección actual [o de otra]"
 
-#: src/commands.c:1394
+#: src/commands.c:1390
 msgid "cd path"
 msgstr "cd ruta"
 
-#: src/commands.c:1394
+#: src/commands.c:1390
 msgid "Change to specified collection"
 msgstr "Cambiar a la colección especificada"
 
-#: src/commands.c:1396
+#: src/commands.c:1392
 msgid "Display name of current collection"
 msgstr "Mostrar nombre de la colección actual"
 
-#: src/commands.c:1398
+#: src/commands.c:1394
 msgid "put local [remote]"
 msgstr "put local [remoto]"
 
-#: src/commands.c:1398
+#: src/commands.c:1394
 msgid "Upload local file"
 msgstr "Transfiere un archivo local"
 
-#: src/commands.c:1400
+#: src/commands.c:1396
 msgid "get remote [local]"
 msgstr "get remoto [local]"
 
-#: src/commands.c:1400
+#: src/commands.c:1396
 msgid "Download remote resource"
 msgstr "Descargar recurso remoto"
 
-#: src/commands.c:1401
+#: src/commands.c:1397
 msgid "mget remote..."
 msgstr "mget remoto"
 
-#: src/commands.c:1401
+#: src/commands.c:1397
 msgid "Download many remote resources"
 msgstr "Descargar muchos recursos remotos"
 
-#: src/commands.c:1403
+#: src/commands.c:1399
 msgid "mput local..."
 msgstr "mput local..."
 
-#: src/commands.c:1403
+#: src/commands.c:1399
 msgid "Upload many local files"
 msgstr "Transferir muchos archivos locales"
 
-#: src/commands.c:1404
+#: src/commands.c:1400
 msgid "edit resource"
 msgstr "edit recurso"
 
-#: src/commands.c:1404
+#: src/commands.c:1400
 msgid "Edit given resource"
 msgstr "Editar el recurso dado"
 
-#: src/commands.c:1405
+#: src/commands.c:1401
 msgid "less remote..."
 msgstr "less remoto"
 
-#: src/commands.c:1405
+#: src/commands.c:1401
 msgid "Display remote resource through pager"
 msgstr "Mostrar el recurso remoto mediante paginador"
 
-#: src/commands.c:1406
+#: src/commands.c:1402
 msgid "mkcol remote..."
 msgstr "mkcol remoto..."
 
-#: src/commands.c:1406
+#: src/commands.c:1402
 msgid "Create remote collection(s)"
 msgstr "Crear collección(es) remota(s)"
 
-#: src/commands.c:1407
+#: src/commands.c:1403
 msgid "cat remote..."
 msgstr "cat remoto..."
 
-#: src/commands.c:1407
+#: src/commands.c:1403
 msgid "Display remote resource(s)"
 msgstr "Mostrar recurso(s) remoto(s)"
 
-#: src/commands.c:1408
+#: src/commands.c:1404
 msgid "delete remote..."
 msgstr "delete remoto..."
 
-#: src/commands.c:1408
+#: src/commands.c:1404
 msgid "Delete non-collection resource(s)"
 msgstr "Borrar recurso(s) que no estén en la colección"
 
-#: src/commands.c:1409
+#: src/commands.c:1405
 msgid "rmcol remote..."
 msgstr "rmcol remoto..."
 
-#: src/commands.c:1409
+#: src/commands.c:1405
 msgid "Delete remote collections and ALL contents"
 msgstr "Borrar colecciones remotas y TODOS sus contenidos"
 
-#: src/commands.c:1410
+#: src/commands.c:1406
 msgid "copy source... dest"
 msgstr "copy origen... destino"
 
-#: src/commands.c:1410
+#: src/commands.c:1406
 msgid "Copy resource(s) from source to dest"
 msgstr "Copiar recurso(s) del origen al destino"
 
-#: src/commands.c:1411
+#: src/commands.c:1407
 msgid "move source... dest"
 msgstr "move origen... destino"
 
-#: src/commands.c:1411
+#: src/commands.c:1407
 msgid "Move resource(s) from source to dest"
 msgstr "Mueve recurso(s) del origen al destino"
 
-#: src/commands.c:1412
+#: src/commands.c:1408
 #, fuzzy
 #| msgid "move source... dest"
 msgid "rename source dest"
 msgstr "move origen... destino"
 
-#: src/commands.c:1412
+#: src/commands.c:1408
 #, fuzzy
 #| msgid "Move resource(s) from source to dest"
 msgid "Rename resource from source to dest"
 msgstr "Mueve recurso(s) del origen al destino"
 
-#: src/commands.c:1418
+#: src/commands.c:1414
 msgid "lock resource"
 msgstr "lock recurso"
 
-#: src/commands.c:1418
+#: src/commands.c:1414
 msgid "Lock given resource"
 msgstr "Bloquear el recurso dado"
 
-#: src/commands.c:1419
+#: src/commands.c:1415
 msgid "unlock resource"
 msgstr "unlock recurso"
 
-#: src/commands.c:1419
+#: src/commands.c:1415
 msgid "Unlock given resource"
 msgstr "Desbloquear el recurso dado"
 
-#: src/commands.c:1420
+#: src/commands.c:1416
 msgid "discover resource"
 msgstr "discover recurso"
 
-#: src/commands.c:1420
+#: src/commands.c:1416
 msgid "Display lock information for resource"
 msgstr "Muestra información del bloqueo del recurso"
 
-#: src/commands.c:1421
+#: src/commands.c:1417
 msgid "steal resource"
 msgstr "steal recurso"
 
-#: src/commands.c:1421
+#: src/commands.c:1417
 msgid "Steal lock token for resource"
 msgstr "Roba el bloqueo del recurso"
 
-#: src/commands.c:1423
+#: src/commands.c:1419
 msgid "Display list of owned locks"
 msgstr "Mostrar la lista de los bloqueos propios"
 
-#: src/commands.c:1426
+#: src/commands.c:1422
 #, fuzzy
 msgid "version resource"
 msgstr "edit recurso"
 
-#: src/commands.c:1426
+#: src/commands.c:1422
 msgid "Place given resource under version control"
 msgstr ""
 
-#: src/commands.c:1427
+#: src/commands.c:1423
 #, fuzzy
 msgid "checkin resource"
 msgstr "lock recurso"
 
-#: src/commands.c:1427
+#: src/commands.c:1423
 #, fuzzy
 msgid "Checkin given resource"
 msgstr "Bloquear el recurso dado"
 
-#: src/commands.c:1428
+#: src/commands.c:1424
 #, fuzzy
 msgid "checkout resource"
 msgstr "lock recurso"
 
-#: src/commands.c:1428
+#: src/commands.c:1424
 #, fuzzy
 msgid "Checkout given resource"
 msgstr "Bloquear el recurso dado"
 
-#: src/commands.c:1429
+#: src/commands.c:1425
 #, fuzzy
 msgid "uncheckin resource"
 msgstr "unlock recurso"
 
-#: src/commands.c:1429
+#: src/commands.c:1425
 #, fuzzy
 msgid "Uncheckout given resource"
 msgstr "Desbloquear el recurso dado"
 
-#: src/commands.c:1430
+#: src/commands.c:1426
 #, fuzzy
 msgid "history resource"
 msgstr "discover recurso"
 
-#: src/commands.c:1430
+#: src/commands.c:1426
 #, fuzzy
 msgid "Show version history of resource"
 msgstr "Activar propiedad del recurso"
 
-#: src/commands.c:1433
+#: src/commands.c:1429
 msgid "label res [add|set|remove] labelname"
 msgstr ""
 
-#: src/commands.c:1434
+#: src/commands.c:1430
 #, fuzzy
 msgid "Set/Del/Edit label on resource"
 msgstr "Editar el recurso dado"
 
-#: src/commands.c:1438
+#: src/commands.c:1434
 #, fuzzy
 msgid "Names of properties defined on resource"
 msgstr "Activar propiedad del recurso"
 
-#: src/commands.c:1441
+#: src/commands.c:1437
 msgid "chexec [+|-] remote"
 msgstr "chexec [+|-] remoto"
 
-#: src/commands.c:1441
+#: src/commands.c:1437
 msgid "Change isexecutable property of resource"
 msgstr "Cambiar la propiedad de ejecución del recurso"
 
-#: src/commands.c:1444
+#: src/commands.c:1440
 #, fuzzy
 msgid "propget res [propname]"
 msgstr "propget recurso [nombre_de_propiedad]"
 
-#: src/commands.c:1445
+#: src/commands.c:1441
 msgid "Retrieve properties of resource"
 msgstr "Obtener propiedades del recurso"
 
-#: src/commands.c:1447
+#: src/commands.c:1443
 #, fuzzy
 msgid "propdel res propname"
 msgstr "propget recurso [nombre_de_propiedad]"
 
-#: src/commands.c:1448
+#: src/commands.c:1444
 #, fuzzy
 msgid "Delete property from resource"
 msgstr "Activar propiedad del recurso"
 
-#: src/commands.c:1450
+#: src/commands.c:1446
 #, fuzzy
 msgid "propset res propname value"
 msgstr "propset recurso nombre_de_propiedad valor"
 
-#: src/commands.c:1451
+#: src/commands.c:1447
 msgid "Set property on resource"
 msgstr "Activar propiedad del recurso"
 
-#: src/commands.c:1454
+#: src/commands.c:1450
 msgid "search query"
 msgstr ""
 
-#: src/commands.c:1455
+#: src/commands.c:1451
 msgid ""
 "DASL Search resource in current collection\n"
 "\n"
@@ -1100,71 +1115,71 @@ msgid ""
 " (See also variables searchdepth, searchorder, searchdorder)\n"
 msgstr ""
 
-#: src/commands.c:1466
+#: src/commands.c:1462
 msgid "set [option] [value]"
 msgstr "set [opción] [valor]"
 
-#: src/commands.c:1466
+#: src/commands.c:1462
 msgid "Set an option, or display options"
 msgstr "Activar una opción, o mostrar opciones"
 
-#: src/commands.c:1468
+#: src/commands.c:1464
 msgid "Open connection to given URL"
 msgstr "Abrir conexión con la URL dada"
 
-#: src/commands.c:1470
+#: src/commands.c:1466
 msgid "Close current connection"
 msgstr "Cerrar conexión actual"
 
-#: src/commands.c:1474
+#: src/commands.c:1470
 msgid "Exit program"
 msgstr "Salir del programa"
 
-#: src/commands.c:1477
+#: src/commands.c:1473
 msgid "unset [option] [value]"
 msgstr "unset [opción] [valor]"
 
-#: src/commands.c:1477
+#: src/commands.c:1473
 msgid "Unsets or clears value from option."
 msgstr "Inactiva o borra el valor de una opción."
 
-#: src/commands.c:1479
+#: src/commands.c:1475
 msgid "lcd [directory]"
 msgstr "lcd [directorio]"
 
-#: src/commands.c:1479
+#: src/commands.c:1475
 msgid "Change local working directory"
 msgstr "Cambiar al directorio de trabajo local"
 
-#: src/commands.c:1481
+#: src/commands.c:1477
 msgid "lls [options]"
 msgstr "lls [opciones]"
 
-#: src/commands.c:1481
+#: src/commands.c:1477
 msgid "Display local directory listing"
 msgstr "Mostrar el listado del directorio local"
 
-#: src/commands.c:1482
+#: src/commands.c:1478
 msgid "Print local working directory"
 msgstr "Mostrar en pantalla el directorio de trabajo local"
 
-#: src/commands.c:1484
+#: src/commands.c:1480
 msgid "Logout of authentication session"
 msgstr ""
 
-#: src/commands.c:1485
+#: src/commands.c:1481
 msgid "help [command]"
 msgstr "help [comando]"
 
-#: src/commands.c:1485
+#: src/commands.c:1481
 msgid "Display help message"
 msgstr "Mostrar el mensaje de ayuda"
 
-#: src/commands.c:1487
+#: src/commands.c:1483
 msgid "Describe an option variable"
 msgstr ""
 
-#: src/commands.c:1488
+#: src/commands.c:1484
 msgid "Information about this version of cadaver"
 msgstr ""
 
@@ -1173,32 +1188,42 @@ msgstr ""
 msgid "Unknown system error"
 msgstr "Error desconocido"
 
-#: src/edit.c:68
-#, c-format
-msgid "Could not stat file: %s\n"
+#: src/edit.c:70
+#, fuzzy, c-format
+#| msgid "Could not stat file: %s\n"
+msgid "edit: Could not stat file: %s\n"
 msgstr "No se pudo obtener las propiedades del archivo: %s\n"
 
-#: src/edit.c:74
-#, c-format
-msgid "Error! Could not examine temporary file: %s\n"
+#: src/edit.c:76
+#, fuzzy, c-format
+#| msgid "Error executing ls: %s\n"
+msgid "edit: Error executing editor: %s\n"
+msgstr "Error ejecutando ls: %s\n"
+
+#: src/edit.c:79
+#, fuzzy, c-format
+#| msgid "Error! Could not examine temporary file: %s\n"
+msgid "edit: Error: Could not examine temporary file: %s\n"
 msgstr "¡Error! No se pudo examinar el archivo temporal: %s\n"
 
-#: src/edit.c:80
-#, c-format
-msgid "No changes were made.\n"
+#: src/edit.c:85
+#, fuzzy, c-format
+#| msgid "No changes were made.\n"
+msgid "edit: No changes were made.\n"
 msgstr "No se realizaron cambios.\n"
 
-#: src/edit.c:83
-#, c-format
-msgid "Changes were made.\n"
+#: src/edit.c:88
+#, fuzzy, c-format
+#| msgid "Changes were made.\n"
+msgid "edit: Changes were made.\n"
 msgstr "Se realizarion cambios.\n"
 
-#: src/edit.c:130
+#: src/edit.c:135
 #, c-format
 msgid "You cannot edit a collection resource (%s).\n"
 msgstr "No se puede editar un recurso de una colección (%s).\n"
 
-#: src/edit.c:147
+#: src/edit.c:152
 #, c-format
 msgid ""
 "Could not create temporary file %s:\n"
@@ -1207,7 +1232,7 @@ msgstr ""
 "No se pudo crear el archivo temporal %s:\n"
 "%s\n"
 
-#: src/edit.c:158
+#: src/edit.c:163
 #, c-format
 msgid ""
 "Could not set file permissions for %s:\n"
@@ -1216,35 +1241,38 @@ msgstr ""
 "No se pudo asignar los permisos de archivo para %s:\n"
 "%s\n"
 
-#: src/edit.c:185
+#: src/edit.c:190
 #, c-format
 msgid "Downloading `%s' to %s"
 msgstr "Descargando '%s' a %s"
 
-#: src/edit.c:191
+#: src/edit.c:196
 #, c-format
 msgid "Error writing to temporary file: %s\n"
 msgstr "Error escribiendo al archivo temporal: %s\n"
 
-#: src/edit.c:200
+#: src/edit.c:205
 #, c-format
 msgid "Could not re-open temporary file: %s\n"
 msgstr "No se pudo reabrir el archivo temporal: %s\n"
 
-#: src/edit.c:204
+#: src/edit.c:209
 #, c-format
 msgid "Uploading changes to `%s'"
 msgstr "Transfiriendo cambios a '%s'"
 
-#: src/edit.c:211
+#: src/edit.c:216
 #, c-format
 msgid "Try uploading again (y/n)? "
 msgstr "¿Intentar transferir de nuevo (y/n)?"
 
-#: src/edit.c:222
-#, c-format
+#: src/edit.c:227
+#, fuzzy, c-format
+#| msgid ""
+#| "Could not delete temporary file %s:\n"
+#| "%s\n"
 msgid ""
-"Could not delete temporary file %s:\n"
+"edit: Could not delete temporary file %s:\n"
 "%s\n"
 msgstr ""
 "No se pudo borrar el archivo temporal %s:\n"
@@ -1271,7 +1299,7 @@ msgstr "Listando colección"
 msgid "collection is empty.\n"
 msgstr "la colección está vacía.\n"
 
-#: src/search.c:667
+#: src/search.c:666
 #, c-format
 msgid "Using query: "
 msgstr ""
