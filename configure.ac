@@ -126,6 +126,8 @@ NEON_WARNINGS
 CPPFLAGS="-I\$(top_builddir) -I\$(top_srcdir)/lib $CPPFLAGS"
 
 AC_CONFIG_FILES([Makefile po/Makefile.in neon/src/Makefile])
+AC_CONFIG_COMMANDS([source-directories],
+  [for f in lib src; do test -d $f || mkdir $f; done])
 
 AC_OUTPUT
 
@@ -140,4 +142,3 @@ AC_MSG_NOTICE([Configured to build cadaver ${PACKAGE_VERSION}:
   GNU readline support:	 ${msg_readline}
 ])
 
-test -d src || mkdir src
