@@ -1205,6 +1205,7 @@ static void execute_head(const char *native_path)
 {
     char *uri_path = uri_resolve_native(native_path);
     ne_request *req = ne_request_create(session.sess, "HEAD", uri_path);
+    const char *bullet = get_bool_option(opt_utf8) ? N_("•") : "-";
 
     if (ne_begin_request(req) == NE_OK) {
         const char *name, *value;
@@ -1213,7 +1214,7 @@ static void execute_head(const char *native_path)
         printf(_("Response status-code %d, headers:\n"), ne_get_status(req)->code);
         while ((iter = ne_response_header_iterate(req, iter,
                                                   &name, &value)) != NULL)
-            printf(" %s: %s\n", name, value);
+            printf("%s %s: %s\n", bullet, name, value);
 
         if (ne_discard_response(req) == NE_OK)
             ne_end_request(req);
