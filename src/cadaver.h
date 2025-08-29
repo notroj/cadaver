@@ -58,7 +58,7 @@ enum command_id {
     cmd_steal, cmd_discover, cmd_showlocks, cmd_propedit, cmd_propnames,
     cmd_propget, cmd_propset, cmd_propdel, cmd_chexec, cmd_edit, cmd_logout,
     cmd_describe, cmd_search, cmd_version, cmd_checkin, cmd_checkout,
-    cmd_uncheckout, cmd_history, cmd_label,
+    cmd_uncheckout, cmd_history, cmd_label, cmd_head,
     cmd_unknown
 /* DON'T FORGET TO ADD A NEW COMMAND ALIAS WHEN YOU ADD A NEW COMMAND */
 };

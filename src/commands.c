@@ -94,7 +94,7 @@ const static struct {
     C(ls), C(cd), C(quit), C(open), C(logout), C(close), C(set), C(unset), 
     C(pwd), C(help), C(put), C(get), C(mkcol), C(delete), C(move), C(copy),
     C(less), C(cat), C(lpwd), C(lcd), C(lls), C(echo), C(quit), C(about),
-    C(rename),
+    C(rename), C(head),
     C(mget), C(mput), C(rmcol), C(lock), C(unlock), C(discover), C(steal),
     C(chexec), C(showlocks), C(version), C(propget), C(propset), C(propdel),
     C(describe), C(search),
@@ -1201,6 +1201,28 @@ static void execute_chexec(const char *val, const char *native_path)
     ne_free(uri_path);
 }
 
+static void execute_head(const char *native_path)
+{
+    char *uri_path = uri_resolve_native(native_path);
+    ne_request *req = ne_request_create(session.sess, "HEAD", uri_path);
+
+    if (ne_begin_request(req) == NE_OK) {
+        const char *name, *value;
+        void *iter = NULL;
+
+        printf(_("Response status-code %d, headers:\n"), ne_get_status(req)->code);
+        while ((iter = ne_response_header_iterate(req, iter,
+                                                  &name, &value)) != NULL)
+            printf(" %s: %s\n", name, value);
+
+        if (ne_discard_response(req) == NE_OK)
+            ne_end_request(req);
+    }
+
+    ne_request_destroy(req);
+    ne_free(uri_path);
+}
+
 static void execute_lpwd(void)
 {
     char pwd[BUFSIZ];
@@ -1398,6 +1420,7 @@ const struct command commands[] = {
     { cmd_mput, "mput", true, 1, CMD_VARY, parmscope_local, TV(multi_mput), 
       N_("mput local..."), N_("Upload many local files") },
     C1(edit, N_("edit resource"), N_("Edit given resource")),
+    C1(head, N_("head remote"), N_("Show resource metadata")),
     C1M(less, N_("less remote..."), N_("Display remote resource through pager")), 
     C1M(mkcol, N_("mkcol remote..."), N_("Create remote collection(s)")), 
     C1M(cat, N_("cat remote..."), N_("Display remote resource(s)")), 
