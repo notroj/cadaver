@@ -1,6 +1,6 @@
 /* 
    cadaver, command-line DAV client
-   Copyright (C) 1999-2024, Joe Orton <joe@manyfish.co.uk>,
+   Copyright (C) 1999-2025, Joe Orton <joe@manyfish.co.uk>,
    except where otherwise indicated.
 
    This program is free software; you can redistribute it and/or modify
@@ -94,7 +94,7 @@ const static struct {
     C(ls), C(cd), C(quit), C(open), C(logout), C(close), C(set), C(unset), 
     C(pwd), C(help), C(put), C(get), C(mkcol), C(delete), C(move), C(copy),
     C(less), C(cat), C(lpwd), C(lcd), C(lls), C(echo), C(quit), C(about),
-    C(rename), C(head),
+    C(rename), C(head), C(resumeget),
     C(mget), C(mput), C(rmcol), C(lock), C(unlock), C(discover), C(steal),
     C(chexec), C(showlocks), C(version), C(propget), C(propset), C(propdel),
     C(describe), C(search),
@@ -1025,10 +1025,12 @@ static void execute_rename(const char *native_src, const char *native_dest)
     ne_free(uri_dest);
 }
 
-static void execute_get(const char *native_remote, const char *native_local)
+static void do_get(const char *native_remote, const char *native_local, int resume)
 {
     char *filename, *uri_path;
-    int fd;
+    ne_content_range range;
+    struct stat st;
+    int fd, ret, flags;
 
     uri_path = uri_resolve_native(native_remote);
 
@@ -1036,12 +1038,11 @@ static void execute_get(const char *native_remote, const char *native_local)
         filename = ne_strdup(native_local);
     }
     else {
-        struct stat st;
-
         filename = ne_strdup(base_name(native_remote));
+    }
 
-        /* Choose an appropriate local filename */
-        if (stat(filename, &st) == 0) {
+    if (stat(filename, &st) == 0) {
+        if (!resume) {
             char buf[BUFSIZ];
             /* File already exists... don't overwrite */
             snprintf(buf, BUFSIZ, _("Enter local filename for `%s': "),
@@ -1049,33 +1050,68 @@ static void execute_get(const char *native_remote, const char *native_local)
             ne_free(filename);
             filename = readline(buf);
             if (filename == NULL || strlen(filename) == 0) {
-                ne_free(uri_path);
-                if (filename) ne_free(filename);
                 printf(_("cancelled.\n"));
-                return;
+                goto fail;
             }
+            flags = O_CREAT|O_TRUNC;
+        }
+        else if (S_ISREG(st.st_mode)) {
+            range.start = st.st_size;
+            range.end = -1;
+            range.total = 0;
+            flags = O_APPEND;
+        }
+        else {
+            printf(_("Cannot resume download to `%s' - not a regular file.\n"),
+                   filename);
+            goto fail;
         }
     }
+    else if (resume) {
+        int errnum = errno;
+        printf(_("Cannot resume download to `%s': %s\n"), filename,
+               strerror(errnum));
+        goto fail;
+    }
+    else {
+        flags = O_CREAT|O_EXCL;
+    }
 
-    fd = open(filename, O_CREAT|O_WRONLY|O_TRUNC|OPEN_BINARY_FLAGS|O_LARGEFILE, 
-                  0644);
+    fd = open(filename, flags|O_WRONLY|OPEN_BINARY_FLAGS|O_LARGEFILE, 0644);
     output(o_download, _("Downloading `%s' to `%s':"), native_remote, filename);
     if (fd < 0) {
         output(o_finish, _("failed:\n%s\n"), strerror(errno));
-    }
-    else {
-        int ret = ne_get(session.sess, uri_path, fd);
-        if (close(fd) && ret == NE_OK) {
-            int errnum = errno;
-            ret = NE_ERROR;
-            ne_set_error(session.sess, _("Could not write to file: %s"),
-                         strerror(errnum));
-        }
-        out_result(ret);
+        goto fail;
     }
 
+    if (resume) {
+        ret = ne_get_range(session.sess, uri_path, &range, fd);
+    }
+    else {
+        ret = ne_get(session.sess, uri_path, fd);
+    }
+
+    if (close(fd) && ret == NE_OK) {
+        int errnum = errno;
+        ret = NE_ERROR;
+        ne_set_error(session.sess, _("Could not write to file: %s"),
+                     strerror(errnum));
+    }
+    out_result(ret);
+
+fail:
     ne_free(uri_path);
-    ne_free(filename);
+    if (filename) ne_free(filename);
+}
+
+static void execute_get(const char *remote, const char *local)
+{
+    return do_get(remote, local, 0);
+}
+
+static void execute_resumeget(const char *remote, const char *local)
+{
+    return do_get(remote, local, 1);
 }
 
 static void simple_put(const char *local, const char *remote)
@@ -1417,6 +1453,8 @@ const struct command commands[] = {
       N_("put local [remote]"), N_("Upload local file") },
     { cmd_get, "get", true, 1, 2, parmscope_none, T2(execute_get),
       N_("get remote [local]"), N_("Download remote resource") },
+    { cmd_resumeget, "resumeget", true, 1, 2, parmscope_none, T2(execute_resumeget),
+      N_("resumeget remote [local]"), N_("Resume download of remote resource") },
     C1M(mget, N_("mget remote..."), N_("Download many remote resources")),
     { cmd_mput, "mput", true, 1, CMD_VARY, parmscope_local, TV(multi_mput), 
       N_("mput local..."), N_("Upload many local files") },
