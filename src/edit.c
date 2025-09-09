@@ -114,9 +114,43 @@ static int is_lockable(const char *uri_path)
 #define PATH_MAX (256)
 #endif
 
+/* Pre-send hook to use a conditional PUT. */
+static void edit_pre_send(ne_request *req, void *userdata, ne_buffer *header)
+{
+    char *etag = userdata;
+
+    if (etag) ne_buffer_concat(header, "If-Match: ", etag, "\r\n", NULL);
+}
+
+/* Post-headers hook to fetch the etag for GET. */
+static void edit_hdrs(ne_request *req, void *userdata, const ne_status *status)
+{
+    char **etag = userdata;
+    const char *val;
+
+    if (status->klass == 2
+        && (val = ne_get_response_header(req, "Etag")) != NULL) {
+        if (*etag) ne_free(*etag);
+        *etag = ne_strclean(ne_strdup(val));
+    }
+}
+
+/* Post-send hook to produce a descriptive failure for a conditional
+ * PUT error. */
+static int edit_post_send(ne_request *req, void *userdata, const ne_status *status)
+{
+    if (status->code == 412) {
+        ne_set_error(session.sess, _("Resource was modified since download, "
+                                     "upload refused"));
+        return NE_ERROR;
+    }
+
+    return NE_OK;
+}
+
 void execute_edit(const char *native_path)
 {
-    char *uri_path;
+    char *uri_path, *etag = NULL;
     struct ne_lock *lock = NULL;
     char fname[PATH_MAX] = "/tmp/cadaver-edit-XXXXXX";
     const char *pnt;
@@ -179,16 +213,17 @@ void execute_edit(const char *native_path)
     }
 
     /* Return 1: Checkin, 2: Checkout, 0: otherwise */
-    is_checkin = is_vcr(uri_path);
-    if (is_checkin==1) {
+    if ((is_checkin = is_vcr(uri_path)) == 1) {
         execute_checkout(uri_path);
     }
-    
-    output(o_download, _("Downloading `%s' to %s"), uri_path, fname);
 
+    ne_hook_post_headers(session.sess, edit_hdrs, &etag);
+    output(o_download, _("Downloading `%s' to %s"), uri_path, fname);
     /* Don't puke if get fails -- perhaps we are creating a new one? */
     out_result(ne_get(session.sess, uri_path, fd));
-    
+
+    ne_unhook_post_headers(session.sess, edit_hdrs, &etag);
+
     if (close(fd)) {
 	output(o_finish, _("Error writing to temporary file: %s\n"), 
 	       strerror(errno));
@@ -202,10 +237,14 @@ void execute_edit(const char *native_path)
 		   _("Could not re-open temporary file: %s\n"),
 		   strerror(errno));
 	} else {
-	    do {
+            if (etag) {
+                ne_hook_pre_send(session.sess, edit_pre_send, etag);
+                ne_hook_post_send(session.sess, edit_post_send, NULL);
+            }
+
+            do {
 		output(o_upload, _("Uploading changes to `%s'"), uri_path);
-		/* FIXME: conditional PUT using fetched Etag/modtime if
-		 * !can_lock */
+
 		if (out_handle(ne_put(session.sess, uri_path, fd))) {
 		    upload_okay = 1;
 		} else {
@@ -216,6 +255,11 @@ void execute_edit(const char *native_path)
 		    }
 		}
 	    } while (!upload_okay);
+
+            if (etag) {
+                ne_unhook_pre_send(session.sess, edit_pre_send, etag);
+                ne_unhook_post_send(session.sess, edit_post_send, NULL);
+            }
 	    close(fd);
 	}
     }
@@ -238,6 +282,8 @@ void execute_edit(const char *native_path)
 	ne_lockstore_remove(session.locks, lock);
 	ne_lock_destroy(lock);
     }
+
+    if (etag) ne_free(etag);
 
     goto edit_bail;
 edit_close:
