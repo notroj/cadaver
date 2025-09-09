@@ -91,38 +91,37 @@ static int run_editor(const char *filename)
 }
 
 /* Returns true if resource at URI is lockable. */
-static int is_lockable(const char *uri)
+static int is_lockable(const char *uri_path)
 {
     ne_server_capabilities caps = {0};
+    ne_uri uri = session.uri; /* shallow copy */
 
-    /* TODO: for the mo, just check we're on a Class 2 server.
-     * Should check supportedlock property really. */
+    uri.path = (char *)uri_path;
 
-    if (ne_options(session.sess, uri, &caps) != NE_OK) {
+    if (ne_lockstore_findbyuri(session.locks, &uri) != NULL)
+        return 0;
+
+    /* A proper test for "lockability" would be to check the
+     * supportedlock property here, but this is sufficient. */
+    if (ne_options(session.sess, uri_path, &caps) != NE_OK) {
 	return 0;
     }
 
-    return caps.dav_class2;
+    return !!caps.dav_class2;
 }
 
 #ifndef PATH_MAX
 #define PATH_MAX (256)
 #endif
 
-/* TODO: this is great big heap of steaming trout.  */
-/* TODO: does this work under cygwin? mkstemp() may or may not open
-   the file using O_BINARY, and then we *do* upload it using O_BINARY,
-   so maybe this will screw things up. Maybe we should fcntl it and
-   set O_BINARY, if that is allowed under cygwin? */
 void execute_edit(const char *native_path)
 {
     char *uri_path;
-    unsigned int can_lock; /* can we LOCK it? */
     struct ne_lock *lock = NULL;
     char fname[PATH_MAX] = "/tmp/cadaver-edit-XXXXXX";
     const char *pnt;
     int fd;
-    int is_checkout, is_checkin;
+    int is_checkout, is_checkin, can_lock;
     
     uri_path = uri_resolve_native(native_path);
 
@@ -177,8 +176,6 @@ void execute_edit(const char *native_path)
 	    ne_lock_destroy(lock);
 	    goto edit_close;
 	}
-    } else {
-	/* TODO: HEAD and get the Etag/modtime */
     }
 
     /* Return 1: Checkin, 2: Checkout, 0: otherwise */
