@@ -159,11 +159,15 @@ void execute_edit(const char *native_path)
     
     uri_path = uri_resolve_native(native_path);
 
-    /* Don't let them edit a collection, since PUT to a collection is
-     * bogus. Really we want to be able to fetch a "DefaultDocument"
-     * property, and edit on that instead: IIS does expose such a
-     * property. Would be a nice hack to add the support to mod_dav
-     * too. */
+    /* The getrestype()  -> PROPFIND
+     *     is_lockable() -> OPTIONS
+     *     is_vcr()      -> PROPFIND
+     * sequence could be condensed into one PROPFIND for the right set
+     * of properties here (resourcetype, checked-in, supportedlock).
+     *
+     * Prevent edit on a collection. Following a (custom?)property to
+     * retrieve "index.html" for a collection would be a possible RFE
+     * here. */
     if (getrestype(uri_path) == resr_collection) {
 	printf(_("You cannot edit a collection resource (%s).\n"),
 	       uri_path);
