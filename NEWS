@@ -1,3 +1,9 @@
+Changes in release 0.28:
+* Add 'resumeget', 'head' commands.
+* Cosmetic tweak for 'propget' command.
+* Allow using 'edit' on an already-locked resource.
+* 'edit' uses a conditional PUT (where possible) to avoid conflicts.
+
 Changes in release 0.27:
 * Opening a location which does not indicate DAV class 1 support
   is now an error (or a warning in tolerant mode).

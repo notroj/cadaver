@@ -1,7 +1,7 @@
 dnl configure script
 
 AC_PREREQ([2.69])
-AC_INIT([cadaver],[0.27],,,[https://github.com/notroj/cadaver])
+AC_INIT([cadaver],[0.28],,,[https://github.com/notroj/cadaver])
 
 AC_CONFIG_SRCDIR(src/cadaver.c)
 AC_CONFIG_HEADERS([config.h])
@@ -108,6 +108,8 @@ AC_SUBST(VERSION)
 AC_SUBST(PACKAGE)
 mkdir_p='$(MKDIR_P)'
 AC_SUBST(mkdir_p)
+
+XGETTEXT_EXTRA_OPTIONS=--from-code=UTF-8
 
 AM_GNU_GETTEXT_VERSION([0.22.5])
 AM_GNU_GETTEXT([external])
