@@ -20,3 +20,15 @@ Copyright (C) 85, 88, 90, 91, 1995-1999 Free Software Foundation, Inc.
 Copyright (C) Free Software Foundation, Inc.
 Copyright (C) GRASE Lab, UCSC
 ~~~
+
+## Development
+
+To build _cadaver_ from source, try:
+
+~~~
+$ git clone --recurse-submodules https://github.com/notroj/cadaver
+$ cd cadaver
+$ ./autogen.sh
+$ ./configure --disable-nls
+$ make
+~~~
