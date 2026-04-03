@@ -887,6 +887,15 @@ int main(int argc, char *argv[])
     textdomain(PACKAGE_NAME);
 #endif /* ENABLE_NLS */
 
+    if (ne_version_match(0, 29)) {
+        fprintf(stderr,
+                "%s: Error incompatible neon library version. "
+                "Version 0.29+ required, found:\n"
+                "%s: %s\n",
+                progname, progname, ne_version_string());
+        return 1;
+    }
+
     ne_debug_init(stderr, 0);
     if (!home) {
 	/* Show me the way to go home... */
