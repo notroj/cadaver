@@ -717,7 +717,7 @@ static void execute_propget(const char *res, const char *name)
 static int propname_iterator(void *userdata, const ne_propname *pname,
 			     const char *value, const ne_status *st)
 {
-    printf("\n %s%s", pname->nspace, pname->name);
+    printf("\n%s %s%s", bullet_str(), pname->nspace, pname->name);
     return 0;
 }
 
